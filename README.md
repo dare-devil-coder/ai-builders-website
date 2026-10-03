@@ -29,6 +29,8 @@ The Join page validates the requested membership fields, saves a draft in the vi
 - `src/pages/`: each page's content and any future confirmed listings.
 - `src/index.css`, `src/feature.css`, and `src/components/ui/EventPassport.css`: visual system, responsive layout, and animation.
 
-The home hero uses a BUILD constellation of paired topics. The work gallery uses a React/Vite adaptation of Spectrum UI's Animated Card; its source attribution is in `src/components/spectrumui/AnimatedCard.jsx`. The upcoming event card shows a live countdown once a confirmed date is entered. Until then, it displays TBA. Visitors can flip the card to read the available event details.
+The home hero uses a BUILD constellation of paired topics and circular spinning text. The homepage process steps morph between Learn, Build, Ship, and Contribute. The work section uses a themed folder that reveals pending project cards on hover or tap, with a direct gallery button. The project gallery itself uses a React/Vite adaptation of Spectrum UI's Animated Card; its source attribution is in `src/components/spectrumui/AnimatedCard.jsx`. The upcoming event card shows a live countdown once a confirmed date is entered. Until then, it displays TBA. Visitors can flip the card to read the available event details.
+
+Motion components live in `src/components/ui/MotionPieces.jsx` and `MotionPieces.css`. They include the word preloader, scroll-driven Who We Are text, About heading and quote effects, and the Events headline build. Reduced-motion preferences remove or simplify these effects.
 
 The site uses GSAP SplitText for masked heading reveals and ScrollTrigger for gentle section exit motion. Sections remain in normal document flow, so scrolling works in both directions and tall sections are fully accessible. Visitors requesting reduced motion get static headings and sections. The motion hook is in `src/hooks/useSiteMotion.js`.

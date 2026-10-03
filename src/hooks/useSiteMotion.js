@@ -17,7 +17,7 @@ export default function useSiteMotion(pathname) {
       const main = document.querySelector('#main-content')
       if (!main) return
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      const headings = [...main.querySelectorAll('h1, h2'), ...document.querySelectorAll('footer h2')]
+      const headings = [...main.querySelectorAll('h1:not([data-motion-managed]), h2:not([data-motion-managed])'), ...document.querySelectorAll('footer h2')]
 
       context = gsap.context(() => {
         headings.forEach(heading => {

@@ -17,12 +17,12 @@ export function Reveal({ children, className = '' }) {
   return <div ref={ref} className={`reveal ${className}`}>{children}</div>
 }
 
-export function SectionIntro({ index, label, title, description, action }) {
-  return <Reveal className="section-intro"><div><span className="eyebrow"><span className="eyebrow-index">{index}</span> {label}</span><h2>{title}</h2>{description && <p>{description}</p>}</div>{action && <Link className="text-link" to={action.to}>{action.label} <ArrowUpRight size={18} /></Link>}</Reveal>
+export function SectionIntro({ index, label, title, description, action, watermark, motionManaged = false }) {
+  return <Reveal className="section-intro"><span className="section-backdrop-word" aria-hidden="true">{watermark || label.split(/\s+/).at(-1)}</span><div><span className="eyebrow"><span className="eyebrow-index">{index}</span> {label}</span><h2 data-motion-managed={motionManaged || undefined}>{title}</h2>{description && <p>{description}</p>}</div>{action && <Link className="text-link" to={action.to}>{action.label} <ArrowUpRight size={18} /></Link>}</Reveal>
 }
 
 export function PageHero({ meta }) {
-  return <section className="page-hero"><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1>{meta.title}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span></div></section>
+  return <section className="page-hero"><span className="section-backdrop-word" aria-hidden="true">{meta.kicker.split(' / ').at(-1)}</span><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1 data-motion-managed={meta.motionTitle || undefined}>{meta.title}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span></div></section>
 }
 
 // Adapted to this project after evaluating Spectrum UI's 3D Tilt Card through its MCP catalog.
