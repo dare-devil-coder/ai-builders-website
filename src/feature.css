@@ -1,0 +1,83 @@
+/* The scroll experience keeps native document flow so reverse scrolling is reliable. */
+.home-page .scroll-panel,.home-page .section-stage,.home-page .section-inner{height:auto;overflow:visible;background:transparent}
+.home-page .scroll-panel{position:relative}
+.home-page .section-stage{transform-origin:center center}
+.home-page .section-inner>.section{min-height:0;display:block}
+main .reveal{opacity:1;transform:none;transition:none}
+.split-line{will-change:transform}
+
+/* Unboxed, uniformly styled topics float around the standalone BUILD word. */
+.build-constellation{position:relative;width:100%;height:590px;min-width:0;display:grid;place-items:center;isolation:isolate}
+.build-constellation:before{content:'';position:absolute;inset:17% 8%;border-radius:50%;background:radial-gradient(ellipse,#5d6fde20,transparent 68%);filter:blur(34px);pointer-events:none}
+.constellation-desktop{width:110%;max-width:none;height:100%;overflow:visible;filter:drop-shadow(0 16px 38px #06091980)}
+.floating-topic{pointer-events:none;transform-box:fill-box;transform-origin:center}
+.floating-topic text{fill:#e5eaff;font:600 21px 'IBM Plex Mono',monospace;letter-spacing:.015em;filter:drop-shadow(0 2px 10px #aebaffbb)}
+.build-letter-fill{fill:#f5f6ff;filter:drop-shadow(0 0 35px #8b9dff99)}
+.build-letter-outline{fill:none;stroke:#aebeff;stroke-width:23;stroke-linejoin:round;filter:drop-shadow(0 0 28px #b0bdff)}
+.constellation-mobile{display:none}
+
+/* Real totals can be inserted in site.js; dashes intentionally denote pending data. */
+.stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#151a30;border:1px solid #4b557b;min-width:0}
+.stat-cell{min-height:173px;padding:23px 25px;display:flex;flex-direction:column;align-items:flex-start;border-right:1px solid #343d61;border-bottom:1px solid #343d61}
+.stat-cell:nth-child(even){border-right:0}
+.stat-index{font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#95a4dc}
+.stat-cell strong{font:600 clamp(46px,5vw,70px)/1 'Space Grotesk',sans-serif;color:#c6ceff;margin:auto 0 4px;font-variant-numeric:tabular-nums}
+.stat-cell>span:last-child{font-size:14px;font-weight:700;color:#f4f5ff}
+.stats-note{grid-column:1/-1;margin:0;padding:14px 25px;color:#aeb8d6;font:11px/1.5 'IBM Plex Mono',monospace}
+
+/* Spectrum UI Animated Card, adapted to this site's Vite stack and project data. */
+.featured-projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.spectrum-animated-card{display:flex;flex-direction:column;min-width:0;background:#151a30;border:1px solid #424b72;overflow:hidden;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+.spectrum-animated-card:hover{transform:translateY(-6px) scale(1.015);border-color:#a5b3fb;box-shadow:0 22px 48px #05071270}
+.project-art{height:208px;position:relative;overflow:hidden;background:radial-gradient(circle at 70% 24%,#35467e,#202849 44%,#10172d 95%)}
+.project-art img{width:100%;height:100%;object-fit:cover}
+.project-art-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.project-art-placeholder:before{content:'';position:absolute;width:310px;height:310px;border:1px solid #9daef263;border-radius:50%;box-shadow:0 0 0 43px #9daef20b,0 0 0 93px #9daef208}
+.project-art-placeholder>span{font:700 62px 'Space Grotesk',sans-serif;letter-spacing:-.1em;color:#e5e9ff;transform:rotate(-10deg);text-shadow:11px 16px 0 #8594dd60}
+.project-art-placeholder>strong{position:absolute;top:17px;right:20px;color:#b9c8ff;font:500 10px 'IBM Plex Mono',monospace}
+.project-art-placeholder i{position:absolute;width:100px;height:1px;background:#a9b9f366;transform:rotate(-32deg)}
+.project-art-placeholder i:nth-of-type(1){top:30px;left:-15px}.project-art-placeholder i:nth-of-type(2){bottom:30px;right:-10px}
+.project-card-body{padding:24px 25px 22px;display:flex;flex:1;flex-direction:column;min-height:235px}
+.project-card-meta{display:flex;justify-content:space-between;gap:12px;color:#aab8f1;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.06em}
+.project-card-meta span:last-child{color:#7d8aaa;white-space:nowrap}
+.project-card-body h3{font:600 27px/1.15 'Space Grotesk',sans-serif;letter-spacing:-.035em;margin:28px 0 10px}
+.project-card-body p{font-size:14px;line-height:1.6;color:#afb8d0;margin:0 0 22px}
+.project-card-bottom{margin-top:auto;border-top:1px solid #3b446a;padding-top:17px;display:flex;justify-content:space-between;align-items:center;color:#a4b2e9;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.1em}
+.project-card-bottom a{display:inline-flex;align-items:center;gap:8px;color:#e5e9ff;font:700 13px 'DM Sans',sans-serif;letter-spacing:0}
+.project-card-bottom a:hover{text-decoration:underline;text-underline-offset:4px}
+.projects-footnote{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:26px;color:#aeb8d0;font-size:14px}
+.projects-footnote p,.project-gallery-note{margin:0;color:#aeb8d0;font-size:14px;line-height:1.6}
+.project-gallery-note{margin-top:24px}
+
+/* Event passport */
+.event-passport{background:#161d39;border:1px solid #8d9dd8;color:#f5f5ff;position:relative;overflow:hidden;box-shadow:0 23px 70px #0507116b}
+.event-passport:before{content:'';position:absolute;right:-110px;top:-150px;width:430px;height:430px;border:1px solid #9caff72b;border-radius:50%;box-shadow:0 0 0 54px #9caff70a,0 0 0 110px #9caff707;pointer-events:none}
+.passport-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 28px;background:#b8c5ff;color:#121935;font:700 10px 'IBM Plex Mono',monospace;letter-spacing:.13em}
+.passport-main{position:relative;display:grid;grid-template-columns:1.15fr .85fr}
+.passport-details{padding:37px 42px 35px;border-right:1px dashed #65729e}
+.passport-details h3{font:600 clamp(32px,3.4vw,48px)/1.08 'Space Grotesk',sans-serif;letter-spacing:-.045em;margin:15px 0 12px}
+.passport-details>p{color:#b9c4df;font-size:15px;line-height:1.65;max-width:490px;margin:0 0 24px}
+.passport-facts{display:grid;gap:13px;margin:0 0 30px;color:#d8e0f7;font-size:13px}
+.passport-facts span{display:flex;gap:10px;align-items:center}.passport-facts svg{color:#b6c7ff}
+.passport-timer{padding:39px 35px;display:flex;flex-direction:column;justify-content:center;min-width:0;background:#11183288}
+.timer-pending{font:700 clamp(70px,8vw,124px)/1 'Space Grotesk',sans-serif;letter-spacing:-.08em;color:#ccd6ff;margin:30px 0 15px;text-shadow:0 0 34px #879aff80}
+.passport-timer p{font:500 11px/1.5 'IBM Plex Mono',monospace;color:#aebbe0;max-width:270px;margin:0}
+.timer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:31px 0 26px}.timer-grid>div{display:grid;gap:3px}.timer-grid strong{font:600 48px 'Space Grotesk',sans-serif;font-variant-numeric:tabular-nums}.timer-grid span{font:500 10px 'IBM Plex Mono',monospace;color:#aab8e4}
+.passport-barcode{border-top:1px dashed #65729e;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:17px 29px;color:#9fabd2;font:500 9px 'IBM Plex Mono',monospace;letter-spacing:.1em}
+.passport-barcode svg{width:min(340px,54%);height:42px;fill:#c5d0ff}
+
+/* Branded footer watermark: lower contrast than all interactive content. */
+.site-footer{position:relative;overflow:hidden;isolation:isolate}
+.site-footer .shell{position:relative;z-index:2}
+.footer-watermark{position:absolute;z-index:0;left:50%;top:78px;transform:translateX(-50%);white-space:nowrap;pointer-events:none;color:#8f9dff24;text-shadow:0 0 35px #7e8fff88,0 0 110px #7789ff77;font:700 clamp(94px,16vw,240px)/1 'Space Grotesk',sans-serif;letter-spacing:-.075em;filter:blur(2px)}
+.site-footer:before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#070810c9,#0708105e 54%,#070810ba),linear-gradient(0deg,#070810 0,transparent 75%);pointer-events:none}
+
+@media(max-width:1150px){.featured-projects{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-projects .spectrum-animated-card:last-child{grid-column:1/-1}.build-constellation{height:530px}.constellation-desktop{width:122%}}
+@media(max-width:900px){.home-page .scroll-panel,.home-page .section-stage,.home-page .section-inner,.home-page .section-inner>.section{height:auto;min-height:0;overflow:visible;display:block;background:transparent}.build-constellation{height:470px;margin:6px auto 15px}.constellation-desktop{width:100%}.stats-grid{margin-top:14px}.passport-details{padding:33px}.passport-timer{padding:30px}}
+@media(max-width:640px){.build-constellation{height:auto;min-height:0;margin:12px 0 24px}.constellation-desktop{display:none}.constellation-mobile{display:block;width:100%}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-cell{min-height:135px;padding:17px}.stat-cell strong{font-size:48px}.stat-cell>span:last-child{font-size:12px}.stats-note{font-size:9px;padding:11px 17px}.featured-projects{grid-template-columns:1fr}.featured-projects .spectrum-animated-card:last-child{grid-column:auto}.project-art{height:175px}.project-card-body{min-height:210px}.projects-footnote{display:block}.projects-footnote .text-link{margin-top:13px}.passport-head{padding:14px 16px;font-size:8px}.passport-head svg{width:17px}.passport-main{grid-template-columns:1fr}.passport-details{padding:29px 23px;border-right:0;border-bottom:1px dashed #65729e}.passport-details h3{font-size:32px}.passport-timer{padding:25px 23px}.timer-pending{font-size:71px;margin:18px 0 8px}.timer-grid{grid-template-columns:repeat(4,1fr);gap:6px}.timer-grid strong{font-size:32px}.passport-barcode{padding:14px 16px;display:block}.passport-barcode svg{width:100%;max-width:310px}.passport-barcode span{display:block;margin-top:6px;font-size:8px}.footer-watermark{top:130px;font-size:28vw;opacity:.7}}
+@media(prefers-reduced-motion:reduce){.spectrum-animated-card{transition:none}.spectrum-animated-card:hover{transform:none}.split-line{will-change:auto}}
+@media(max-width:640px){
+  .build-constellation{width:min(100%,390px);margin:16px auto 32px}
+  .constellation-mobile{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 12px 26px #06091980)}
+  .constellation-mobile .floating-topic text{font-size:18.5px}
+}
