@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Pause, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { approach, featuredProjects } from '../../data/site'
 import './MotionPieces.css'
 
 const easeOut = [0.23, 1, 0.32, 1]
 
-export function SpinningText({ text = 'learn more • earn more • grow more •' }) {
+export function SpinningText({ text = 'LEARN • BUILD • GROW • CONTRIBUTE • ' }) {
   const characters = [...text]
   return <div className="spinning-text" role="img" aria-label={text}>
     <div className="spinning-text-ring" aria-hidden="true">{characters.map((character, index) =>
       <span key={index} style={{ '--angle': `${index * 360 / characters.length}deg` }}>{character}</span>)}</div>
-    <span className="spinning-text-center" aria-hidden="true">AI</span>
+    <span className="spinning-text-center" aria-hidden="true">AI<br />BUILDERS</span>
   </div>
 }
 
@@ -45,11 +45,15 @@ export function SoftBlurText({ text }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '0px 0px -8% 0px' })
   const reduced = useReducedMotion()
-  return <span ref={ref} className="soft-blur-text" role="text" aria-label={text}>{[...text].map((character, index) =>
-    <motion.span key={index} aria-hidden="true" className="soft-blur-letter"
-      initial={reduced ? false : { opacity: 0, filter: 'blur(8px)', transform: 'translateY(10px)' }}
-      animate={inView || reduced ? { opacity: 1, filter: 'blur(0px)', transform: 'translateY(0px)' } : undefined}
-      transition={{ duration: reduced ? 0 : .65, delay: reduced ? 0 : Math.min(index * .018, .6), ease: [0.22, 1, 0.36, 1] }}>{character === ' ' ? '\u00a0' : character}</motion.span>)}</span>
+  let index = 0
+  return <span ref={ref} className="soft-blur-text" role="text" aria-label={text}>{text.split(' ').map((word, wordIndex) =>
+    <span className="soft-blur-word" key={wordIndex} aria-hidden="true">{wordIndex > 0 && ' '}{[...word].map(character => {
+      const letterIndex = index++
+      return <motion.span key={letterIndex} className="soft-blur-letter"
+        initial={reduced ? false : { opacity: 0, filter: 'blur(8px)', transform: 'translateY(10px)' }}
+        animate={inView || reduced ? { opacity: 1, filter: 'blur(0px)', transform: 'translateY(0px)' } : undefined}
+        transition={{ duration: reduced ? 0 : .65, delay: reduced ? 0 : Math.min(letterIndex * .018, .6), ease: [0.22, 1, 0.36, 1] }}>{character}</motion.span>
+    })}</span>)}</span>
 }
 
 export function ShineText({ children }) {
@@ -80,18 +84,20 @@ export function TextMorph({ text }) {
 
 export function ApproachMorph() {
   const [active, setActive] = useState(0)
-  const [manual, setManual] = useState(false)
+  const [paused, setPaused] = useState(false)
   const reduced = useReducedMotion()
   useEffect(() => {
-    if (manual || reduced) return undefined
+    if (paused || reduced) return undefined
     const timer = window.setInterval(() => setActive(value => (value + 1) % approach.length), 3800)
     return () => window.clearInterval(timer)
-  }, [manual, reduced])
-  return <div className="approach-morph">
-    <div className="approach-morph-display"><span className="eyebrow">0{active + 1} / THE LOOP</span><h3><TextMorph text={approach[active].title} /></h3><p>{approach[active].text}</p></div>
-    <div className="approach-morph-steps" role="group" aria-label="Explore our process">{approach.map((step, index) =>
+  }, [paused, reduced])
+  const progress = ((active + 1) / approach.length) * 100
+  return <div className="approach-morph" aria-label="How we work">
+    <div className="approach-morph-display"><span className="eyebrow">THE BUILD LOOP / 0{active + 1}</span><h3><TextMorph text={approach[active].title} /></h3><p>{approach[active].text}</p></div>
+    <div className="approach-progress"><span>Progress</span><strong>{progress}%</strong><div className="approach-progress-track"><span style={{ width: `${progress}%` }} /></div></div>
+    <div className="approach-morph-controls"><div className="approach-morph-steps" role="group" aria-label="Explore our process">{approach.map((step, index) =>
       <button key={step.number} type="button" className={index === active ? 'is-active' : ''} aria-pressed={index === active}
-        onClick={() => { setManual(true); setActive(index) }}><span>{step.number}</span>{step.title}</button>)}</div>
+        onClick={() => { setPaused(true); setActive(index) }}>{step.title}</button>)}</div><button className="approach-pause" type="button" onClick={() => setPaused(value => !value)} aria-label={paused ? 'Play process animation' : 'Pause process animation'}>{paused ? <Play size={16} /> : <Pause size={16} />}{paused ? 'Play' : 'Pause'}</button></div>
   </div>
 }
 

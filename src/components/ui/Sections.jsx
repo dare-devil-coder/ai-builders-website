@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { KineticCenterBuild } from './MotionPieces'
 
 export function Reveal({ children, className = '' }) {
   const ref = useRef(null)
@@ -22,7 +23,7 @@ export function SectionIntro({ index, label, title, description, action, waterma
 }
 
 export function PageHero({ meta }) {
-  return <section className="page-hero"><span className="section-backdrop-word" aria-hidden="true">{meta.kicker.split(' / ').at(-1)}</span><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1 data-motion-managed={meta.motionTitle || undefined}>{meta.title}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span></div></section>
+  return <section className="page-hero"><span className="section-backdrop-word" aria-hidden="true">{meta.kicker.split(' / ').at(-1)}</span><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1 data-motion-managed>{meta.motionTitle ? meta.title : <KineticCenterBuild words={meta.title.split(/\s+/)} />}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span></div></section>
 }
 
 // Adapted to this project after evaluating Spectrum UI's 3D Tilt Card through its MCP catalog.

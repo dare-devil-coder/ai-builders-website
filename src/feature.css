@@ -3,6 +3,7 @@
 .home-page .scroll-panel{position:relative}
 .home-page .section-stage{transform-origin:center center}
 .home-page .section-inner>.section{min-height:0;display:block}
+@media(min-width:901px) and (prefers-reduced-motion:no-preference){.home-page .scroll-panel{height:auto;min-height:100vh;overflow:visible}.home-page .section-stage{height:auto;min-height:100vh;overflow:visible}.home-page .section-inner>.section{min-height:100vh}.home-page .section-inner>.hero{min-height:100vh}}
 main .reveal{opacity:1;transform:none;transition:none}
 .split-line{will-change:transform}
 

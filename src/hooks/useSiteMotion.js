@@ -50,30 +50,54 @@ export default function useSiteMotion(pathname) {
 
         if (!reduced) {
           const panels = [...main.querySelectorAll('.home-page > .scroll-panel')]
-          panels.forEach(panel => {
+          panels.slice(0, -1).forEach(panel => {
             const stage = panel.querySelector('.section-stage')
+            if (!stage) return
             gsap.fromTo(stage, { opacity: 1, scale: 1 }, {
-              opacity: 0.82,
-              scale: 0.975,
+              opacity: 0,
+              scale: 0.7,
               ease: 'none',
               scrollTrigger: {
                 trigger: panel,
                 start: 'bottom bottom',
-                end: 'bottom top',
-                scrub: 1.4,
+                end: () => `+=${Math.round(window.innerHeight * .65)}`,
+                pin: window.innerWidth > 900 ? panel : false,
+                pinSpacing: false,
+                scrub: true,
                 invalidateOnRefresh: true,
               },
             })
           })
           if (!panels.length) {
-            main.querySelectorAll('section').forEach(section => {
-              gsap.fromTo(section, { opacity: 1 }, {
-                opacity: 0.88,
+            const sections = [...main.querySelectorAll(':scope > section')]
+            sections.slice(0, -1).forEach(section => {
+              gsap.fromTo(section, { opacity: 1, scale: 1 }, {
+                opacity: 0,
+                scale: 0.7,
                 ease: 'none',
-                scrollTrigger: { trigger: section, start: 'bottom bottom', end: 'bottom top', scrub: 1.1 },
+                scrollTrigger: {
+                  trigger: section,
+                  start: () => section.offsetHeight < window.innerHeight ? 'top top' : 'bottom bottom',
+                  end: () => `+=${Math.round(window.innerHeight * .65)}`,
+                  scrub: true,
+                  invalidateOnRefresh: true,
+                },
               })
             })
           }
+          main.querySelectorAll('[data-guide-step]').forEach(step => {
+            const inner = step.querySelector('.contribution-step-inner')
+            if (!inner) return
+            gsap.fromTo(inner, { opacity: 1, scale: 1 }, { opacity: .3, scale: .7, ease: 'none', scrollTrigger: {
+              trigger: step,
+              start: 'top 20%',
+              end: () => `+=${Math.round(window.innerHeight * .4)}`,
+              pin: window.innerWidth > 900 ? step : false,
+              pinSpacing: true,
+              scrub: true,
+              invalidateOnRefresh: true,
+            } })
+          })
         }
       }, main)
       ScrollTrigger.refresh()
