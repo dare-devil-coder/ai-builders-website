@@ -115,7 +115,11 @@ export function PagePreloader() {
     return () => { window.clearInterval(cycle); window.clearTimeout(leave); window.clearTimeout(done); document.body.style.overflow = previous }
   }, [reduced])
   useEffect(() => {
-    if (phase === 'done') document.body.style.overflow = ''
+    if (phase === 'done') {
+      document.body.style.overflow = ''
+      document.documentElement.dataset.preloaderDone = 'true'
+      window.dispatchEvent(new Event('site-preloader-done'))
+    }
   }, [phase])
   if (reduced || phase === 'done') return null
   return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''}`} role="status" aria-live="polite"><span className="sr-only">Loading</span><div className="preloader-visual" aria-hidden="true"><span>AI BUILDERS / UAIU</span><strong key={index}>{['LEARN', 'BUILD', 'SHIP', 'CONTRIBUTE'][index]}</strong><span>MADE TO MAKE THINGS REAL</span></div></div>

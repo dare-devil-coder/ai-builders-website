@@ -1,0 +1,6 @@
+.infinite-ribbon{position:relative}
+.infinite-ribbon-track{animation:ticker-move var(--ribbon-duration,35s) linear infinite;will-change:transform}
+.infinite-ribbon-toggle{position:absolute;z-index:2;right:0;top:0;width:52px;height:100%;display:grid;place-items:center;border:0;border-left:1px solid #4b548b;background:#b7c0ff;color:#151832}
+.infinite-ribbon-toggle:hover{background:#c7cfff}
+.infinite-ribbon-toggle:focus-visible{outline:2px solid #151832;outline-offset:-5px}
+@media(prefers-reduced-motion:reduce){.infinite-ribbon-track{animation:none!important;transform:none!important}.infinite-ribbon-toggle{display:none}}

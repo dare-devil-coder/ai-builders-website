@@ -4,6 +4,7 @@ import { pillars } from '../data/site'
 import { pageMeta } from '../data/pages'
 import { PageFlow, PageHero, Reveal, SectionIntro, TiltCard } from '../components/ui/Sections'
 import { ApproachMorph, ShineText, SoftBlurText } from '../components/ui/MotionPieces'
+import { BackgroundWord } from '../components/ui/SiteEffects'
 
 export default function About() {
   return (
@@ -16,6 +17,7 @@ export default function About() {
           title={<><SoftBlurText text="The best way to learn AI" /><br /><em><SoftBlurText text="is to build with it." /></em></>}
           motionManaged
           watermark="STORY"
+          className="about-intro-story"
         />
         <div className="story-copy">
           <div>
@@ -48,7 +50,7 @@ export default function About() {
       </section>
 
       <section className="section shell">
-        <SectionIntro index="03" label="OUR PILLARS" title={<>The work has<br /><em>many dimensions.</em></>} />
+        <SectionIntro index="03" label="OUR PILLARS" title={<>The work has<br /><em>many dimensions.</em></>} className="about-intro-pillars" />
         <div className="pillar-grid">
           {pillars.map(pillar => (
             <Reveal key={pillar.id}>
@@ -67,13 +69,13 @@ export default function About() {
 
       <section className="section section-alt">
         <div className="shell">
-          <SectionIntro index="04" label="OUR APPROACH" title={<>Learn. Build. Ship.<br /><em>Contribute.</em></>} />
+          <SectionIntro index="04" label="OUR APPROACH" title={<>Learn. Build. Ship.<br /><em>Contribute.</em></>} className="about-intro-approach" />
           <ApproachMorph />
         </div>
       </section>
 
       <section className="section shell compact-section">
-        <div className="university-panel" data-watermark="UAI">
+        <div className="university-panel has-inline-watermark"><BackgroundWord text="UAI" />
           <span className="eyebrow">ROOTED AT UAI</span>
           <h2>Built on campus.<br /><em>Open to the world.</em></h2>
           <p>AI Builders is a student club at Universal AI University, Mumbai — an institution dedicated to shaping the next generation of AI practitioners and researchers.</p>

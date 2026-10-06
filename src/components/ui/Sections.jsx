@@ -2,6 +2,12 @@ import { useEffect, useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { KineticCenterBuild } from './MotionPieces'
+import { BackgroundWord, LampLight } from './SiteEffects'
+
+// Keep route sections as direct children so the shared scroll-motion hook can find them.
+export function PageFlow({ children }) {
+  return <>{children}</>
+}
 
 export function Reveal({ children, className = '' }) {
   const ref = useRef(null)
@@ -18,12 +24,12 @@ export function Reveal({ children, className = '' }) {
   return <div ref={ref} className={`reveal ${className}`}>{children}</div>
 }
 
-export function SectionIntro({ index, label, title, description, action, watermark, motionManaged = false }) {
-  return <Reveal className="section-intro"><span className="section-backdrop-word" aria-hidden="true">{watermark || label.split(/\s+/).at(-1)}</span><div><span className="eyebrow"><span className="eyebrow-index">{index}</span> {label}</span><h2 data-motion-managed={motionManaged || undefined}>{title}</h2>{description && <p>{description}</p>}</div>{action && <Link className="text-link" to={action.to}>{action.label} <ArrowUpRight size={18} /></Link>}</Reveal>
+export function SectionIntro({ index, label, title, description, action, watermark, motionManaged = false, className = '' }) {
+  return <Reveal className={`section-intro ${className}`}>{watermark !== false && <BackgroundWord text={watermark || label.split(/\s+/).at(-1)} />}<div><span className="eyebrow"><span className="eyebrow-index">{index}</span> {label}</span><h2 data-motion-managed={motionManaged || undefined}>{title}</h2>{description && <p>{description}</p>}</div>{action && <Link className="text-link" to={action.to}>{action.label} <ArrowUpRight size={18} /></Link>}</Reveal>
 }
 
-export function PageHero({ meta }) {
-  return <section className="page-hero"><span className="section-backdrop-word" aria-hidden="true">{meta.kicker.split(' / ').at(-1)}</span><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1 data-motion-managed>{meta.motionTitle ? meta.title : <KineticCenterBuild words={meta.title.split(/\s+/)} />}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span></div></section>
+export function PageHero({ meta, lamp = true }) {
+  return <section className={`page-hero${lamp ? ' has-lamp' : ''}`}>{lamp && <LampLight />}<BackgroundWord text={meta.kicker.split(' / ').at(-1)} /><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1 data-motion-managed>{meta.motionTitle ? meta.title : <KineticCenterBuild words={meta.title.split(/\s+/)} />}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span></div></section>
 }
 
 // Adapted to this project after evaluating Spectrum UI's 3D Tilt Card through its MCP catalog.

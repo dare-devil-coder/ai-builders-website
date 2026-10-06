@@ -9,6 +9,8 @@ export default function useSiteMotion(pathname) {
   useLayoutEffect(() => {
     let active = true
     let context
+    let markerObserver
+    let markerHeadings = []
     const splits = []
     window.scrollTo(0, 0)
 
@@ -22,6 +24,18 @@ export default function useSiteMotion(pathname) {
       context = gsap.context(() => {
         headings.forEach(heading => {
           gsap.set(heading, { opacity: 1 })
+          if (heading.querySelector('em')) {
+            if (!reduced && !heading.closest('.reveal')) {
+              gsap.from(heading, {
+                y: 20,
+                opacity: 0,
+                duration: .7,
+                ease: 'power2.out',
+                scrollTrigger: { trigger: heading, start: 'top 80%', toggleActions: 'play none none reverse' },
+              })
+            }
+            return
+          }
           const isFirstHeading = heading.tagName === 'H1'
           const split = SplitText.create(heading, {
             type: 'words,lines',
@@ -85,21 +99,21 @@ export default function useSiteMotion(pathname) {
               })
             })
           }
-          main.querySelectorAll('[data-guide-step]').forEach(step => {
-            const inner = step.querySelector('.contribution-step-inner')
-            if (!inner) return
-            gsap.fromTo(inner, { opacity: 1, scale: 1 }, { opacity: .3, scale: .7, ease: 'none', scrollTrigger: {
-              trigger: step,
-              start: 'top 20%',
-              end: () => `+=${Math.round(window.innerHeight * .4)}`,
-              pin: window.innerWidth > 900 ? step : false,
-              pinSpacing: true,
-              scrub: true,
-              invalidateOnRefresh: true,
-            } })
-          })
         }
       }, main)
+      markerHeadings = [...main.querySelectorAll('h1, h2'), ...document.querySelectorAll('footer h2')].filter(heading => heading.querySelector('em'))
+      markerHeadings.forEach(heading => {
+        const length = [...heading.querySelectorAll('em')].reduce((total, em) => total + em.textContent.trim().length, 0)
+        heading.style.setProperty('--marker-duration', `${Math.min(1.15, Math.max(.55, length * .04)).toFixed(2)}s`)
+      })
+      if ('IntersectionObserver' in window && !reduced) {
+        markerObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            entry.target.classList.toggle('is-marker-visible', entry.intersectionRatio >= .25)
+          })
+        }, { rootMargin: '0px 0px -35% 0px', threshold: .25 })
+        markerHeadings.forEach(heading => markerObserver.observe(heading))
+      } else markerHeadings.forEach(heading => heading.classList.add('is-marker-visible'))
       ScrollTrigger.refresh()
     }
 
@@ -107,6 +121,8 @@ export default function useSiteMotion(pathname) {
     return () => {
       active = false
       context?.revert()
+      markerObserver?.disconnect()
+      markerHeadings.forEach(heading => { heading.classList.remove('is-marker-visible'); heading.style.removeProperty('--marker-duration') })
       splits.forEach(split => split.revert())
     }
   }, [pathname])

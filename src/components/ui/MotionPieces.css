@@ -59,7 +59,7 @@
 .section-intro{position:relative;isolation:isolate}
 .section-intro>div,.section-intro>.text-link{position:relative;z-index:1}
 .section-backdrop-word{position:absolute;z-index:0;left:50%;top:45%;transform:translate(-50%,-50%);pointer-events:none;user-select:none;white-space:nowrap;color:#929ef512;text-shadow:0 0 28px #8795ed29,0 0 90px #8795ed1a;font:700 clamp(90px,18vw,310px)/1 'Space Grotesk',sans-serif;letter-spacing:-.08em}
-.page-hero{position:relative;isolation:isolate}
+.page-hero{position:relative;isolation:isolate;overflow:hidden}
 .page-hero>.section-backdrop-word{left:73%;top:48%;font-size:clamp(110px,18vw,320px)}
 .page-hero .shell{z-index:1}
 .page-hero .page-orbit{display:none}
@@ -72,6 +72,10 @@
 .work-showcase .section-intro h2{font-size:clamp(55px,6vw,96px)}
 .work-gallery-button{display:inline-flex}
 .story-quote .shine-text{display:inline;margin:0;color:inherit;font:inherit;letter-spacing:inherit}
+h1 em,h2 em{--marker-color:#7184df80;background-image:linear-gradient(var(--marker-color),var(--marker-color));background-repeat:no-repeat;background-position:left 56%;background-size:0% .53em;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-size var(--marker-duration,.72s) cubic-bezier(.23,1,.32,1)}
+h1.is-marker-visible em,h2.is-marker-visible em{background-size:100% .53em}
+.join-banner h2 em{--marker-color:#dce2ff88}
+@media(prefers-reduced-motion:reduce){h1 em,h2 em{background-size:100% .53em;transition:none}}
 
 @media(max-width:900px){.approach-morph{grid-template-columns:1fr;gap:18px}.approach-morph-steps{grid-template-columns:repeat(4,1fr)}.approach-morph-steps button{gap:8px;font-size:15px;padding:15px 6px}.approach-morph-steps button.is-active{padding-left:6px}.folder-reveal{margin-inline:auto}.work-showcase{grid-template-columns:1fr;gap:0}.work-showcase .section-intro h2{font-size:clamp(55px,9vw,86px)}}
 @media(max-width:640px){.spinning-text{width:92px;height:92px}.spinning-text-ring span{height:45px;font-size:7px}.spinning-text-center{font-size:22px}.hero-bottom{flex-direction:row;min-height:108px;align-items:center}.hero-bottom>span{max-width:150px}.hero-bottom .spinning-text{margin-top:-56px}.kinetic-type{font-size:24px}.approach-morph{min-height:0}.approach-morph-display h3{font-size:clamp(64px,17vw,96px)}.approach-morph-display p{font-size:15px;min-height:72px}.approach-morph-steps button{display:grid;justify-items:start;font-size:12px}.folder-reveal{height:370px}.folder-back{top:22%}.folder-well{top:44%}.folder-front{top:52%;height:36%;padding:20px}.folder-paper{top:40%;height:40%;padding:12px;gap:6px}.folder-paper strong{font-size:15px}.folder-paper span,.folder-paper small{font-size:8px}.folder-hint{font-size:15px}.section-backdrop-word{font-size:clamp(76px,22vw,140px)}.page-hero>.section-backdrop-word{left:65%;font-size:27vw}.work-showcase .section-intro h2{font-size:clamp(49px,11vw,65px)}.work-gallery-button{margin-bottom:12px}}
@@ -111,15 +115,104 @@
 .section-backdrop-word{left:50%;top:48%;max-width:100%;font-size:clamp(58px,10vw,154px);font-weight:700;letter-spacing:-.065em;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:2.5px #939fe570;text-shadow:0 0 20px #7888e544,0 0 64px #7888e522}
 .page-hero>.section-backdrop-word{left:50%;top:52%;font-size:clamp(54px,9vw,145px)}
 .join-banner>.section-backdrop-word{left:50%;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:3px #e6eaff9c;text-shadow:0 0 35px #dce2ff4d}
-.inline-cta[data-watermark],.university-panel[data-watermark]{position:relative;isolation:isolate}
-.inline-cta[data-watermark]::before,.university-panel[data-watermark]::before{content:attr(data-watermark);position:absolute;z-index:-1;right:0;top:3%;font:700 clamp(58px,10vw,145px)/1 'Space Grotesk',sans-serif;letter-spacing:-.065em;color:transparent;-webkit-text-stroke:2.5px #939fe570;text-shadow:0 0 30px #7888e533;pointer-events:none}
-@media(max-width:640px){.spinning-text{width:168px;height:168px}.spinning-text-ring span{height:82px;font-size:9px}.spinning-text-center{font-size:18px}.hero-bottom{min-height:136px}.hero-bottom .spinning-text{margin-top:-52px}.approach-morph-display{min-height:210px}.approach-morph-display h3{font-size:clamp(56px,15vw,82px)}.approach-morph-display p{font-size:15px;min-height:70px}.approach-morph-controls{align-items:flex-start}.approach-morph-steps{gap:7px}.approach-morph-steps button,.approach-morph-steps button.is-active{padding:8px 10px;font-size:12px}.approach-pause{font-size:12px}.section-backdrop-word{left:50%;font-size:clamp(52px,11vw,90px);-webkit-text-stroke:1.8px #939fe582}.page-hero>.section-backdrop-word{left:50%;font-size:clamp(42px,10vw,72px)}.join-banner>.section-backdrop-word{left:50%}.inline-cta[data-watermark]::before,.university-panel[data-watermark]::before{font-size:clamp(54px,13vw,90px)}}
+.has-inline-watermark{position:relative;isolation:isolate;overflow:hidden}
+.has-inline-watermark > :not(.section-backdrop-word){position:relative;z-index:1}
+.has-inline-watermark > .section-backdrop-word.text-hover-word{left:auto;right:0;top:3%;transform:none;font-size:clamp(58px,10vw,145px)}
+@media(max-width:640px){.spinning-text{width:168px;height:168px}.spinning-text-ring span{height:82px;font-size:9px}.spinning-text-center{font-size:18px}.hero-bottom{min-height:136px}.hero-bottom .spinning-text{margin-top:-52px}.approach-morph-display{min-height:210px}.approach-morph-display h3{font-size:clamp(56px,15vw,82px)}.approach-morph-display p{font-size:15px;min-height:70px}.approach-morph-controls{align-items:flex-start}.approach-morph-steps{gap:7px}.approach-morph-steps button,.approach-morph-steps button.is-active{padding:8px 10px;font-size:12px}.approach-pause{font-size:12px}.section-backdrop-word{left:50%;font-size:clamp(52px,11vw,90px);-webkit-text-stroke:1.8px #939fe582}.page-hero>.section-backdrop-word{left:50%;font-size:clamp(42px,10vw,72px)}.join-banner>.section-backdrop-word{left:50%}}
 @media(prefers-reduced-motion:reduce){.approach-progress-track span{transition:none}}
 
-.contribution-guide{display:grid;gap:22px}
-.contribution-step{position:relative;min-height:250px;border:1px solid #465178;background:radial-gradient(circle at 85% 0,#303d7190,#171c36 55%,#111629);overflow:hidden}
-.contribution-step-inner{min-height:250px;padding:34px clamp(24px,4vw,58px);transform-origin:center center}
-.contribution-step-inner>span{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.15em;color:#adb9ff}
-.contribution-step-inner h3{margin:24px 0 10px;font:600 clamp(38px,5vw,62px)/1 'Space Grotesk',sans-serif;letter-spacing:-.06em}
-.contribution-step-inner p{max-width:660px;margin:0;color:#acb5d1;font-size:17px;line-height:1.6}
-@media(max-width:640px){.contribution-step,.contribution-step-inner{min-height:220px}.contribution-step-inner{padding:26px}.contribution-step-inner h3{font-size:38px}.contribution-step-inner p{font-size:15px}}
+.home-page .section-intro > .section-backdrop-word{
+  left:auto;
+  right:0;
+  top:0;
+  max-width:none;
+  transform:none;
+  font-size:clamp(48px,5vw,94px);
+}
+@media(min-width:901px){
+  .home-page .home-intro-who > .section-backdrop-word{top:10px}
+  .home-page .home-intro-explore > .section-backdrop-word{top:-60px}
+  .home-page .home-intro-how > .section-backdrop-word{top:26px}
+}
+.work-showcase{position:relative}
+.home-page .proof-section{position:relative;isolation:isolate}
+.home-page .proof-section > .section-backdrop-word{
+  left:auto;
+  right:max(32px,calc((100% - 1260px)/2));
+  top:24px;
+  max-width:none;
+  transform:none;
+  font-size:clamp(48px,5vw,94px);
+}
+.home-page .proof-section .work-showcase{position:relative;z-index:1}
+@media(max-width:900px){
+  .home-page .section-intro > .section-backdrop-word{top:-46px;font-size:clamp(44px,7vw,72px)}
+  .home-page .proof-section > .section-backdrop-word{right:32px;top:20px;font-size:clamp(44px,7vw,72px)}
+}
+@media(max-width:640px){
+  .home-page .section-intro > .section-backdrop-word{top:-40px;font-size:clamp(42px,11vw,62px)}
+  .home-page .proof-section > .section-backdrop-word{right:16px;top:18px;font-size:clamp(42px,11vw,62px)}
+  .has-inline-watermark > .section-backdrop-word.text-hover-word{font-size:clamp(48px,13vw,90px)}
+}
+
+.about-intro-story > .section-backdrop-word.text-hover-word,
+.about-intro-pillars > .section-backdrop-word.text-hover-word,
+.about-intro-approach > .section-backdrop-word.text-hover-word{left:auto;right:0;max-width:none;transform:none;font-size:clamp(48px,5vw,94px)}
+.about-intro-pillars > .section-backdrop-word.text-hover-word{right:5px}
+.resources-intro-tutorials > .section-backdrop-word.text-hover-word,
+.resources-intro-frameworks > .section-backdrop-word.text-hover-word,
+.open-source-intro-why > .section-backdrop-word.text-hover-word{left:auto;right:0;max-width:none;transform:none;font-size:clamp(48px,5vw,94px)}
+.open-source-intro-guide > .section-backdrop-word.text-hover-word,
+.open-source-intro-repositories > .section-backdrop-word.text-hover-word{left:auto;max-width:none;transform:none}
+.open-source-intro-guide > .section-backdrop-word.text-hover-word{right:80px;font-size:clamp(72px,8.8vw,124px)}
+.open-source-intro-repositories > .section-backdrop-word.text-hover-word{right:120px;font-size:clamp(65px,7.4vw,114px)}
+.resources-intro-tutorials > .section-backdrop-word.text-hover-word,
+.resources-intro-frameworks > .section-backdrop-word.text-hover-word{font-size:clamp(44px,4.6vw,86px)}
+.projects-intro-directions > .section-backdrop-word.text-hover-word,
+.events-intro-topics > .section-backdrop-word.text-hover-word,
+.team-intro-builders > .section-backdrop-word.text-hover-word,
+.team-intro-contribute > .section-backdrop-word.text-hover-word{left:auto;right:0;max-width:none;transform:none;font-size:clamp(48px,5vw,94px)}
+.projects-intro-directions > .section-backdrop-word.text-hover-word,
+.team-intro-contribute > .section-backdrop-word.text-hover-word{font-size:clamp(44px,4.6vw,86px)}
+@media(min-width:901px){
+  .about-intro-story > .section-backdrop-word.text-hover-word{top:-84px}
+  .about-intro-pillars > .section-backdrop-word.text-hover-word{top:22px}
+  .about-intro-approach > .section-backdrop-word.text-hover-word{top:-24px}
+  .projects-intro-directions > .section-backdrop-word.text-hover-word{top:-19px}
+  .events-intro-topics > .section-backdrop-word.text-hover-word{top:16px}
+  .team-intro-builders > .section-backdrop-word.text-hover-word{top:-7px}
+  .team-intro-contribute > .section-backdrop-word.text-hover-word{top:-13px}
+  .resources-intro-tutorials > .section-backdrop-word.text-hover-word{top:34px}
+  .resources-intro-frameworks > .section-backdrop-word.text-hover-word{top:16px}
+  .open-source-intro-why > .section-backdrop-word.text-hover-word{top:-26px}
+  .open-source-intro-guide > .section-backdrop-word.text-hover-word{top:18px}
+  .open-source-intro-repositories > .section-backdrop-word.text-hover-word{top:-30px}
+}
+@media(max-width:900px){
+  .about-intro-story > .section-backdrop-word.text-hover-word,
+  .about-intro-pillars > .section-backdrop-word.text-hover-word,
+  .about-intro-approach > .section-backdrop-word.text-hover-word,
+  .projects-intro-directions > .section-backdrop-word.text-hover-word,
+  .events-intro-topics > .section-backdrop-word.text-hover-word,
+  .team-intro-builders > .section-backdrop-word.text-hover-word,
+  .team-intro-contribute > .section-backdrop-word.text-hover-word,
+  .resources-intro-tutorials > .section-backdrop-word.text-hover-word,
+  .resources-intro-frameworks > .section-backdrop-word.text-hover-word,
+  .open-source-intro-why > .section-backdrop-word.text-hover-word,
+  .open-source-intro-guide > .section-backdrop-word.text-hover-word,
+  .open-source-intro-repositories > .section-backdrop-word.text-hover-word{top:-46px;right:0;font-size:clamp(44px,7vw,72px)}
+}
+@media(max-width:640px){
+  .about-intro-story > .section-backdrop-word.text-hover-word,
+  .about-intro-pillars > .section-backdrop-word.text-hover-word,
+  .about-intro-approach > .section-backdrop-word.text-hover-word,
+  .projects-intro-directions > .section-backdrop-word.text-hover-word,
+  .events-intro-topics > .section-backdrop-word.text-hover-word,
+  .team-intro-builders > .section-backdrop-word.text-hover-word,
+  .team-intro-contribute > .section-backdrop-word.text-hover-word,
+  .resources-intro-tutorials > .section-backdrop-word.text-hover-word,
+  .resources-intro-frameworks > .section-backdrop-word.text-hover-word,
+  .open-source-intro-why > .section-backdrop-word.text-hover-word,
+  .open-source-intro-guide > .section-backdrop-word.text-hover-word,
+  .open-source-intro-repositories > .section-backdrop-word.text-hover-word{top:-40px;font-size:clamp(42px,11vw,62px)}
+}

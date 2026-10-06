@@ -22,13 +22,38 @@ function remaining(startsAt, now) {
 export default function EventPassport() {
   const [now, setNow] = useState(() => Date.now())
   const [flipped, setFlipped] = useState(false)
+  const [cardHeight, setCardHeight] = useState(660)
   const frontButton = useRef(null)
   const backButton = useRef(null)
+  const frontFace = useRef(null)
+  const backFace = useRef(null)
 
   useEffect(() => {
     if (!nextEvent.startsAt) return undefined
     const id = window.setInterval(() => setNow(Date.now()), 1000)
     return () => window.clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    const measure = () => {
+      const front = frontFace.current
+      const back = backFace.current
+      if (!front || !back) return
+      const frontContent = front.querySelector('.event-card-bottom')
+      const backContent = back.querySelector('.event-card-details')
+      const padding = window.innerWidth <= 600 ? 50 : 82
+      const backNeeded = back.querySelector('.event-card-top').scrollHeight + backContent.scrollHeight + backButton.current.scrollHeight + padding + 40
+      const frontNeeded = front.querySelector('.event-card-top').scrollHeight + frontContent.scrollHeight + padding + 155
+      setCardHeight(Math.ceil(Math.max(600, frontNeeded, backNeeded)))
+    }
+    const frame = requestAnimationFrame(measure)
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
+    for (const element of [frontFace.current?.querySelector('.event-card-bottom'), backFace.current?.querySelector('.event-card-details'), frontFace.current?.querySelector('.event-card-top'), backFace.current?.querySelector('.event-card-top'), frontButton.current, backButton.current]) {
+      if (element) observer?.observe(element)
+    }
+    window.addEventListener('resize', measure)
+    document.fonts.ready.then(measure)
+    return () => { cancelAnimationFrame(frame); observer?.disconnect(); window.removeEventListener('resize', measure) }
   }, [])
 
   const countdown = remaining(nextEvent.startsAt, now)
@@ -60,16 +85,16 @@ export default function EventPassport() {
           ? <a className="event-access-link" href={nextEvent.registrationUrl} target="_blank" rel="noreferrer">Register now <ArrowUpRight aria-hidden="true" /></a>
           : <Link className="event-access-link" to="/events">Explore events <ArrowUpRight aria-hidden="true" /></Link>}
       </div>
-      <div className={`event-flip-card${flipped ? ' is-flipped' : ''}`}>
+      <div className={`event-flip-card${flipped ? ' is-flipped' : ''}`} style={{ height: cardHeight }}>
         <div className="event-flip-inner">
-          <div className="event-card-face event-card-front" aria-hidden={flipped} inert={flipped}>
+          <div ref={frontFace} className="event-card-face event-card-front" aria-hidden={flipped} inert={flipped}>
             <div className="event-card-top"><span>COUNTDOWN / IST</span><Ticket aria-hidden="true" /></div>
             <div className="event-card-center">{countdown
               ? <div className="event-countdown">{countdown.map((value, index) => <div key={['days', 'hours', 'minutes', 'seconds'][index]}><strong>{String(value).padStart(2, '0')}</strong><span>{['DAYS', 'HRS', 'MIN', 'SEC'][index]}</span></div>)}</div>
               : <strong className="event-tba">TBA</strong>}</div>
             <div className="event-card-bottom"><svg viewBox="0 0 158 44" preserveAspectRatio="none" aria-hidden="true">{barcode.map((bar, index) => <rect key={index} x={bar.x} y={index % 7 === 0 ? 5 : 0} width={bar.width} height={index % 5 === 0 ? 31 : 38} />)}</svg><div className="event-barcode-caption"><span>AI BUILDERS / EVENT PASS</span><span>{nextEvent.startsAt ? 'ACCESS PREVIEW' : 'DETAILS PENDING'}</span></div><div className="event-card-divider" /><p className="event-countdown-note"><Clock3 aria-hidden="true" />{nextEvent.startsAt ? 'Until the next event begins' : 'Countdown starts when the date is announced'}</p><button ref={frontButton} type="button" className="event-flip-trigger" onClick={showDetails}>Flip to see the event details <span aria-hidden="true">↗</span></button></div>
           </div>
-          <div className="event-card-face event-card-back" aria-hidden={!flipped} inert={!flipped}>
+          <div ref={backFace} className="event-card-face event-card-back" aria-hidden={!flipped} inert={!flipped}>
             <div className="event-card-top"><span>EVENT DETAILS / IST</span><Ticket aria-hidden="true" /></div>
             <div className="event-card-details"><div className="event-detail-title"><span>EVENT TITLE</span><h3>{title}</h3></div><dl><div><dt>DATE</dt><dd>{dateLabel}</dd></div><div><dt>VENUE</dt><dd>{venueLabel}</dd></div><div><dt>FORMAT</dt><dd>{formatLabel}</dd></div><div><dt>TOPIC</dt><dd>{nextEvent.description || 'Topic to be published once the next event is confirmed'}</dd></div><div><dt>REGISTRATION</dt><dd>{nextEvent.registrationUrl ? <a href={nextEvent.registrationUrl} target="_blank" rel="noreferrer">Registration is open ↗</a> : 'Registration details will be published once the next event is confirmed'}</dd></div></dl></div>
             <button ref={backButton} type="button" className="event-flip-trigger event-flip-back" onClick={showCountdown}>Flip back to countdown <span aria-hidden="true">↗</span></button>
