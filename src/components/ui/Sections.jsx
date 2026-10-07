@@ -3,6 +3,8 @@ import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { KineticCenterBuild } from './MotionPieces'
 import { BackgroundWord, LampLight } from './SiteEffects'
+import GridPattern from './GridPattern'
+import RobotMascot from './RobotMascot'
 
 // Keep route sections as direct children so the shared scroll-motion hook can find them.
 export function PageFlow({ children }) {
@@ -28,8 +30,8 @@ export function SectionIntro({ index, label, title, description, action, waterma
   return <Reveal className={`section-intro ${className}`}>{watermark !== false && <BackgroundWord text={watermark || label.split(/\s+/).at(-1)} />}<div><span className="eyebrow"><span className="eyebrow-index">{index}</span> {label}</span><h2 data-motion-managed={motionManaged || undefined}>{title}</h2>{description && <p>{description}</p>}</div>{action && <Link className="text-link" to={action.to}>{action.label} <ArrowUpRight size={18} /></Link>}</Reveal>
 }
 
-export function PageHero({ meta, lamp = true }) {
-  return <section className={`page-hero${lamp ? ' has-lamp' : ''}`}>{lamp && <LampLight />}<BackgroundWord text={meta.kicker.split(' / ').at(-1)} /><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1 data-motion-managed>{meta.motionTitle ? meta.title : <KineticCenterBuild words={meta.title.split(/\s+/)} />}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span></div></section>
+export function PageHero({ meta, lamp = true, mascot = false }) {
+  return <section className={`page-hero${lamp ? ' has-lamp' : ''}${mascot ? ' has-mascot' : ''}`}><GridPattern />{lamp && <LampLight />}<BackgroundWord text={meta.kicker.split(' / ').at(-1)} /><div className="shell"><span className="eyebrow">{meta.kicker}</span><h1 data-motion-managed>{meta.motionTitle ? meta.title : <KineticCenterBuild words={meta.title.split(/\s+/)} />}</h1><p>{meta.description}</p><span className="page-orbit" aria-hidden="true">✳</span>{mascot && <div className="hero-mascot"><RobotMascot /></div>}</div></section>
 }
 
 // Adapted to this project after evaluating Spectrum UI's 3D Tilt Card through its MCP catalog.

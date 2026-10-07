@@ -37,12 +37,12 @@ export const resourceTools = [
   { name: 'FastAPI', detail: 'Build AI APIs', url: 'https://fastapi.tiangolo.com/' },
 ]
 
-// Source document placeholders remain null until the club confirms real totals.
+// Club totals supplied by the user on 2026-10-08.
 export const clubStats = [
-  { label: 'Members', value: null },
-  { label: 'Projects made', value: null },
-  { label: 'Workshops done', value: null },
-  { label: 'Open contributions', value: null },
+  { label: 'Members', value: 26 },
+  { label: 'Projects made', value: 0 },
+  { label: 'Workshops done', value: 1 },
+  { label: 'Open contributions', value: 0 },
 ]
 
 export const featuredProjects = [

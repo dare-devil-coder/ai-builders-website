@@ -6,7 +6,7 @@ Updated: 2026-10-06. This file describes the current checkout, not a claim about
 
 AI Builders is the AI and development club of Universal AI University. The site uses React 19, Vite 8, React Router, Motion, GSAP, animejs, and plain CSS. Pages: Home, About, Projects, Events, Team, Resources (`/blog`), Open Source, Join, and 404. The club content document informed copy, page structure, focus areas, workshop topics, and Join fields. The visual implementation has its own dark blue AI Builders identity.
 
-Keep unconfirmed facts unconfirmed. `src/data/site.js` intentionally stores `null` for club counts, project details, and the next event. Team identity, articles, repositories, registration, social and contact details also need confirmed source material. The Team page's “Your name here” card is explicitly an illustrative layout preview.
+Keep unconfirmed facts unconfirmed. `src/data/site.js` now records the four club totals supplied directly by the user on 2026-10-08: 26 members, 0 projects made, 1 workshop done, and 0 open contributions. Project details and the next event remain `null`. Team identity, articles, repositories, registration, social and contact details still need confirmed source material. The Team page's “Your name here” card is explicitly an illustrative layout preview.
 
 The Join page validates membership fields, stores a local draft, and offers copy/download. There is no application submission endpoint. Do not imply the form submits until a verified destination or backend exists.
 

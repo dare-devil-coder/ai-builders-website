@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { RotateCw, X } from 'lucide-react'
 import './MemberBadgeModal.css'
@@ -11,14 +11,21 @@ class BadgeRenderBoundary extends Component {
   render() { return this.state.failed ? this.props.fallback : this.props.children }
 }
 
+function BadgeFallback({ member, flipped, onReady }) {
+  useEffect(() => { onReady() }, [onReady])
+  return <img className="member-badge-static" src={flipped ? member.badgeBack : member.badgeFront} alt="Member badge artwork" />
+}
+
 export default function MemberBadgeModal({ member, onClose }) {
   const closeRef = useRef(null)
   const [flipped, setFlipped] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  const [badgeReady, setBadgeReady] = useState(reduceMotion)
+  const markBadgeReady = useCallback(() => setBadgeReady(true), [])
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const onChange = () => setReduceMotion(media.matches)
+    const onChange = () => { setReduceMotion(media.matches); if (media.matches) setBadgeReady(true) }
     media.addEventListener('change', onChange)
     return () => media.removeEventListener('change', onChange)
   }, [])
@@ -55,10 +62,11 @@ export default function MemberBadgeModal({ member, onClose }) {
       </div>
       <h2 id="member-badge-title" className="sr-only">{member.name} member badge</h2>
       <p id="member-badge-description" className="sr-only">{member.role}. {member.description}{member.illustrative ? ' This is an illustrative member profile.' : ''}</p>
-      <div className="member-badge-stage">
+      {!badgeReady && <div className="member-badge-loading" role="status">Preparing member badge…</div>}
+      <div className={`member-badge-stage${badgeReady ? ' is-ready' : ''}`}>
         {reduceMotion ? <img className="member-badge-static" src={flipped ? member.badgeBack : member.badgeFront} alt={flipped ? 'AI Builders club artwork on the back of the member badge' : `Badge front for ${member.name}`} /> :
-          <BadgeRenderBoundary fallback={<img className="member-badge-static" src={flipped ? member.badgeBack : member.badgeFront} alt="Member badge artwork" />}>
-            <Suspense fallback={<img className="member-badge-static" src={member.badgeFront} alt="Loading member badge" />}><EventBadge3D flipped={flipped} frontImage={member.badgeFront} backImage={member.badgeBack} /></Suspense>
+          <BadgeRenderBoundary fallback={<BadgeFallback member={member} flipped={flipped} onReady={markBadgeReady} />}>
+            <Suspense fallback={null}><EventBadge3D flipped={flipped} frontImage={member.badgeFront} backImage={member.badgeBack} onReady={markBadgeReady} /></Suspense>
           </BadgeRenderBoundary>}
       </div>
       <div className="member-badge-actions">

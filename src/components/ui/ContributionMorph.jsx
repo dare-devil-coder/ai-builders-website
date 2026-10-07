@@ -29,7 +29,7 @@ export default function ContributionMorph() {
   return <div ref={ref} className="contribution-morph" aria-label="Contribution guide">
     <div className="contribution-morph-display">
       <span className="eyebrow">YOUR FIRST CONTRIBUTION / 0{active + 1}</span>
-      <div className="contribution-kinetic-frame" aria-live="polite"><span className="contribution-kinetic-outline" aria-hidden="true">{current.title}</span><h3 key={current.id}>{current.title}</h3><span className="contribution-kinetic-index" aria-hidden="true">0{active + 1} / 0{steps.length}</span></div>
+      <div className="contribution-kinetic-frame" aria-live="polite"><h3 key={current.id}>{current.title}</h3><span className="contribution-kinetic-index" aria-hidden="true">0{active + 1} / 0{steps.length}</span></div>
       <AnimatePresence mode="wait" initial={false}>
         <motion.p key={current.id} initial={reduced ? false : { opacity: 0, y: 8, filter: 'blur(4px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={reduced ? undefined : { opacity: 0, y: -6, filter: 'blur(4px)' }} transition={{ duration: reduced ? 0 : .3, ease: [.23, 1, .32, 1] }}>{current.detail}</motion.p>
       </AnimatePresence>

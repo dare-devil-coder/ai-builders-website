@@ -7,12 +7,14 @@ import { ApproachMorph, ShineText, SoftBlurText } from '../components/ui/MotionP
 import { BackgroundWord } from '../components/ui/SiteEffects'
 import CampusPath from '../components/ui/CampusPath'
 import DotPattern from '../components/ui/DotPattern'
+import GridPattern from '../components/ui/GridPattern'
 
 export default function About() {
   return (
     <PageFlow>
-      <PageHero meta={pageMeta.about} />
-      <section className="section shell">
+      <PageHero meta={pageMeta.about} mascot />
+      <section className="section shell has-section-grid">
+        <GridPattern animated />
         <SectionIntro
           index="01"
           label="OUR STORY"

@@ -5,7 +5,7 @@ This tracks the 19 items in the 2026-10-05 request. “Implemented” means the 
 | # | Request | Current status |
 | --- | --- | --- |
 | 1, 14 | Lamp light on navigation page heroes | Implemented in shared `PageHero`, including Join; a radial cone replaces the hard-edged polygon under the light line. Existing heading build remains. Title/description offset by 2 px. Visual comparison pending. |
-| 2 | Flipping statistics in Home “Who We Are” | All four metric cells remain visible. Their labels use character tiles, with one label animating every 6 seconds while in view. Counts remain pending and display `—`. |
+| 2 | Flipping statistics in Home “Who We Are” | All four metric cells remain visible. Their labels use character tiles, with one label animating every 6 seconds while in view. User-supplied totals are 26 members, 0 projects made, 1 workshop done, and 0 open contributions. |
 | 3 | Pointer highlight on “study AI.” | Implemented on those words in Home hero. |
 | 4 | Footer AI BUILDERS 1.5-second glow cycle | Existing working-tree CSS supplies the 3-second glow/dim loop. Visual timing pending. |
 | 5 | Mobile compatibility | Responsive CSS and touch targets added or preserved; real viewport and touch QA pending. |
@@ -40,4 +40,4 @@ This tracks the 19 items in the 2026-10-05 request. “Implemented” means the 
 
 ## Content still required from the club
 
-Confirmed metric totals, member names/roles/photos/profile links, project titles/descriptions/repositories, event date/venue/topic/registration, published articles, GitHub organization and repository links, and a verified Join submission destination.
+Member names/roles/photos/profile links, project titles/descriptions/repositories, event date/venue/topic/registration, published articles, GitHub organization and repository links, and a verified Join submission destination.

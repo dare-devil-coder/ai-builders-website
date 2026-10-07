@@ -1,0 +1,15 @@
+.site-grid-pattern{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;stroke:#8192d2;stroke-opacity:.15;mask-image:linear-gradient(90deg,transparent 23%,#000 78%,transparent 100%)}
+.site-grid-cell{stroke:none;fill:#9caaf0;fill-opacity:.045;animation:grid-cell-arrive .8s var(--cell-delay) both}
+.page-hero>.site-grid-pattern{z-index:0;mask-image:linear-gradient(90deg,transparent 36%,#000 82%,transparent 100%)}
+.hero>.site-grid-pattern{z-index:0;mask-image:linear-gradient(90deg,transparent 15%,#000 56%,transparent 95%);stroke-opacity:.1}
+.has-section-grid{position:relative;isolation:isolate}
+.has-section-grid>.site-grid-pattern{z-index:0}
+.has-section-grid>:not(.site-grid-pattern){position:relative;z-index:1}
+.site-grid-pattern--animated{stroke-opacity:.11;mask-image:radial-gradient(ellipse 58% 55% at 72% 42%,#000 8%,transparent 100%)}
+.site-grid-pattern--animated.section-grid--quiet{stroke-opacity:.075}
+.site-grid-pattern--animated .site-grid-cell{fill-opacity:0;animation:none}
+.site-grid-pattern--animated.is-active .site-grid-cell{animation:section-grid-cell-pulse 4s var(--cell-delay) ease-in-out infinite}
+@keyframes section-grid-cell-pulse{0%,20%,75%,100%{fill-opacity:0}45%{fill-opacity:var(--cell-opacity)}}
+@keyframes grid-cell-arrive{from{fill-opacity:0}to{fill-opacity:.045}}
+@media(max-width:640px){.page-hero>.site-grid-pattern{stroke-opacity:.09}.hero>.site-grid-pattern{stroke-opacity:.07}.site-grid-pattern--animated{stroke-opacity:.065}.site-grid-pattern--animated.section-grid--quiet{stroke-opacity:.05}}
+@media(prefers-reduced-motion:reduce){.site-grid-pattern,.site-grid-cell{animation:none!important}.site-grid-pattern--animated .site-grid-cell{fill-opacity:.025}}

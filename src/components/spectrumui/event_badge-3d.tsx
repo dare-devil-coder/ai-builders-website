@@ -15,8 +15,8 @@ declare global {
   }
 }
 
-function HangingBadge({ flipped, frontImage, backImage }: { flipped: boolean; frontImage: string; backImage: string }) {
-  const { size } = useThree()
+function HangingBadge({ flipped, frontImage, backImage, onReady }: { flipped: boolean; frontImage: string; backImage: string; onReady?: () => void }) {
+  const { viewport } = useThree()
   const fixed = useRef<any>(null)
   const jointOne = useRef<any>(null)
   const jointTwo = useRef<any>(null)
@@ -24,6 +24,7 @@ function HangingBadge({ flipped, frontImage, backImage }: { flipped: boolean; fr
   const card = useRef<any>(null)
   const artwork = useRef<THREE.Group>(null)
   const dragOffset = useRef<THREE.Vector3 | null>(null)
+  const dragPlane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), [])
   const line = useMemo(() => new MeshLineGeometry(), [])
   const curve = useMemo(() => new THREE.CatmullRomCurve3(Array.from({ length: 5 }, () => new THREE.Vector3())), [])
   const [front, back] = useTexture([frontImage, backImage])
@@ -39,9 +40,10 @@ function HangingBadge({ flipped, frontImage, backImage }: { flipped: boolean; fr
   useSphericalJoint(jointThree, card, [[0, 0, 0], [0, 1.73, 0]])
 
   useEffect(() => {
-    const timer = window.setTimeout(() => card.current?.setBodyType(RigidBodyType.Dynamic, true), 420)
+    onReady?.()
+    const timer = window.setTimeout(() => card.current?.setBodyType(RigidBodyType.Dynamic, true), 760)
     return () => window.clearTimeout(timer)
-  }, [])
+  }, [onReady])
 
   const release = () => {
     if (!dragOffset.current || !card.current) return
@@ -59,7 +61,9 @@ function HangingBadge({ flipped, frontImage, backImage }: { flipped: boolean; fr
     event.stopPropagation()
     const position = card.current?.translation()
     if (!position) return
-    dragOffset.current = new THREE.Vector3(position.x - event.point.x, position.y - event.point.y, 0)
+    const pointer = event.ray.intersectPlane(dragPlane, new THREE.Vector3())
+    if (!pointer) return
+    dragOffset.current = new THREE.Vector3(position.x - pointer.x, position.y - pointer.y, 0)
     card.current.setBodyType(RigidBodyType.KinematicPositionBased, true)
     event.target.setPointerCapture(event.pointerId)
   }
@@ -67,8 +71,13 @@ function HangingBadge({ flipped, frontImage, backImage }: { flipped: boolean; fr
   const moveDrag = (event: any) => {
     if (!dragOffset.current || !card.current) return
     event.stopPropagation()
-    const horizontalLimit = Math.min(1.05, Math.max(.12, (5.8 * size.width / size.height - 2.12) / 2 - .05))
-    card.current.setNextKinematicTranslation({ x: THREE.MathUtils.clamp(event.point.x + dragOffset.current.x, -horizontalLimit, horizontalLimit), y: THREE.MathUtils.clamp(event.point.y + dragOffset.current.y, -.05, 2.25), z: 0 })
+    const pointer = event.ray.intersectPlane(dragPlane, new THREE.Vector3())
+    if (!pointer) return
+    const horizontalRange = Math.max(.75, viewport.width / 2 - 1.8)
+    const x = THREE.MathUtils.clamp(pointer.x + dragOffset.current.x, -horizontalRange, horizontalRange)
+    const verticalRange = Math.max(.7, viewport.height / 2 - 1.75)
+    const y = THREE.MathUtils.clamp(pointer.y + dragOffset.current.y, -verticalRange, verticalRange)
+    card.current.setNextKinematicTranslation({ x, y, z: 0 })
   }
 
   useFrame((_, delta) => {
@@ -97,12 +106,12 @@ function HangingBadge({ flipped, frontImage, backImage }: { flipped: boolean; fr
   </>
 }
 
-export default function EventBadge3D({ flipped = false, frontImage, backImage }: { flipped?: boolean; frontImage: string; backImage: string }) {
+export default function EventBadge3D({ flipped = false, frontImage, backImage, onReady }: { flipped?: boolean; frontImage: string; backImage: string; onReady?: () => void }) {
   return <div className="team-badge-canvas" aria-hidden="true">
     <Canvas camera={{ position: [0, 0.9, 9.2], fov: 35 }} dpr={[1, 1.75]} gl={{ alpha: true, antialias: true }}>
       <Suspense fallback={null}>
         <Physics interpolate gravity={[0, -30, 0]} timeStep={1 / 60}>
-          <HangingBadge flipped={flipped} frontImage={frontImage} backImage={backImage} />
+          <HangingBadge flipped={flipped} frontImage={frontImage} backImage={backImage} onReady={onReady} />
         </Physics>
       </Suspense>
     </Canvas>

@@ -109,10 +109,11 @@ export function PagePreloader() {
     if (reduced) return undefined
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const cycle = window.setInterval(() => setIndex(value => (value + 1) % 4), 370)
-    const leave = window.setTimeout(() => { window.clearInterval(cycle); setPhase('exit') }, 1480)
-    const done = window.setTimeout(() => setPhase('done'), 2200)
-    return () => { window.clearInterval(cycle); window.clearTimeout(leave); window.clearTimeout(done); document.body.style.overflow = previous }
+    const words = [370, 740, 1110].map((delay, value) => window.setTimeout(() => setIndex(value + 1), delay))
+    const welcome = window.setTimeout(() => setPhase('welcome'), 1480)
+    const leave = window.setTimeout(() => setPhase('exit'), 4480)
+    const done = window.setTimeout(() => setPhase('done'), 5160)
+    return () => { words.forEach(window.clearTimeout); window.clearTimeout(welcome); window.clearTimeout(leave); window.clearTimeout(done); document.body.style.overflow = previous }
   }, [reduced])
   useEffect(() => {
     if (phase === 'done') {
@@ -122,7 +123,7 @@ export function PagePreloader() {
     }
   }, [phase])
   if (reduced || phase === 'done') return null
-  return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''}`} role="status" aria-live="polite"><span className="sr-only">Loading</span><div className="preloader-visual" aria-hidden="true"><span>AI BUILDERS / UAIU</span><strong key={index}>{['LEARN', 'BUILD', 'SHIP', 'CONTRIBUTE'][index]}</strong><span>MADE TO MAKE THINGS REAL</span></div></div>
+  return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''}`} role="status" aria-live="polite"><span className="sr-only">{phase === 'welcome' ? 'Welcome to the world of AI Builders' : 'Loading AI Builders'}</span><div className="preloader-visual" aria-hidden="true"><span>AI BUILDERS / UAI</span><strong key={phase === 'welcome' || phase === 'exit' ? 'welcome' : index} className={phase === 'welcome' || phase === 'exit' ? 'preloader-welcome' : ''}>{phase === 'welcome' || phase === 'exit' ? 'WELCOME TO THE WORLD OF AI BUILDERS' : ['LEARN', 'BUILD', 'SHIP', 'CONTRIBUTE'][index]}</strong><span>MADE TO MAKE THINGS REAL</span></div></div>
 }
 
 export function KineticCenterBuild({ words = ['Learn.', 'Build.', 'Repeat.'] }) {

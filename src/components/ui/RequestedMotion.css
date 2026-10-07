@@ -15,10 +15,10 @@
 .text-link:hover::after,.text-link:focus-visible::after{transform:scaleX(1)}
 .text-link svg{flex:none;width:28px;height:28px;padding:5px;border:1px solid #7784bd;transition:transform .45s cubic-bezier(.16,1,.3,1),background .3s,color .3s}
 .text-link:hover svg,.text-link:focus-visible svg{transform:rotate(45deg) scale(1.12);background:#b9c4ff;color:#10152a}
-.button,.nav-cta,.team-member-open,.member-badge-flip,.event-access-link,.event-flip-trigger,.contribution-morph-steps button{background-image:linear-gradient(100deg,#bdc7ff 0 50%,transparent 50% 100%);background-size:205% 100%;background-position:100% 0;transition:background-position .42s cubic-bezier(.16,1,.3,1),color .28s,border-color .28s,transform .28s}
-.button:hover,.button:focus-visible,.nav-cta:hover,.nav-cta:focus-visible,.team-member-open:hover,.team-member-open:focus-visible,.member-badge-flip:hover,.member-badge-flip:focus-visible,.event-access-link:hover,.event-access-link:focus-visible,.event-flip-trigger:hover,.event-flip-trigger:focus-visible,.contribution-morph-steps button:hover,.contribution-morph-steps button:focus-visible{background-position:0 0;color:#11162d;border-color:#d5dcff}
-.button-primary,.button-light,.member-badge-flip,.contribution-morph-steps button.is-active{background-image:linear-gradient(100deg,#222b52 0 50%,transparent 50% 100%)}
-.button-primary:hover,.button-primary:focus-visible,.button-light:hover,.button-light:focus-visible,.member-badge-flip:hover,.member-badge-flip:focus-visible,.contribution-morph-steps button.is-active:hover,.contribution-morph-steps button.is-active:focus-visible{color:#f6f5ff}
+.button,.nav-cta,.team-member-open,.member-badge-flip,.event-access-link,.event-flip-trigger{background-image:linear-gradient(100deg,#bdc7ff 0 50%,transparent 50% 100%);background-size:205% 100%;background-position:100% 0;transition:background-position .42s cubic-bezier(.16,1,.3,1),color .28s,border-color .28s,transform .28s}
+.button:hover,.button:focus-visible,.nav-cta:hover,.nav-cta:focus-visible,.team-member-open:hover,.team-member-open:focus-visible,.member-badge-flip:hover,.member-badge-flip:focus-visible,.event-access-link:hover,.event-access-link:focus-visible,.event-flip-trigger:hover,.event-flip-trigger:focus-visible{background-position:0 0;color:#11162d;border-color:#d5dcff}
+.button-primary,.button-light,.member-badge-flip{background-image:linear-gradient(100deg,#222b52 0 50%,transparent 50% 100%)}
+.button-primary:hover,.button-primary:focus-visible,.button-light:hover,.button-light:focus-visible,.member-badge-flip:hover,.member-badge-flip:focus-visible{color:#f6f5ff}
 .smooth-cursor{position:fixed;left:0;top:0;z-index:1200;width:28px;height:28px;opacity:0;pointer-events:none;transform:translate3d(-100px,-100px,0);filter:drop-shadow(0 2px 4px #050612aa)}
 .smooth-cursor.is-visible{opacity:1}
 .smooth-cursor svg{width:100%;height:100%;fill:#c4ceff;stroke:#151932;stroke-width:1.5}

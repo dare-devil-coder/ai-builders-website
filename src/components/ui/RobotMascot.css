@@ -1,0 +1,9 @@
+.robot-mascot{position:relative;display:block;flex:none;width:192px;height:192px;padding:0;border:0;background:transparent;appearance:none;cursor:pointer;touch-action:manipulation;filter:drop-shadow(0 10px 24px #697bd12b)}
+.robot-mascot>span{position:absolute;inset:0;background-size:300% 300%;background-repeat:no-repeat;pointer-events:none}
+.robot-mascot-direction{background-image:url('/mascots/builder-bot-directions.png')}
+.robot-mascot-reaction{background-image:url('/mascots/builder-bot-reactions.png')}
+.robot-mascot:focus-visible{outline:2px solid #c6ceff;outline-offset:3px}
+.page-hero.has-mascot .hero-mascot{position:absolute;left:61%;bottom:16px;z-index:2}
+@media(max-width:900px){.page-hero.has-mascot .shell{padding-bottom:190px}.page-hero.has-mascot .hero-mascot{left:auto;right:4%;bottom:18px}.hero-mascot .robot-mascot{width:150px;height:150px}}
+@media(max-width:640px){.page-hero.has-mascot .shell{padding-bottom:146px}.page-hero.has-mascot .hero-mascot{right:0;bottom:12px}.hero-mascot .robot-mascot{width:126px;height:126px}}
+@media(prefers-reduced-motion:reduce){.robot-mascot{filter:none}}

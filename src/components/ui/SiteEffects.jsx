@@ -109,7 +109,7 @@ export function TextFlippingBoard({ stats }) {
     const id = window.setInterval(() => setActive(value => (value + 1) % stats.length), 6000)
     return () => window.clearInterval(id)
   }, [reduced, stats.length, visible])
-  return <div ref={ref} className="stats-grid flipping-stats" aria-label="Club statistics">{stats.map((stat, index) => <div className="stat-cell" key={stat.label}><span className="stat-index">0{index + 1} / CLUB</span><div className="stat-content"><strong aria-label={stat.value == null ? `${stat.label} count not yet published` : undefined}>{stat.value ?? '—'}</strong><FlapLabel text={stat.label} flipping={visible && active === index} reduced={reduced} /></div></div>)}<p className="stats-note">Verified totals will appear when the club provides them.</p></div>
+  return <div ref={ref} className="stats-grid flipping-stats" aria-label="Club statistics">{stats.map((stat, index) => <div className="stat-cell" key={stat.label}><span className="stat-index">0{index + 1} / CLUB</span><div className="stat-content"><strong aria-label={stat.value == null ? `${stat.label} count not yet published` : undefined}>{stat.value ?? '—'}</strong><FlapLabel text={stat.label} flipping={visible && active === index} reduced={reduced} /></div></div>)}{stats.some(stat => stat.value == null) && <p className="stats-note">Verified totals will appear when the club provides them.</p>}</div>
 }
 
 export function TracingBeam() {
