@@ -106,12 +106,11 @@ export function PagePreloader() {
   const [phase, setPhase] = useState('hold')
   const [index, setIndex] = useState(0)
   useEffect(() => {
-    if (reduced) return undefined
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const cycle = window.setInterval(() => setIndex(value => (value + 1) % 4), 370)
-    const leave = window.setTimeout(() => { window.clearInterval(cycle); setPhase('exit') }, 1480)
-    const done = window.setTimeout(() => setPhase('done'), 2200)
+    const cycle = reduced ? undefined : window.setInterval(() => setIndex(value => (value + 1) % 4), 650)
+    const leave = window.setTimeout(() => { if (cycle) window.clearInterval(cycle); setPhase('exit') }, 3000)
+    const done = window.setTimeout(() => setPhase('done'), 3700)
     return () => { window.clearInterval(cycle); window.clearTimeout(leave); window.clearTimeout(done); document.body.style.overflow = previous }
   }, [reduced])
   useEffect(() => {
@@ -122,7 +121,7 @@ export function PagePreloader() {
     }
   }, [phase])
   if (reduced || phase === 'done') return null
-  return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''}`} role="status" aria-live="polite"><span className="sr-only">Loading</span><div className="preloader-visual" aria-hidden="true"><span>AI BUILDERS / UAIU</span><strong key={index}>{['LEARN', 'BUILD', 'SHIP', 'CONTRIBUTE'][index]}</strong><span>MADE TO MAKE THINGS REAL</span></div></div>
+  return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''}`} role="status" aria-live="polite"><span className="sr-only">Loading AI Builders</span><div className="preloader-visual" aria-hidden="true"><img src="/First.png" alt="" /><strong key={index}>{['BUILD', 'LEARN', 'CODE', 'CONTRIBUTE'][index]}</strong><i className="preloader-progress" /></div></div>
 }
 
 export function KineticCenterBuild({ words = ['Learn.', 'Build.', 'Repeat.'] }) {
