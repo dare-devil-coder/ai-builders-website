@@ -5,6 +5,8 @@ import { pageMeta } from '../data/pages'
 import { PageFlow, PageHero, Reveal, SectionIntro, TiltCard } from '../components/ui/Sections'
 import { ApproachMorph, ShineText, SoftBlurText } from '../components/ui/MotionPieces'
 import { BackgroundWord } from '../components/ui/SiteEffects'
+import CampusPath from '../components/ui/CampusPath'
+import DotPattern from '../components/ui/DotPattern'
 
 export default function About() {
   return (
@@ -35,14 +37,18 @@ export default function About() {
         <div className="shell">
           <SectionIntro index="02" label="WHY WE EXIST" title={<>A mission with<br /><em>room to grow.</em></>} />
           <div className="statement-grid">
-            <Reveal>
+            <Reveal className="statement-card">
+              <DotPattern />
+              <span className="statement-corners" aria-hidden="true"><i /><i /><i /><i /></span>
               <span className="eyebrow">MISSION / TODAY</span>
-              <h3>Empower students to design, build, and ship AI-driven systems.</h3>
+              <h3><strong>Empower students</strong> to design, build, and ship AI-driven systems.</h3>
               <p>Through hands-on projects, collaborative development, and open-source contribution.</p>
             </Reveal>
-            <Reveal>
+            <Reveal className="statement-card">
+              <DotPattern />
+              <span className="statement-corners" aria-hidden="true"><i /><i /><i /><i /></span>
               <span className="eyebrow">VISION / TOMORROW</span>
-              <h3>Become the most impactful student AI community in India.</h3>
+              <h3><strong>Become the most impactful</strong> student AI community in India.</h3>
               <p>A community that produces real contributors to the global AI ecosystem.</p>
             </Reveal>
           </div>
@@ -75,7 +81,7 @@ export default function About() {
       </section>
 
       <section className="section shell compact-section">
-        <div className="university-panel has-inline-watermark"><BackgroundWord text="UAI" />
+        <div className="university-panel has-inline-watermark"><BackgroundWord text="UAI" /><CampusPath />
           <span className="eyebrow">ROOTED AT UAI</span>
           <h2>Built on campus.<br /><em>Open to the world.</em></h2>
           <p>AI Builders is a student club at Universal AI University, Mumbai — an institution dedicated to shaping the next generation of AI practitioners and researchers.</p>

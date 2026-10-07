@@ -1,0 +1,30 @@
+.team-member-list{display:grid;gap:22px;align-items:start}
+.team-member-card{display:grid;grid-template-columns:minmax(250px,.78fr) minmax(300px,1fr);width:min(100%,920px);min-height:365px;border:1px solid #424a70;background:#14192d;min-width:0}
+.team-member-photo{min-height:365px;overflow:hidden;background-color:#202942;background-repeat:no-repeat;background-size:cover;background-position:center;border-right:1px solid #424a70}
+.team-member-photo--sample{background-size:158% auto;background-position:0 30%}
+.team-member-copy{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:clamp(28px,4vw,52px)}
+.team-member-copy .eyebrow{display:block}
+.team-member-copy h3{font:600 clamp(30px,3vw,41px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-.05em;margin:16px 0 6px}
+.team-member-role{display:block;color:#b9c4ff;font-size:14px;font-weight:700}
+.team-member-copy p{color:#aeb6ce;font-size:13px;line-height:1.6;margin:13px 0 22px;max-width:34ch}
+.team-member-open{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;width:min(100%,260px);min-height:50px;padding:11px 14px;border:1px solid #8292d4;background:#252e52;color:#f2f3ff;font-size:13px;font-weight:700;transition:background .2s,border-color .2s,transform .2s}
+.team-member-open:hover,.team-member-open:focus-visible{background:#354477;border-color:#bec8ff;transform:translateY(-2px)}
+.team-member-note{display:block;color:#8994bc;font:500 10px/1.5 'IBM Plex Mono',monospace;margin-top:17px}
+.member-badge-overlay{position:fixed;inset:0;z-index:1000;background:#03050cdd;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);display:grid;grid-template-columns:minmax(0,1fr);place-items:center}
+.member-badge-dialog{position:relative;display:flex;flex-direction:column;width:100%;min-width:0;height:100dvh;max-height:100dvh;padding:clamp(16px,2.5vw,32px);background:radial-gradient(circle at 50% 45%,#1c244466,#090b18 72%);outline:none;overflow:hidden}
+.member-badge-topbar,.member-badge-actions{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:15px;width:min(100%,1180px);margin-inline:auto}
+.member-badge-topbar{min-height:48px}
+.member-badge-close{display:grid;place-items:center;flex:none;width:48px;height:48px;border:1px solid #69749e;background:#161b31;color:#f7f7ff;transition:background .2s,transform .2s}
+.member-badge-close:hover{background:#313b67;transform:rotate(90deg)}
+.member-badge-stage{position:relative;flex:1;min-width:0;min-height:0;max-height:calc(100dvh - 150px);width:min(100%,750px);margin:auto;animation:badge-stage-enter .65s cubic-bezier(.18,.7,.16,1) both}
+.team-badge-canvas,.team-badge-canvas canvas{width:100%;height:100%;display:block}
+.team-badge-canvas canvas{touch-action:none;cursor:grab}
+.team-badge-canvas canvas:active{cursor:grabbing}
+.member-badge-static{display:block;height:100%;max-width:100%;max-height:100%;object-fit:contain;margin:auto}
+.member-badge-actions{min-height:55px;color:#aeb9ef;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.1em}
+.member-badge-flip{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:11px 20px;color:#0b0d19;background:#b8c1ff;border:1px solid #d0d6ff;font:700 13px 'Space Grotesk',sans-serif}
+.member-badge-flip:hover{background:#d4d9ff}
+@keyframes badge-stage-enter{from{opacity:0;transform:translateY(-14vh) rotate(-7deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+@media(max-width:640px){.team-member-card{grid-template-columns:1fr;min-height:0}.team-member-photo{height:290px;min-height:0;border-right:0;border-bottom:1px solid #424a70}.team-member-photo--sample{background-size:160% auto;background-position:0 29%}.team-member-copy{padding:25px 27px 27px}.team-member-open{width:100%}.member-badge-dialog{padding:12px}.member-badge-topbar .eyebrow{font-size:9px;letter-spacing:.08em}.member-badge-stage{max-height:calc(100dvh - 140px)}.member-badge-hint{display:none}.member-badge-actions{padding-bottom:env(safe-area-inset-bottom)}.member-badge-actions>span:first-child{font-size:9px}}
+@media(max-width:360px){.team-member-photo{height:255px}.member-badge-topbar .eyebrow{max-width:180px}.member-badge-actions{gap:5px}.member-badge-flip{padding-inline:12px}}
+@media(prefers-reduced-motion:reduce){.member-badge-stage{animation:none}.team-member-open,.member-badge-close{transition:none}.team-member-open:hover,.team-member-open:focus-visible,.member-badge-close:hover{transform:none}}

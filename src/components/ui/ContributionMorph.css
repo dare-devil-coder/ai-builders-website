@@ -1,16 +1,24 @@
-.contribution-morph{border-top:1px solid #434868;padding:34px 0 4px;background-image:radial-gradient(#8e99d41b 1px,transparent 1px);background-size:20px 20px}
-.contribution-morph-display{min-height:250px}
-.contribution-morph-display h3{margin:14px 0 12px;color:#f4f3ff;font:600 clamp(58px,8vw,108px)/1.04 'Space Grotesk',sans-serif;letter-spacing:-.06em}
-.contribution-morph-display p{max-width:720px;margin:0;color:#aeb6d0;font-size:clamp(16px,1.5vw,19px);line-height:1.55}
-.contribution-morph-progress{display:grid;grid-template-columns:1fr auto;align-items:end;gap:14px;color:#aeb6d0;font:500 15px 'Space Grotesk',sans-serif}
-.contribution-morph-progress strong{color:#f5f4ff;font:600 38px 'Space Grotesk',sans-serif;font-variant-numeric:tabular-nums}
-.contribution-morph-track{grid-column:1/-1;height:8px;border-radius:20px;background:#343951;overflow:hidden}
-.contribution-morph-track span{display:block;width:100%;height:100%;transform-origin:left center;border-radius:inherit;background:#aeb9ff;transition:transform .55s cubic-bezier(.23,1,.32,1)}
-.contribution-morph-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:25px}
-.contribution-morph-steps{display:flex;flex-wrap:wrap;gap:10px}
-.contribution-morph-steps button{padding:11px 17px;border:1px solid #41465f;border-radius:30px;background:#25293c;color:#e0e3f5;font:600 15px 'Space Grotesk',sans-serif;transition:background .2s ease,color .2s ease,border-color .2s ease}
+.contribution-morph{position:relative;overflow:hidden;border:1px solid #495577;background:linear-gradient(130deg,#141b34,#0c0e1c 62%);padding:clamp(24px,4vw,56px)}
+.contribution-morph::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.34;background-image:linear-gradient(#8295d41b 1px,transparent 1px),linear-gradient(90deg,#8295d41b 1px,transparent 1px);background-size:32px 32px}
+.contribution-morph-display,.contribution-morph-progress,.contribution-morph-controls{position:relative;z-index:1}
+.contribution-morph-display{min-height:clamp(270px,30vw,390px);display:flex;flex-direction:column}
+.contribution-kinetic-frame{position:relative;display:flex;align-items:center;flex:1;min-height:190px;overflow:hidden;border-block:1px solid #6877a277;margin:20px 0}
+.contribution-kinetic-frame::before,.contribution-kinetic-frame::after{content:'+';position:absolute;left:0;color:#a8b9ff;font:400 22px 'IBM Plex Mono',monospace;z-index:2}
+.contribution-kinetic-frame::before{top:5px}.contribution-kinetic-frame::after{bottom:5px}
+.contribution-kinetic-frame h3{position:relative;z-index:1;margin:0 0 0 28px;color:#f4f3ff;font:700 clamp(58px,10vw,146px)/.92 'Space Grotesk',sans-serif;letter-spacing:-.085em;text-transform:uppercase;animation:kinetic-slide .65s cubic-bezier(.16,1,.3,1) both}
+.contribution-kinetic-outline{position:absolute;left:30px;top:50%;white-space:nowrap;font:700 clamp(75px,12vw,170px)/1 'Space Grotesk',sans-serif;letter-spacing:-.085em;text-transform:uppercase;color:transparent;-webkit-text-stroke:1px #a6b6ff4b;transform:translate(12%,-50%);user-select:none}
+.contribution-kinetic-index{position:absolute;right:12px;bottom:13px;color:#a9b6ed;font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.12em}
+@keyframes kinetic-slide{from{opacity:0;transform:translateX(-9%) skewX(-5deg);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+.contribution-morph-display p{max-width:720px;min-height:55px;margin:0 0 28px;color:#bac3df;font-size:clamp(16px,1.5vw,19px);line-height:1.55}
+.contribution-morph-progress{display:grid;grid-template-columns:1fr auto;align-items:end;gap:14px;color:#aeb6d0;font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.13em}
+.contribution-morph-progress strong{color:#f5f4ff;font:600 31px 'Space Grotesk',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:0}
+.contribution-morph-track{grid-column:1/-1;height:3px;background:#343e60;overflow:hidden}
+.contribution-morph-track span{display:block;width:100%;height:100%;transform-origin:left center;background:#bcc8ff;transition:transform .55s cubic-bezier(.23,1,.32,1)}
+.contribution-morph-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:28px}
+.contribution-morph-steps{display:flex;flex-wrap:wrap;gap:8px}
+.contribution-morph-steps button{min-height:44px;padding:10px 15px;border:1px solid #536081;background:#1b2440;color:#dfe4fc;font:600 13px 'Space Grotesk',sans-serif}
 .contribution-morph-steps button.is-active{border-color:#b9c3ff;background:#aeb9ff;color:#12172d}
-.contribution-morph-play{display:inline-flex;align-items:center;gap:7px;padding:10px 5px;border:0;background:transparent;color:#e8eafb;font:600 14px 'Space Grotesk',sans-serif;white-space:nowrap}
+.contribution-morph-play{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 5px;border:0;background:transparent;color:#e8eafb;font:600 13px 'Space Grotesk',sans-serif;white-space:nowrap}
 .contribution-morph-steps button:focus-visible,.contribution-morph-play:focus-visible{outline:2px solid #c7ccff;outline-offset:3px}
-@media(max-width:640px){.contribution-morph-display{min-height:205px}.contribution-morph-display h3{font-size:clamp(38px,10vw,64px)}.contribution-morph-controls{align-items:flex-start}.contribution-morph-steps{gap:7px}.contribution-morph-steps button{padding:9px 11px;font-size:12px}.contribution-morph-play{font-size:12px}.contribution-morph-progress strong{font-size:30px}}
-@media(prefers-reduced-motion:reduce){.contribution-morph-track span,.contribution-morph-steps button{transition:none}}
+@media(max-width:640px){.contribution-morph{padding:22px}.contribution-morph-display{min-height:0}.contribution-kinetic-frame{min-height:170px}.contribution-kinetic-frame h3{font-size:clamp(37px,10vw,64px);margin-left:14px}.contribution-kinetic-outline{font-size:clamp(57px,13vw,82px);left:14px}.contribution-morph-controls{align-items:flex-start;flex-direction:column;gap:8px}.contribution-morph-steps{gap:6px}.contribution-morph-steps button{font-size:11px;padding:8px 10px}.contribution-morph-display p{min-height:70px}}
+@media(prefers-reduced-motion:reduce){.contribution-kinetic-frame h3{animation:none}.contribution-morph-track span,.contribution-morph-steps button{transition:none}}

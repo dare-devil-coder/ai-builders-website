@@ -14,6 +14,8 @@ import Join from './pages/Join'
 import useSiteMotion from './hooks/useSiteMotion'
 import { PagePreloader } from './components/ui/MotionPieces'
 import { TracingBeam } from './components/ui/SiteEffects'
+import SmoothCursor from './components/ui/SmoothCursor'
+import './components/ui/RequestedMotion.css'
 
 function Site() {
   const location = useLocation()
@@ -36,7 +38,7 @@ function Site() {
     const titles = { '/': 'AI Builders | Universal AI University', '/about': 'About | AI Builders', '/projects': 'Projects | AI Builders', '/events': 'Events | AI Builders', '/team': 'Team | AI Builders', '/blog': 'Resources | AI Builders', '/open-source': 'Open Source | AI Builders', '/join': 'Join Us | AI Builders' }
     document.title = titles[location.pathname] || 'Page not found | AI Builders'
   }, [location.pathname])
-  return <><PagePreloader /><TracingBeam /><Navbar /><main id="main-content"><Routes>
+  return <><SmoothCursor /><PagePreloader /><TracingBeam /><Navbar /><main id="main-content"><Routes>
     <Route path="/" element={<Home />} /><Route path="/about" element={<About />} />
     <Route path="/projects" element={<Projects />} /><Route path="/events" element={<Events />} />
     <Route path="/team" element={<Team />} /><Route path="/blog" element={<Blog />} />

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
 import { Pause, Play } from 'lucide-react'
-import { TextMorph } from './MotionPieces'
 import './ContributionMorph.css'
 
 const steps = [
@@ -30,12 +29,12 @@ export default function ContributionMorph() {
   return <div ref={ref} className="contribution-morph" aria-label="Contribution guide">
     <div className="contribution-morph-display">
       <span className="eyebrow">YOUR FIRST CONTRIBUTION / 0{active + 1}</span>
-      <h3><TextMorph text={current.title} /></h3>
+      <div className="contribution-kinetic-frame" aria-live="polite"><span className="contribution-kinetic-outline" aria-hidden="true">{current.title}</span><h3 key={current.id}>{current.title}</h3><span className="contribution-kinetic-index" aria-hidden="true">0{active + 1} / 0{steps.length}</span></div>
       <AnimatePresence mode="wait" initial={false}>
         <motion.p key={current.id} initial={reduced ? false : { opacity: 0, y: 8, filter: 'blur(4px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={reduced ? undefined : { opacity: 0, y: -6, filter: 'blur(4px)' }} transition={{ duration: reduced ? 0 : .3, ease: [.23, 1, .32, 1] }}>{current.detail}</motion.p>
       </AnimatePresence>
     </div>
-    <div className="contribution-morph-progress"><span>Progress</span><strong>{progress}%</strong><div className="contribution-morph-track"><span style={{ transform: `scaleX(${progress / 100})` }} /></div></div>
+    <div className="contribution-morph-progress"><span>THE BUILD SEQUENCE</span><strong>{progress}%</strong><div className="contribution-morph-track"><span style={{ transform: `scaleX(${progress / 100})` }} /></div></div>
     <div className="contribution-morph-controls"><div className="contribution-morph-steps" role="group" aria-label="Contribution steps">{steps.map((step, index) => <button type="button" key={step.id} aria-pressed={index === active} className={index === active ? 'is-active' : ''} onClick={() => { setActive(index); setPaused(true) }}>{step.title}</button>)}</div><button type="button" className="contribution-morph-play" onClick={() => setPaused(value => !value)} aria-label={paused ? 'Play contribution guide' : 'Pause contribution guide'}>{paused ? <Play size={16} /> : <Pause size={16} />}{paused ? 'Play' : 'Pause'}</button></div>
   </div>
 }

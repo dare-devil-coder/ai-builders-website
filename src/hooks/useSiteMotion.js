@@ -10,6 +10,8 @@ export default function useSiteMotion(pathname) {
     let active = true
     let context
     let markerObserver
+    let textObserver
+    const markerTimers = []
     let markerHeadings = []
     const splits = []
     window.scrollTo(0, 0)
@@ -19,7 +21,7 @@ export default function useSiteMotion(pathname) {
       const main = document.querySelector('#main-content')
       if (!main) return
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      const headings = [...main.querySelectorAll('h1:not([data-motion-managed]), h2:not([data-motion-managed])'), ...document.querySelectorAll('footer h2')]
+      const headings = [...main.querySelectorAll('h1:not([data-motion-managed])')]
 
       context = gsap.context(() => {
         headings.forEach(heading => {
@@ -82,7 +84,7 @@ export default function useSiteMotion(pathname) {
               },
             })
           })
-          if (!panels.length) {
+          if (!panels.length && pathname !== '/about') {
             const sections = [...main.querySelectorAll(':scope > section')]
             sections.slice(0, -1).forEach(section => {
               gsap.fromTo(section, { opacity: 1, scale: 1 }, {
@@ -109,11 +111,31 @@ export default function useSiteMotion(pathname) {
       if ('IntersectionObserver' in window && !reduced) {
         markerObserver = new IntersectionObserver(entries => {
           entries.forEach(entry => {
-            entry.target.classList.toggle('is-marker-visible', entry.intersectionRatio >= .25)
+            if (entry.intersectionRatio >= .25) {
+              if (entry.target.tagName === 'H2') markerTimers.push(window.setTimeout(() => entry.target.classList.add('is-marker-visible'), 650))
+              else entry.target.classList.add('is-marker-visible')
+            } else entry.target.classList.remove('is-marker-visible')
           })
         }, { rootMargin: '0px 0px -35% 0px', threshold: .25 })
         markerHeadings.forEach(heading => markerObserver.observe(heading))
       } else markerHeadings.forEach(heading => heading.classList.add('is-marker-visible'))
+      const textTargets = [...main.querySelectorAll('h2, p:not(.sr-only)'), ...document.querySelectorAll('footer h2, footer p')].filter(element => !element.closest('.member-badge-overlay, .contribution-morph'))
+      if (!reduced && 'IntersectionObserver' in window) {
+        textTargets.forEach(element => element.classList.add(element.tagName === 'H2' ? 'dual-wipe' : 'rect-reveal'))
+        const triggers = new Map()
+        textTargets.forEach(element => {
+          const trigger = element.parentElement
+          if (!triggers.has(trigger)) triggers.set(trigger, [])
+          triggers.get(trigger).push(element)
+        })
+        textObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            triggers.get(entry.target)?.forEach(element => element.classList.add('motion-visible'))
+            textObserver.unobserve(entry.target)
+          }
+        }), { rootMargin: '0px 0px -10% 0px', threshold: .08 })
+        triggers.forEach((_, trigger) => textObserver.observe(trigger))
+      }
       ScrollTrigger.refresh()
     }
 
@@ -122,6 +144,9 @@ export default function useSiteMotion(pathname) {
       active = false
       context?.revert()
       markerObserver?.disconnect()
+      textObserver?.disconnect()
+      markerTimers.forEach(timer => window.clearTimeout(timer))
+      document.querySelectorAll('.dual-wipe, .rect-reveal').forEach(element => element.classList.remove('dual-wipe', 'rect-reveal', 'motion-visible'))
       markerHeadings.forEach(heading => { heading.classList.remove('is-marker-visible'); heading.style.removeProperty('--marker-duration') })
       splits.forEach(split => split.revert())
     }

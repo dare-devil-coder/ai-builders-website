@@ -1,0 +1,43 @@
+.dual-wipe{position:relative;isolation:isolate;clip-path:inset(0 100% 0 0)}
+.dual-wipe.motion-visible{animation:heading-uncover .66s .2s cubic-bezier(.16,1,.3,1) both}
+.dual-wipe::before,.dual-wipe::after{content:'';position:absolute;left:0;right:0;height:50%;z-index:3;pointer-events:none;transform:translateX(-105%);background:#7d8bd5}
+.dual-wipe::before{top:0}.dual-wipe::after{bottom:0;background:#bcc6ff}
+.dual-wipe.motion-visible::before{animation:wipe-across .72s cubic-bezier(.65,0,.25,1) both}
+.dual-wipe.motion-visible::after{animation:wipe-across .72s .09s cubic-bezier(.65,0,.25,1) both}
+@keyframes heading-uncover{to{clip-path:inset(0)}}
+@keyframes wipe-across{50%{transform:translateX(0)}100%{transform:translateX(105%)}}
+.rect-reveal{clip-path:inset(0 100% 0 0);background-image:linear-gradient(90deg,#8494dd38,#8494dd38);background-repeat:no-repeat;background-size:0 100%}
+.rect-reveal.motion-visible{animation:rect-text-in .75s cubic-bezier(.16,1,.3,1) both}
+@keyframes rect-text-in{35%{background-size:100% 100%;clip-path:inset(0)}100%{background-size:0 100%;clip-path:inset(0)}}
+.text-link{position:relative;border-bottom:0;padding-bottom:10px;gap:14px}
+.text-link::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:#b8c4ff;transform:scaleX(.22);transform-origin:left;transition:transform .54s cubic-bezier(.16,1,.3,1)}
+.text-link:hover,.text-link:focus-visible{gap:14px}
+.text-link:hover::after,.text-link:focus-visible::after{transform:scaleX(1)}
+.text-link svg{flex:none;width:28px;height:28px;padding:5px;border:1px solid #7784bd;transition:transform .45s cubic-bezier(.16,1,.3,1),background .3s,color .3s}
+.text-link:hover svg,.text-link:focus-visible svg{transform:rotate(45deg) scale(1.12);background:#b9c4ff;color:#10152a}
+.button,.nav-cta,.team-member-open,.member-badge-flip,.event-access-link,.event-flip-trigger,.contribution-morph-steps button{background-image:linear-gradient(100deg,#bdc7ff 0 50%,transparent 50% 100%);background-size:205% 100%;background-position:100% 0;transition:background-position .42s cubic-bezier(.16,1,.3,1),color .28s,border-color .28s,transform .28s}
+.button:hover,.button:focus-visible,.nav-cta:hover,.nav-cta:focus-visible,.team-member-open:hover,.team-member-open:focus-visible,.member-badge-flip:hover,.member-badge-flip:focus-visible,.event-access-link:hover,.event-access-link:focus-visible,.event-flip-trigger:hover,.event-flip-trigger:focus-visible,.contribution-morph-steps button:hover,.contribution-morph-steps button:focus-visible{background-position:0 0;color:#11162d;border-color:#d5dcff}
+.button-primary,.button-light,.member-badge-flip,.contribution-morph-steps button.is-active{background-image:linear-gradient(100deg,#222b52 0 50%,transparent 50% 100%)}
+.button-primary:hover,.button-primary:focus-visible,.button-light:hover,.button-light:focus-visible,.member-badge-flip:hover,.member-badge-flip:focus-visible,.contribution-morph-steps button.is-active:hover,.contribution-morph-steps button.is-active:focus-visible{color:#f6f5ff}
+.smooth-cursor{position:fixed;left:0;top:0;z-index:1200;width:28px;height:28px;opacity:0;pointer-events:none;transform:translate3d(-100px,-100px,0);filter:drop-shadow(0 2px 4px #050612aa)}
+.smooth-cursor.is-visible{opacity:1}
+.smooth-cursor svg{width:100%;height:100%;fill:#c4ceff;stroke:#151932;stroke-width:1.5}
+.statement-grid>.statement-card{position:relative;isolation:isolate;overflow:hidden;min-width:0;background:#151a30;border-color:#59648d;transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1),border-color .35s ease}
+.statement-card>.dot-pattern{position:absolute;inset:0;width:100%;height:100%;fill:#aab8ff;opacity:0;mask-image:linear-gradient(135deg,#000 0%,#0008 45%,transparent 90%);pointer-events:none;transition:opacity .7s ease}
+.statement-card.in-view>.dot-pattern{opacity:.27}
+.statement-card:hover{border-color:#8c9bd1}
+.statement-card:hover>.dot-pattern{opacity:.38}
+.statement-card>.eyebrow,.statement-card>h3,.statement-card>p{position:relative;z-index:1}
+.statement-card h3{font-weight:400;letter-spacing:-.04em;max-width:24ch}
+.statement-card h3 strong{font-weight:700}
+.statement-corners i{position:absolute;z-index:2;width:10px;height:10px;background:#aab8ff;pointer-events:none}
+.statement-corners i:nth-child(1){top:0;left:0}.statement-corners i:nth-child(2){top:0;right:0}.statement-corners i:nth-child(3){bottom:0;left:0}.statement-corners i:nth-child(4){bottom:0;right:0}
+.university-panel{position:relative;isolation:isolate;overflow:hidden;min-height:500px}
+.university-panel>.eyebrow,.university-panel>h2,.university-panel>p,.university-panel>.text-link{position:relative;z-index:2}
+.university-panel.has-inline-watermark>.campus-path{position:absolute;right:0;bottom:0;width:100%;height:100%;z-index:1;overflow:visible;pointer-events:none;mask-image:linear-gradient(90deg,transparent,#000 22%)}
+.cinematic-footer{position:relative;overflow:hidden;border-top:1px solid #8997cc66;background:radial-gradient(circle at 77% 12%,#263463,#0a0c18 59%)}
+.cinematic-footer::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(#8d9bd214 1px,transparent 1px);background-size:100% 36px;mask-image:linear-gradient(#000,transparent 80%)}
+.cinematic-footer .footer-main,.cinematic-footer .footer-watermark-band,.cinematic-footer .footer-bottom{position:relative}
+@media(any-hover:hover) and (any-pointer:fine){html:has(.smooth-cursor.is-visible),html:has(.smooth-cursor.is-visible) *{cursor:none!important}}
+@media(max-width:640px){.dual-wipe::before,.dual-wipe::after{height:50%}.text-link svg{width:26px;height:26px}.statement-grid>.statement-card{padding:30px 27px}.statement-card h3{font-size:clamp(26px,7vw,36px)}.university-panel{min-height:0;padding-bottom:145px}.university-panel.has-inline-watermark>.campus-path{width:100%;height:210px;bottom:0;mask-image:linear-gradient(90deg,transparent,#000 30%)}.campus-path text{font-size:32px;letter-spacing:6px}}
+@media(prefers-reduced-motion:reduce){.dual-wipe,.rect-reveal{clip-path:none!important;animation:none!important}.dual-wipe::before,.dual-wipe::after{display:none}.text-link::after,.text-link svg,.button,.nav-cta,.team-member-open,.member-badge-flip,.event-access-link,.event-flip-trigger,.contribution-morph-steps button{transition:none!important}.smooth-cursor{display:none}}

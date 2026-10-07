@@ -1,6 +1,11 @@
-.infinite-ribbon{position:relative}
+.ticker.infinite-ribbon{position:relative;display:block;height:clamp(130px,13vw,190px);isolation:isolate;overflow:hidden;background:#080911;border-bottom:1px solid #373c5b;color:#151832}
+.infinite-ribbon-rail{position:absolute;top:50%;left:-6%;width:112%;height:52px;display:flex;align-items:center;overflow:hidden;background:#b7c0ff;border-block:1px solid #d8ddff;box-shadow:0 8px 24px #05050e80}
+.infinite-ribbon-rail-forward{transform:translateY(-50%) rotate(5deg)}
+.infinite-ribbon-rail-reverse{transform:translateY(-50%) rotate(-5deg);background:#9eaaed;border-color:#c5cdff}
 .infinite-ribbon-track{animation:ticker-move var(--ribbon-duration,35s) linear infinite;will-change:transform}
-.infinite-ribbon-toggle{position:absolute;z-index:2;right:0;top:0;width:52px;height:100%;display:grid;place-items:center;border:0;border-left:1px solid #4b548b;background:#b7c0ff;color:#151832}
-.infinite-ribbon-toggle:hover{background:#c7cfff}
-.infinite-ribbon-toggle:focus-visible{outline:2px solid #151832;outline-offset:-5px}
+.infinite-ribbon-rail-reverse .infinite-ribbon-track{animation-direction:reverse}
+.infinite-ribbon-toggle{position:absolute;z-index:2;right:16px;top:14px;width:44px;height:44px;display:grid;place-items:center;border:1px solid #808dc7;background:#12172e;color:#e1e5ff}
+.infinite-ribbon-toggle:hover{background:#28325c}
+.infinite-ribbon-toggle:focus-visible{outline:2px solid #d5dcff;outline-offset:3px}
+@media(max-width:640px){.ticker.infinite-ribbon{height:138px}.infinite-ribbon-rail{left:-12%;width:124%;height:42px}.infinite-ribbon-rail-forward{transform:translateY(-50%) rotate(7deg)}.infinite-ribbon-rail-reverse{transform:translateY(-50%) rotate(-7deg)}.infinite-ribbon-toggle{top:8px;right:8px}}
 @media(prefers-reduced-motion:reduce){.infinite-ribbon-track{animation:none!important;transform:none!important}.infinite-ribbon-toggle{display:none}}
