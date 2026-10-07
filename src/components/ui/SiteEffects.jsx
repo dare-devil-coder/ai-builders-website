@@ -99,6 +99,26 @@ function FlapLabel({ text, flipping, reduced }) {
   return <span className="flap-label" aria-label={text}>{[...text.toUpperCase()].map((character, index) => character === ' ' ? <span className="flap-space" aria-hidden="true" key={index} /> : <span aria-hidden="true" className="flap-character" key={`${index}-${frame}`} data-frame={frame}>{flipping && frame < 9 && frame > 0 ? flapAlphabet[(index * 7 + frame * 5) % flapAlphabet.length] : character}</span>)}</span>
 }
 
+function CountUpNumber({ value, visible, reduced, label }) {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!visible || reduced) return undefined
+    let frame
+    const startedAt = performance.now()
+    const duration = 1600
+    const tick = now => {
+      const progress = Math.min(1, (now - startedAt) / duration)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(value * eased))
+      if (progress < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [label, reduced, value, visible])
+  const displayCount = visible ? (reduced ? value : count) : 0
+  return <>{displayCount.toLocaleString('en-IN')}+</>
+}
+
 export function TextFlippingBoard({ stats }) {
   const ref = useRef(null)
   const visible = useInView(ref, { amount: .2 })
@@ -109,7 +129,7 @@ export function TextFlippingBoard({ stats }) {
     const id = window.setInterval(() => setActive(value => (value + 1) % stats.length), 6000)
     return () => window.clearInterval(id)
   }, [reduced, stats.length, visible])
-  return <div ref={ref} className="stats-grid flipping-stats" aria-label="Club statistics">{stats.map((stat, index) => <div className="stat-cell" key={stat.label}><span className="stat-index">0{index + 1} / CLUB</span><div className="stat-content"><strong aria-label={stat.value == null ? `${stat.label} count not yet published` : undefined}>{stat.value ?? '—'}</strong><FlapLabel text={stat.label} flipping={visible && active === index} reduced={reduced} /></div></div>)}<p className="stats-note">Verified totals will appear when the club provides them.</p></div>
+  return <div ref={ref} className="stats-grid flipping-stats" aria-label="Club statistics">{stats.map((stat, index) => <div className="stat-cell" key={stat.label}><span className="stat-index">0{index + 1} / CLUB</span><div className="stat-content"><strong aria-label={`${stat.label}: ${stat.value.toLocaleString('en-IN')} plus`}><CountUpNumber value={stat.value} visible={visible} reduced={reduced} label={stat.label} /></strong><FlapLabel text={stat.label} flipping={visible && active === index} reduced={reduced} /></div></div>)}<p className="stats-note">Current AI Builders community totals.</p></div>
 }
 
 export function TracingBeam() {

@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react'
 import { ArrowDown, ArrowUpRight, MoveUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { clubStats, pillars } from '../data/site'
 import { Reveal, SectionIntro, TiltCard } from '../components/ui/Sections'
-import BuildConstellation from '../components/ui/BuildConstellation'
 import EventPassport from '../components/ui/EventPassport'
 import { ApproachMorph, FolderReveal, KineticType } from '../components/ui/MotionPieces'
 import { BackgroundRipple, BackgroundWord, HeroKineticBuild, TextFlippingBoard, WaveText, WordGenerate } from '../components/ui/SiteEffects'
@@ -12,10 +12,40 @@ function ScrollPanel({ children, tone = '' }) {
   return <div className={`scroll-panel ${tone}`}><div className="section-stage"><div className="section-inner">{children}</div></div></div>
 }
 
+function HeroArtwork() {
+  return <div className="hero-art" aria-label="AI Builders model and technology puzzle artwork">
+    <img className="hero-art-reference" src="/Hero.png" alt="" aria-hidden="true" />
+    <div className="hero-art-live" aria-hidden="true" />
+    <img className="hero-art-model" src="/Hero-model-cutout.png" alt="" aria-hidden="true" />
+  </div>
+}
+
+function ExplorePillars() {
+  const [expanded, setExpanded] = useState(false)
+  const [settled, setSettled] = useState(false)
+  const reduced = expanded && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  useEffect(() => {
+    if (!expanded) return undefined
+    if (reduced) return undefined
+    const timer = window.setTimeout(() => setSettled(true), 1900)
+    return () => window.clearTimeout(timer)
+  }, [expanded, reduced])
+
+  return <div className={`explore-pillars${expanded ? ' is-expanded' : ''}${settled ? ' is-settled' : ''}`}>
+    {!settled && !reduced && <button className={`explore-trigger tilt-card${expanded ? ' is-launching' : ''}`} type="button" onClick={() => setExpanded(true)} disabled={expanded} aria-label="Explore eight AI Builders focus areas">
+      <span className="pillar-top"><span>01 / FOCUS</span><span className="pillar-icon" aria-hidden="true">✳</span></span>
+      <span className="explore-trigger-title">Explore</span>
+      <span className="explore-trigger-note">Eight ways to keep building <MoveUpRight size={19} aria-hidden="true" /></span>
+    </button>}
+    {expanded && <div className="pillar-grid explore-card-grid" aria-label="AI Builders focus areas">{pillars.map((pillar, index) => <Reveal key={pillar.id} style={{ '--launch-index': index, '--launch-x': `${[180, 60, -60, -180][index % 4]}px`, '--launch-y': `${index < 4 ? 86 : -86}px` }}><TiltCard className="pillar-card"><div className="pillar-top"><span>{pillar.id} / FOCUS</span><span className="pillar-icon">{pillar.icon}</span></div><h3>{pillar.title}</h3><p>{pillar.text}</p><MoveUpRight size={19} className="pillar-arrow" /></TiltCard></Reveal>)}</div>}
+  </div>
+}
+
 export default function Home() {
   return <div className="home-page">
     <ScrollPanel>
-      <section className="hero"><div className="hero-noise" aria-hidden="true" /><BackgroundRipple /><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow hero-kicker"><span className="status-dot" /> THE OFFICIAL AI & DEVELOPMENT CLUB OF UAI</span><HeroKineticBuild /><WordGenerate text="AI Builders is the official AI & development club of Universal AI University — where students ship real projects, contribute to open source, and push the boundaries of what’s possible with artificial intelligence." /><div className="hero-actions"><Link to="/projects" className="button button-primary">Explore our work <ArrowUpRight size={18} /></Link><Link to="/join" className="button button-outline">Join the club <ArrowUpRight size={18} /></Link></div><a href="#what-we-do" className="scroll-cue">SCROLL TO EXPLORE <ArrowDown size={16} /></a></div><BuildConstellation /></div><div className="hero-bottom shell"><span>UNIVERSAL AI UNIVERSITY / MUMBAI</span><div className="hero-wave-words"><WaveText>LEARN</WaveText><WaveText>BUILD</WaveText><WaveText>GROW</WaveText><WaveText>CONTRIBUTE</WaveText></div></div></section>
+      <section className="hero"><div className="hero-noise" aria-hidden="true" /><BackgroundRipple /><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow hero-kicker"><span className="status-dot" /> THE OFFICIAL AI & DEVELOPMENT CLUB OF UAI</span><HeroKineticBuild /><WordGenerate text="AI Builders is the official AI & development club of Universal AI University — where students ship real projects, contribute to open source, and push the boundaries of what’s possible with artificial intelligence." /><div className="hero-actions"><Link to="/projects" className="button button-primary">Explore our work <ArrowUpRight size={18} /></Link><Link to="/join" className="button button-outline">Join the club <ArrowUpRight size={18} /></Link></div><a href="#what-we-do" className="scroll-cue">SCROLL TO EXPLORE <ArrowDown size={16} /></a></div><HeroArtwork /></div><div className="hero-bottom shell"><span>UNIVERSAL AI UNIVERSITY / MUMBAI</span><div className="hero-wave-words"><WaveText>LEARN</WaveText><WaveText>BUILD</WaveText><WaveText>GROW</WaveText><WaveText>CONTRIBUTE</WaveText></div></div></section>
       <InfiniteRibbon items={['AI PROJECTS','AI AGENTS','LLMs','RAG PIPELINES','API INTEGRATION','OPEN SOURCE','WORKSHOPS','DEVELOPMENT']} />
     </ScrollPanel>
 
@@ -24,7 +54,7 @@ export default function Home() {
     </ScrollPanel>
 
     <ScrollPanel tone="alt-panel">
-      <section className="section section-alt"><div className="shell"><SectionIntro index="02" label="WHAT WE EXPLORE" title={<>Eight ways to<br /><em>keep building.</em></>} description="From models and agents to complete products, our work crosses disciplines." action={{ label: 'Explore our approach', to: '/about' }} className="home-intro-explore" /><div className="pillar-grid">{pillars.map(pillar => <Reveal key={pillar.id}><TiltCard className="pillar-card"><div className="pillar-top"><span>{pillar.id} / FOCUS</span><span className="pillar-icon">{pillar.icon}</span></div><h3>{pillar.title}</h3><p>{pillar.text}</p><MoveUpRight size={19} className="pillar-arrow" /></TiltCard></Reveal>)}</div></div></section>
+      <section className="section section-alt"><div className="shell"><SectionIntro index="02" label="WHAT WE EXPLORE" title={<>Eight ways to<br /><em>keep building.</em></>} description="From models and agents to complete products, our work crosses disciplines." action={{ label: 'Explore our approach', to: '/about' }} className="home-intro-explore" /><ExplorePillars /></div></section>
     </ScrollPanel>
 
     <ScrollPanel>

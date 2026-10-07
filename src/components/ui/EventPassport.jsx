@@ -15,8 +15,21 @@ function remaining(startsAt, now) {
   if (!startsAt) return null
   const milliseconds = new Date(startsAt).getTime() - now
   if (!Number.isFinite(milliseconds) || milliseconds <= 0) return null
-  const seconds = Math.floor(milliseconds / 1000)
+  const seconds = Math.ceil(milliseconds / 1000)
   return [Math.floor(seconds / 86400), Math.floor(seconds / 3600) % 24, Math.floor(seconds / 60) % 60, seconds % 60]
+}
+
+function PixelNumber({ value }) {
+  return <strong className="event-pixel-number" aria-label={String(value).padStart(2, '0')}>
+    {String(value).padStart(2, '0')}
+  </strong>
+}
+
+function PixelCountdownUnit({ value, index, label }) {
+  return <div className="event-pixel-unit" style={{ '--pixel-index': index }}>
+    <PixelNumber value={value} />
+    <span>{label}</span>
+  </div>
 }
 
 export default function EventPassport() {
@@ -30,8 +43,14 @@ export default function EventPassport() {
 
   useEffect(() => {
     if (!nextEvent.startsAt) return undefined
-    const id = window.setInterval(() => setNow(Date.now()), 1000)
-    return () => window.clearInterval(id)
+    let timeout
+    const tick = () => {
+      const current = Date.now()
+      setNow(current)
+      timeout = window.setTimeout(tick, 1000 - (current % 1000))
+    }
+    tick()
+    return () => window.clearTimeout(timeout)
   }, [])
 
   useEffect(() => {
@@ -58,7 +77,7 @@ export default function EventPassport() {
 
   const countdown = remaining(nextEvent.startsAt, now)
   const dateLabel = nextEvent.startsAt && Number.isFinite(new Date(nextEvent.startsAt).getTime())
-    ? new Intl.DateTimeFormat('en-IN', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(nextEvent.startsAt))
+    ? new Intl.DateTimeFormat('en-IN', { dateStyle: 'long', timeZone: 'Asia/Kolkata' }).format(new Date(nextEvent.startsAt))
     : 'Date to be announced'
   const venueLabel = nextEvent.venue || 'Venue to be announced'
   const formatLabel = nextEvent.type || 'Workshop / Talk / Hackathon'
@@ -73,7 +92,7 @@ export default function EventPassport() {
   }
 
   return <section className="upcoming-event" aria-labelledby="upcoming-event-title">
-    <div className="event-access-head"><div className="event-access-brand"><CodeXml aria-hidden="true" /><span>AI BUILDERS / EVENT ACCESS</span></div><span className="event-access-admit"><i aria-hidden="true" /> ADMIT CURIOSITY</span></div>
+    <div className="event-access-head"><div className="event-access-brand"><CodeXml aria-hidden="true" /><span>AI BUILDERS / EVENTS</span></div><span className="event-access-admit"><i aria-hidden="true" /> ADMIT CURIOSITY</span></div>
     <div className="event-access-main">
       <div className="event-access-copy">
         <div className="event-access-kicker"><span aria-hidden="true" /> <strong>UPCOMING EVENTS</strong><span className="event-access-crumb">/ NEXT EVENT / PREVIEW</span></div>
@@ -90,7 +109,7 @@ export default function EventPassport() {
           <div ref={frontFace} className="event-card-face event-card-front" aria-hidden={flipped} inert={flipped}>
             <div className="event-card-top"><span>COUNTDOWN / IST</span><Ticket aria-hidden="true" /></div>
             <div className="event-card-center">{countdown
-              ? <div className="event-countdown">{countdown.map((value, index) => <div key={['days', 'hours', 'minutes', 'seconds'][index]}><strong>{String(value).padStart(2, '0')}</strong><span>{['DAYS', 'HRS', 'MIN', 'SEC'][index]}</span></div>)}</div>
+              ? <div className="event-countdown event-pixel-countdown" aria-live="polite" aria-label="Live countdown to the GitHub Hands-on Workshop">{countdown.map((value, index) => <PixelCountdownUnit value={value} index={index} label={['DAYS', 'HRS', 'MIN', 'SEC'][index]} key={`${index}-${value}`} />)}</div>
               : <strong className="event-tba">TBA</strong>}</div>
             <div className="event-card-bottom"><svg viewBox="0 0 158 44" preserveAspectRatio="none" aria-hidden="true">{barcode.map((bar, index) => <rect key={index} x={bar.x} y={index % 7 === 0 ? 5 : 0} width={bar.width} height={index % 5 === 0 ? 31 : 38} />)}</svg><div className="event-barcode-caption"><span>AI BUILDERS / EVENT PASS</span><span>{nextEvent.startsAt ? 'ACCESS PREVIEW' : 'DETAILS PENDING'}</span></div><div className="event-card-divider" /><p className="event-countdown-note"><Clock3 aria-hidden="true" />{nextEvent.startsAt ? 'Until the next event begins' : 'Countdown starts when the date is announced'}</p><button ref={frontButton} type="button" className="event-flip-trigger" onClick={showDetails}>Flip to see the event details <span aria-hidden="true">↗</span></button></div>
           </div>

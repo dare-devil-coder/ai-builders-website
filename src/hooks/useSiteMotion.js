@@ -62,44 +62,6 @@ export default function useSiteMotion(pathname) {
           splits.push(split)
         })
 
-        if (!reduced) {
-          const panels = [...main.querySelectorAll('.home-page > .scroll-panel')]
-          panels.slice(0, -1).forEach(panel => {
-            const stage = panel.querySelector('.section-stage')
-            if (!stage) return
-            gsap.fromTo(stage, { opacity: 1, scale: 1 }, {
-              opacity: 0,
-              scale: 0.7,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: panel,
-                start: 'bottom bottom',
-                end: () => `+=${Math.round(window.innerHeight * .65)}`,
-                pin: window.innerWidth > 900 ? panel : false,
-                pinSpacing: false,
-                scrub: true,
-                invalidateOnRefresh: true,
-              },
-            })
-          })
-          if (!panels.length) {
-            const sections = [...main.querySelectorAll(':scope > section')]
-            sections.slice(0, -1).forEach(section => {
-              gsap.fromTo(section, { opacity: 1, scale: 1 }, {
-                opacity: 0,
-                scale: 0.7,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: section,
-                  start: () => section.offsetHeight < window.innerHeight ? 'top top' : 'bottom bottom',
-                  end: () => `+=${Math.round(window.innerHeight * .65)}`,
-                  scrub: true,
-                  invalidateOnRefresh: true,
-                },
-              })
-            })
-          }
-        }
       }, main)
       markerHeadings = [...main.querySelectorAll('h1, h2'), ...document.querySelectorAll('footer h2')].filter(heading => heading.querySelector('em'))
       markerHeadings.forEach(heading => {

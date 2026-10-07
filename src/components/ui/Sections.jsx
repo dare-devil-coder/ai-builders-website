@@ -9,7 +9,7 @@ export function PageFlow({ children }) {
   return <>{children}</>
 }
 
-export function Reveal({ children, className = '' }) {
+export function Reveal({ children, className = '', style }) {
   const ref = useRef(null)
   useEffect(() => {
     const el = ref.current
@@ -21,7 +21,7 @@ export function Reveal({ children, className = '' }) {
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
-  return <div ref={ref} className={`reveal ${className}`}>{children}</div>
+  return <div ref={ref} className={`reveal ${className}`} style={style}>{children}</div>
 }
 
 export function SectionIntro({ index, label, title, description, action, watermark, motionManaged = false, className = '' }) {

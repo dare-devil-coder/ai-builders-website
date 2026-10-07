@@ -27,6 +27,10 @@ function KineticWord({ word, index, count, progress }) {
   return <motion.span aria-hidden="true" className="kinetic-word" style={{ scale, y, opacity, letterSpacing }}>{word}</motion.span>
 }
 
+function StaticKineticType({ text }) {
+  return <p className="kinetic-type kinetic-type-static">{text}</p>
+}
+
 function AnimatedKineticType({ text }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.9', 'end 0.45'] })
@@ -38,7 +42,7 @@ function AnimatedKineticType({ text }) {
 
 export function KineticType({ text }) {
   const reduced = useReducedMotion()
-  return reduced ? <p className="kinetic-type kinetic-type-static">{text}</p> : <AnimatedKineticType text={text} />
+  return reduced ? <StaticKineticType text={text} /> : <AnimatedKineticType text={text} />
 }
 
 export function SoftBlurText({ text }) {

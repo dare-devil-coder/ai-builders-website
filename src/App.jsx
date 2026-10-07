@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { flushSync } from 'react-dom'
+import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Home from './pages/Home'
@@ -17,21 +16,7 @@ import { TracingBeam } from './components/ui/SiteEffects'
 
 function Site() {
   const location = useLocation()
-  const navigate = useNavigate()
   useSiteMotion(location.pathname)
-  useEffect(() => {
-    const onLink = event => {
-      if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-      const link = event.target.closest('a[href]')
-      if (!link || link.origin !== window.location.origin || link.target || link.hasAttribute('download')) return
-      const next = new URL(link.href)
-      if (next.pathname === location.pathname || next.hash) return
-      event.preventDefault()
-      document.startViewTransition(() => flushSync(() => navigate(next.pathname + next.search)))
-    }
-    document.addEventListener('click', onLink, true)
-    return () => document.removeEventListener('click', onLink, true)
-  }, [location.pathname, navigate])
   useEffect(() => {
     const titles = { '/': 'AI Builders | Universal AI University', '/about': 'About | AI Builders', '/projects': 'Projects | AI Builders', '/events': 'Events | AI Builders', '/team': 'Team | AI Builders', '/blog': 'Resources | AI Builders', '/open-source': 'Open Source | AI Builders', '/join': 'Join Us | AI Builders' }
     document.title = titles[location.pathname] || 'Page not found | AI Builders'

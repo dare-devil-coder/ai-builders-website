@@ -37,12 +37,11 @@ export const resourceTools = [
   { name: 'FastAPI', detail: 'Build AI APIs', url: 'https://fastapi.tiangolo.com/' },
 ]
 
-// Source document placeholders remain null until the club confirms real totals.
 export const clubStats = [
-  { label: 'Members', value: null },
-  { label: 'Projects made', value: null },
-  { label: 'Workshops done', value: null },
-  { label: 'Open contributions', value: null },
+  { label: 'Members', value: 25 },
+  { label: 'Projects made', value: 50 },
+  { label: 'Workshops done', value: 15 },
+  { label: 'Contributions done', value: 4000 },
 ]
 
 export const featuredProjects = [
@@ -52,10 +51,10 @@ export const featuredProjects = [
 ]
 
 export const nextEvent = {
-  title: null,
-  startsAt: null,
-  type: null,
-  venue: null,
-  description: null,
+  title: 'GitHub Hands-on Workshop',
+  startsAt: '2026-10-10T00:00:00+05:30',
+  type: 'GitHub Hands-on Workshop',
+  venue: 'UAI',
+  description: 'A hands-on workshop to learn, collaborate, and build with GitHub.',
   registrationUrl: null,
 }
