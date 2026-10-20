@@ -1,5 +1,29 @@
 # Frontend QA handoff
 
+## Live verification, 2026-10-18, project dossier scroll lock
+
+- On `http://127.0.0.1:5174/projects?project=04`, an opened project file applies the existing 10 px backdrop blur and locks document scrolling. The dossier itself is a labelled, vertical-only scroll region with contained overscroll and a themed scrollbar. Closing through the top-right Close file control restores page scrolling at the previous position.
+- At a 390 px viewport, the direct project URL aligned the file under the fixed close control. The file region measured 705 px high with 1,997 px of content and no horizontal overflow; the document width remained within the viewport.
+
+## Live verification, 2026-10-18, Kokonut event card
+
+- Installed Kokonut UI `card-flip` with the requested shadcn registry command and adapted its spring flip, click, drag, keyboard, and reduced-motion behavior to the existing CSS event pass. The prior flip buttons are removed; the card surface now turns, while its countdown, details, and torch reveal remain intact.
+- At `http://127.0.0.1:5174/events`, the torch reveal exposed the card, pointer click showed the details, and Enter returned to the countdown. The same card flipped to details on Home at a 390 px viewport. The torch OFF switch set the card wrapper to hidden and inert and changed the status to LIGHT OFF.
+- At 390 px and 320 px viewport widths, the document did not overflow horizontally and the card was within the viewport. Browser reduced-motion emulation and physical-device touch/drag remain untested.
+
+## Live verification, 2026-10-18
+
+- Installed Kokonut UI's `cradle-text` through the requested shadcn registry command, then adapted its source to the site's existing CSS and Vite setup. On About at desktop width, the page label hung from the centered lavender light line and glowed in the beam color. At 320 px, all seven inner-route labels rendered with no document overflow. A tap on the Join label moved a cradle letter; browser reduced-motion emulation was not available in this pass.
+- On Home at `127.0.0.1:5176`, the Upcoming Events section gained `is-lit` as it entered the viewport (top measured at 353 px in an 800 px viewport), before its card was ready. After the drop duration, `torch-ready` appeared with the torch ON. The Events route retains the original 35% trigger.
+- The Projects dossier opened from the gallery with a fixed 10 px blur backdrop, turned to Project 02 detail, and returned to the closed gallery through the top-right Close file button. Closing removed the backdrop and project query. A direct Project 04 URL showed its matching detail at 320 px; the viewport and document widths were both 320 px, and the Close file button stayed within view.
+- Checked `/`, `/about`, `/projects`, `/events`, `/team`, `/blog`, `/open-source`, and `/join` at 320 px: each route rendered its expected hero label where applicable, with no Vite error overlay or document-wide horizontal overflow. Desktop About and 390 px About were visually inspected. Physical-device touch and reduced-motion browser emulation remain open.
+
+## Live verification, 2026-10-17
+
+- On local Vite at `127.0.0.1:5175`, the Projects dossier opened inline, showed four placeholder rows, opened Project 02 and Project 04 details, returned to the selected row, and loaded Project 02 directly from `?project=02#project-gallery` after the preloader. The Home folder exposed three distinct URLs for Projects 01–03; selecting Project 03 opened its matching detail. Desktop and 390 px / 320 px checks found no document-wide horizontal overflow. The 320 px detail remained readable with natural vertical scrolling.
+- On Events, the torch stayed hidden below the 35% visibility threshold, dropped and turned on automatically after entry, and revealed the existing flip card. Its switch changed the LIGHT ON/OFF status and card visibility. The event card flipped to details and back after each transition settled. Leaving the section reset the torch; returning replayed the drop. At 390 px and 320 px, the torch was moved beneath the card so the flip control remained clear and there was no horizontal overflow. The same `EventPassport` is used on Home. A separate physical-device and reduced-motion browser emulation pass remains open.
+- Excluding the interactive dossier and event section from the shared section scale-out prevented them from shrinking while their controls were in use. All eight route paths rendered their main content at desktop width without document overflow. The rapid-route browser pass surfaced a ResizeObserver callback after Home unmount; a null-root guard was added to `BuildConstellation`.
+
 The source was audited across every route. The latest local checks and their limits are recorded below. The focused browser checks are visually verified; the remaining checklist is still open.
 
 ## Live verification, 2026-10-08

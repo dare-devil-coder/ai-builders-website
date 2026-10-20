@@ -37,7 +37,7 @@ export default function Home() {
     </ScrollPanel>
 
     <ScrollPanel tone="event-panel">
-      <EventPassport />
+      <EventPassport immediateOnEnter />
     </ScrollPanel>
 
     <section className="join-banner"><BackgroundWord text="JOIN" /><div className="shell"><span className="eyebrow">YOUR NEXT BUILD STARTS HERE</span><h2>Ready to build<br /><em>something real?</em></h2><p>Whether you’re just starting out or already shipping projects, there’s a place for you in AI Builders.</p><Link className="button button-light" to="/join">Join AI Builders <ArrowUpRight size={18} /></Link></div></section>

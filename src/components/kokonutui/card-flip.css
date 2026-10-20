@@ -1,0 +1,16 @@
+.kokonut-card-flip{position:relative;width:100%;height:100%;border-radius:24px;outline:none;perspective:1500px;touch-action:pan-y;user-select:none}
+.kokonut-card-axis-x{touch-action:pan-x}
+.kokonut-card-flip:focus-visible{outline:3px solid #f0f0fb;outline-offset:5px}
+.kokonut-card-shadow{position:absolute;left:8%;right:8%;bottom:-18px;height:24px;border-radius:50%;background:#080a18a6;filter:blur(16px);pointer-events:none}
+.kokonut-card-tilt,.kokonut-card-body{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.kokonut-card-tilt{transition:transform .5s cubic-bezier(.23,1,.32,1)}
+.kokonut-card-body{cursor:grab;border-radius:24px}
+.kokonut-card-body:active{cursor:grabbing}
+.kokonut-card-edge,.kokonut-card-face{position:absolute;inset:0;border-radius:24px}
+.kokonut-card-edge{background:#40476c}
+.kokonut-card-face{overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.kokonut-card-light{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;border-radius:inherit}
+.kokonut-card-shade{position:absolute;inset:0;background:#050716;opacity:0}
+.kokonut-card-band{width:33%;height:220%;flex:none;background:#f0f0fb;opacity:0}
+.kokonut-card-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(prefers-reduced-motion:reduce){.kokonut-card-tilt{transition:none}}

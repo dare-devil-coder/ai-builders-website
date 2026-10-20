@@ -1,0 +1,11 @@
+.cradle-text{display:flex;width:100%;justify-content:center;pointer-events:none}
+.cradle-text-stage{position:relative;max-width:100%;padding:1.23em .55em .35em;color:#e8edff;font:600 clamp(20px,3.2vw,42px)/1 'Space Grotesk',sans-serif;letter-spacing:-.025em;white-space:nowrap;cursor:grab;touch-action:pan-y;user-select:none;pointer-events:auto}
+.cradle-text-stage[data-grabbing]{cursor:grabbing}
+.cradle-text-rail{position:absolute;left:0;right:0;top:0;height:1px;background:#becbff;box-shadow:0 0 9px #a2b3ff,0 0 28px #7993ff;pointer-events:none}
+.cradle-text-letters{position:relative;display:block;white-space:pre}
+.cradle-text-letter{position:relative;display:inline-block;transform-origin:top left;text-shadow:0 0 9px #a0b2ff,0 0 26px #758dffad}
+.cradle-text-thread{position:absolute;width:1px;background:linear-gradient(#bccaff,#788bdf);box-shadow:0 0 6px #a2b3ff;pointer-events:none}
+.cradle-text-space{display:inline-block;width:.32em}
+.cradle-text-probe{display:inline-block;width:0;height:0}
+@media(max-width:640px){.cradle-text-stage{font-size:clamp(17px,5.2vw,26px);padding-top:1.25em}}
+@media(prefers-reduced-motion:reduce){.cradle-text-stage{cursor:default}.cradle-text-letter{will-change:auto}}

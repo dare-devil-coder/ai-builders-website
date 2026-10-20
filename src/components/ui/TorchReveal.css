@@ -1,0 +1,43 @@
+.upcoming-event.event-section{position:relative;isolation:isolate;overflow:hidden}
+.upcoming-event .visual-stage{position:relative;z-index:4;min-width:0;align-self:center}
+.upcoming-event .darkness-label{position:absolute;z-index:5;top:-32px;left:4px;display:flex;align-items:center;gap:8px;color:#9095bb;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.1em;transition:opacity .3s 1.7s}
+.upcoming-event .darkness-dot{width:5px;height:5px;border-radius:50%;background:#9095bb}
+.upcoming-event.torch-ready:not(.light-off) .darkness-label{opacity:0}
+.upcoming-event .ticket-wrap{position:relative;perspective:1200px;filter:brightness(.08) saturate(0);opacity:0;visibility:hidden;transform:translateY(12px) rotateY(-4deg);transition:filter .7s cubic-bezier(.22,1,.36,1),opacity .55s,transform .8s cubic-bezier(.22,1,.36,1),visibility .55s}
+.upcoming-event.torch-ready:not(.light-off) .ticket-wrap{filter:brightness(1) saturate(1);opacity:1;visibility:visible;transform:translateY(0) rotateY(0)}
+.upcoming-event .ticket-glow{position:absolute;inset:12%;z-index:-1;border-radius:50%;background:#b9b8ff40;filter:blur(60px);opacity:0;transition:opacity .7s}
+.upcoming-event.torch-ready:not(.light-off) .ticket-glow{opacity:1}
+.upcoming-event .light-beam{display:none}
+.upcoming-event .torch-stage{position:absolute;z-index:8;left:38%;bottom:15%;width:78px;height:215px;opacity:0;transform:translate(-50%,-110vh) rotate(8deg);transform-origin:50% 92%;will-change:transform}
+.upcoming-event.is-lit .torch-stage{animation:torchDrop 1.7s cubic-bezier(.65,0,.85,.35) forwards}
+.upcoming-event .torch{position:relative;width:100%;height:100%;filter:drop-shadow(0 12px 10px #000a);transform:scale(.78);transform-origin:50% 100%}
+.upcoming-event .torch-lens{position:relative;z-index:2;width:76px;height:35px;border:2px solid #363a50;border-radius:8px 8px 15px 15px;background:linear-gradient(90deg,#292d43,#5e647e 50%,#222537)}
+.upcoming-event .torch-lens::after{content:'';position:absolute;z-index:-1;left:50%;bottom:calc(100% - 3px);width:640px;height:480px;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,#f2f0ff94,#b9b8ff29 38%,transparent 72%),linear-gradient(to top,#e1e0ff47,#b9b8ff14 52%,transparent 82%);clip-path:polygon(48.5% 100%,51.5% 100%,84% 0,16% 0);mask-image:linear-gradient(to top,#000 0%,#000 42%,transparent 86%);filter:blur(3px);mix-blend-mode:screen;opacity:0;transform:translateX(-50%) scaleX(.08) scaleY(.06);transform-origin:50% 100%}
+.upcoming-event.torch-ready:not(.light-off) .torch-lens::after{animation:lensBeamOn .7s cubic-bezier(.16,1,.3,1) forwards}
+.upcoming-event .torch-lens::before{content:'';position:absolute;inset:5px 9px 13px;border-radius:50%;background:#848aa4}
+.upcoming-event .torch-lens span{position:absolute;left:15px;right:15px;top:-5px;height:12px;border-radius:50%;background:#858ca6;transition:background .12s,box-shadow .12s}
+.upcoming-event.torch-ready:not(.light-off) .torch-lens span{background:#f2f0ff;box-shadow:0 0 18px 5px #dcdbffe6}
+.upcoming-event .torch-neck{width:51px;height:19px;margin:-2px auto 0;border-inline:2px solid #41455d;background:#282c40}
+.upcoming-event .torch-body{position:relative;width:44px;height:133px;margin:0 auto;border:2px solid #3c4057;border-radius:7px 7px 13px 13px;background:linear-gradient(90deg,#171a2b,#363b53 47%,#191c2e)}
+.upcoming-event .torch-body>i{display:block;height:2px;margin-top:26px;background:#b9b8ff26}
+.upcoming-event .torch-switch{position:absolute;z-index:3;top:1px;left:50%;width:62px;height:62px;padding:0;border:0;background:transparent;cursor:pointer;transform:translateX(-50%)}
+.upcoming-event .torch-switch::before{content:'';position:absolute;top:14px;left:25px;width:12px;height:25px;border:1px solid #686e8e;border-radius:4px;background:#171a29;box-shadow:inset 0 2px 4px #0008;transition:background .16s,box-shadow .16s,translate .16s}
+.upcoming-event .torch-switch::after{content:'';position:absolute;top:20px;left:29px;width:4px;height:4px;border-radius:50%;background:#8187a9;transition:background .16s,box-shadow .16s}
+.upcoming-event .torch-switch.is-on::before{background:#444a67;box-shadow:inset 0 1px 2px #fff3,0 0 10px #b9b8ff40;translate:0 -3px}
+.upcoming-event .torch-switch.is-on::after{background:#bfc1ff;box-shadow:0 0 8px #bfc1ff}
+.upcoming-event .switch-label{position:absolute;top:43px;left:50%;display:flex;gap:5px;color:#8c90b0;font:700 7px 'IBM Plex Mono',monospace;letter-spacing:.04em;transform:translateX(-50%)}
+.upcoming-event .switch-label b{transition:color .16s,text-shadow .16s}.upcoming-event .switch-label b.is-active{color:#f2f0ff;text-shadow:0 0 7px #bfc1ff}
+.upcoming-event .torch-switch:focus-visible{outline:2px solid #bfc1ff;outline-offset:-8px;border-radius:50%}.upcoming-event .torch-switch:disabled{cursor:default}
+.upcoming-event .torch-status{position:absolute;z-index:9;left:27%;bottom:20%;display:flex;align-items:center;gap:10px;color:#a7abc4;font-family:'IBM Plex Mono',monospace;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .3s,transform .3s}
+.upcoming-event.torch-ready .torch-status{opacity:1;transform:translateY(0)}.upcoming-event .torch-status>span{width:7px;height:7px;border-radius:50%;background:#7c829f;transition:background .18s,box-shadow .18s}.upcoming-event .torch-status.is-on>span{background:#bfc1ff;box-shadow:0 0 10px #bfc1ff}.upcoming-event .torch-status div{display:grid;gap:4px}.upcoming-event .torch-status strong{color:#f2f0ff;font-size:9px;letter-spacing:.08em}.upcoming-event .torch-status small{color:#9095bb;font-size:7px;letter-spacing:.06em}
+.upcoming-event .torch-cap{width:37px;height:12px;margin:-3px auto 0;border:2px solid #3e4258;border-radius:0 0 9px 9px;background:#202337}
+.upcoming-event .impact-ring{position:absolute;z-index:-1;left:50%;bottom:-7px;width:48px;height:10px;border:1px solid #bfc1ff;border-radius:50%;opacity:0;transform:translateX(-50%) scale(.2)}.upcoming-event.is-lit .impact-ring{animation:impactRing .7s 1.26s ease-out forwards}
+.upcoming-event .spark{position:absolute;z-index:-1;left:50%;bottom:2px;width:2px;height:22px;background:#bfc1ff;opacity:0;transform-origin:50% 100%}.upcoming-event .spark-one{--spark-x:-58px;transform:rotate(-57deg)}.upcoming-event .spark-two{--spark-x:8px;height:15px;transform:rotate(8deg)}.upcoming-event .spark-three{--spark-x:62px;height:18px;transform:rotate(58deg)}.upcoming-event.is-lit .spark{animation:sparkFly .52s 1.27s ease-out forwards}
+.upcoming-event .ground-line{position:absolute;z-index:1;left:47%;right:2%;bottom:14.5%;height:1px;background:linear-gradient(90deg,transparent,#555a80,transparent);pointer-events:none}
+@keyframes torchDrop{0%{opacity:0;transform:translate(-50%,-110vh) rotate(8deg)}10%{opacity:1}72%{transform:translate(-50%,0) rotate(-7deg)}79%{transform:translate(-50%,-38px) rotate(12deg)}87%{transform:translate(-50%,0) rotate(28deg)}93%{transform:translate(-50%,-10px) rotate(47deg)}100%{opacity:1;transform:translate(-50%,0) rotate(58deg)}}
+@keyframes lensBeamOn{0%{opacity:0;transform:translateX(-50%) scaleX(.08) scaleY(.06)}12%{opacity:.8}18%{opacity:.12}28%{opacity:.72}42%{opacity:.3}100%{opacity:.62;transform:translateX(-50%) scaleX(1) scaleY(1)}}
+@keyframes impactRing{0%{opacity:.8;transform:translateX(-50%) scale(.2)}100%{opacity:0;transform:translateX(-50%) scale(4)}}
+@keyframes sparkFly{0%{opacity:1;translate:0 0}100%{opacity:0;translate:var(--spark-x) -48px}}
+@media(max-width:980px){.upcoming-event .torch-stage{left:20%;bottom:9%}.upcoming-event .torch-status{left:8%;bottom:13%}.upcoming-event .ground-line{left:6%;bottom:8.5%}}
+@media(max-width:640px){.upcoming-event .event-access-main{padding-bottom:210px}.upcoming-event .torch-stage{left:17%;bottom:11%;width:62px;height:172px}.upcoming-event .torch{transform:scale(.66)}.upcoming-event .torch-lens::after{width:620px;height:540px}.upcoming-event .torch-status{left:7%;bottom:12%}.upcoming-event .ground-line{bottom:7%}}
+@media(prefers-reduced-motion:reduce){.upcoming-event .ticket-wrap{transition:opacity .18s;transform:none}.upcoming-event.is-lit .torch-stage{animation:none;opacity:1;transform:translate(-50%,0) rotate(58deg)}.upcoming-event.torch-ready:not(.light-off) .torch-lens::after{animation:none;opacity:.66;transform:translateX(-50%) scaleX(1) scaleY(1)}.upcoming-event .impact-ring,.upcoming-event .spark{animation:none!important}}

@@ -49,15 +49,13 @@
 .event-access-tags span { border: 1px solid var(--event-line); border-radius: 99px; padding: 9px 15px; color: var(--event-muted); font: 500 clamp(11px, .8vw, 15px) 'IBM Plex Mono', monospace; }
 .event-access-link { display: inline-flex; align-items: center; justify-content: space-between; gap: 48px; margin-top: 48px; padding: 22px 26px; min-width: 294px; min-height: 76px; border-radius: 8px; background: var(--event-lavender); color: #10131e; font-size: 21px; font-weight: 700; transition: background .2s ease, transform .2s ease; }
 @media (hover: hover) and (pointer: fine) { .event-access-link:hover { background: #d1d2ff; transform: translateY(-2px); } }
-.event-access-link:focus-visible, .event-flip-trigger:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+.event-access-link:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
 .event-access-link svg { width: 24px; height: 24px; }
 .event-access-foot { min-height: 88px; border-top: 1px solid var(--event-line); color: var(--event-muted); }
 .event-access-foot span:last-child { color: #b4b8e9; }
 .event-access-foot i { display: inline-block; width: 8px; height: 8px; background: var(--event-lavender); margin-right: 11px; vertical-align: 2px; }
 
 .event-flip-card { width: 100%; height: 600px; perspective: 1500px; }
-.event-flip-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .65s cubic-bezier(.77, 0, .175, 1); }
-.event-flip-card.is-flipped .event-flip-inner { transform: rotateY(180deg); }
 .event-card-face {
   position: absolute; inset: 0; overflow: hidden; display: flex; flex-direction: column;
   padding: 42px 45px 40px; border: 1px solid #34394f; border-radius: 24px;
@@ -65,7 +63,6 @@
 }
 .event-card-face::before, .event-card-face::after { content: ''; position: absolute; z-index: 0; pointer-events: none; width: 590px; height: 590px; border: 1px solid #454f87; border-radius: 50%; right: -390px; top: -390px; opacity: .28; }
 .event-card-face::after { width: 690px; height: 690px; right: -430px; top: -430px; opacity: .15; }
-.event-card-back { transform: rotateY(180deg); }
 .event-card-top { display: flex; justify-content: space-between; align-items: center; gap: 15px; position: relative; z-index: 1; color: #b2b6e8; font: 500 clamp(12px, .9vw, 17px) 'IBM Plex Mono', monospace; }
 .event-card-top svg { width: 25px; height: 25px; }
 .event-card-center { position: relative; z-index: 1; flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
@@ -81,9 +78,8 @@
 .event-card-divider { height: 1px; background: var(--event-line); margin: 28px 0 25px; }
 .event-countdown-note { display: flex; align-items: center; gap: 15px; margin: 0; color: var(--event-muted); font: 500 clamp(11px, .85vw, 16px)/1.5 'IBM Plex Mono', monospace; }
 .event-countdown-note svg { width: 21px; height: 21px; flex: none; }
-.event-flip-trigger { align-self: flex-start; padding: 6px 0; margin-top: 25px; border: 0; background: none; color: #b8baeb; cursor: pointer; font: 600 clamp(11px, .84vw, 16px)/1.4 'IBM Plex Mono', monospace; text-align: left; }
-.event-flip-trigger:hover { color: #fff; text-decoration: underline; text-underline-offset: 5px; }
-.event-flip-trigger span { margin-left: 6px; }
+.event-flip-hint { display: block; width: max-content; max-width: 100%; margin-top: 25px; padding-top: 12px; border-top: 1px solid #6e75a5; color: #b8baeb; font: 600 clamp(11px, .84vw, 16px)/1.4 'IBM Plex Mono', monospace; letter-spacing: .04em; }
+.event-flip-hint span { margin-left: 6px; }
 .event-card-details { position: relative; z-index: 1; flex: 1; min-height: 0; margin-top: 28px; overflow: visible; padding-right: 4px; }
 .event-card-back .event-card-details { flex: 0 0 auto; }
 .event-detail-title { padding-bottom: 18px; border-bottom: 1px solid var(--event-line); }
@@ -142,5 +138,5 @@
   .event-access-foot span:last-child { max-width: 160px; text-align: right; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .event-flip-inner, .event-access-link { transition: none; }
+  .event-access-link { transition: none; }
 }

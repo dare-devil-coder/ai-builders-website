@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, CalendarDays, Clock3, CodeXml, MapPin, Ticket } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { nextEvent } from '../../data/site'
+import CardFlip from '../kokonutui/card-flip'
+import Flashlight from './Flashlight'
 import './EventPassport.css'
+import './TorchReveal.css'
 
 const bars = [2, 1, 1, 3, 2, 1, 4, 1, 2, 2, 1, 3, 1, 1, 4, 2, 1, 3, 2, 1, 1, 4, 2, 2, 1, 3, 1, 2, 4, 1, 1, 3, 2, 1, 4, 2, 1, 2, 3, 1, 2, 4, 1, 2, 3, 1, 1, 4]
 const barcode = bars.reduce((items, width, index) => {
@@ -19,14 +22,42 @@ function remaining(startsAt, now) {
   return [Math.floor(seconds / 86400), Math.floor(seconds / 3600) % 24, Math.floor(seconds / 60) % 60, seconds % 60]
 }
 
-export default function EventPassport() {
+export default function EventPassport({ immediateOnEnter = false }) {
   const [now, setNow] = useState(() => Date.now())
   const [flipped, setFlipped] = useState(false)
   const [cardHeight, setCardHeight] = useState(660)
-  const frontButton = useRef(null)
-  const backButton = useRef(null)
   const frontFace = useRef(null)
   const backFace = useRef(null)
+  const [isLit, setIsLit] = useState(false)
+  const [isTorchOn, setIsTorchOn] = useState(true)
+  const [isTorchReady, setIsTorchReady] = useState(false)
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return undefined
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && (immediateOnEnter || entry.intersectionRatio >= 0.35)) setIsLit(true)
+        if (!entry.isIntersecting) {
+          setIsLit(false)
+          setIsTorchReady(false)
+          setIsTorchOn(true)
+          setFlipped(false)
+        }
+      },
+      { threshold: [0, 0.35] },
+    )
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [immediateOnEnter])
+
+  useEffect(() => {
+    if (!isLit) return undefined
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const timer = window.setTimeout(() => setIsTorchReady(true), prefersReducedMotion ? 0 : 1700)
+    return () => window.clearTimeout(timer)
+  }, [isLit])
 
   useEffect(() => {
     if (!nextEvent.startsAt) return undefined
@@ -42,13 +73,13 @@ export default function EventPassport() {
       const frontContent = front.querySelector('.event-card-bottom')
       const backContent = back.querySelector('.event-card-details')
       const padding = window.innerWidth <= 600 ? 50 : 82
-      const backNeeded = back.querySelector('.event-card-top').scrollHeight + backContent.scrollHeight + backButton.current.scrollHeight + padding + 40
+      const backNeeded = back.querySelector('.event-card-top').scrollHeight + backContent.scrollHeight + padding + 65
       const frontNeeded = front.querySelector('.event-card-top').scrollHeight + frontContent.scrollHeight + padding + 155
       setCardHeight(Math.ceil(Math.max(600, frontNeeded, backNeeded)))
     }
     const frame = requestAnimationFrame(measure)
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
-    for (const element of [frontFace.current?.querySelector('.event-card-bottom'), backFace.current?.querySelector('.event-card-details'), frontFace.current?.querySelector('.event-card-top'), backFace.current?.querySelector('.event-card-top'), frontButton.current, backButton.current]) {
+    for (const element of [frontFace.current?.querySelector('.event-card-bottom'), backFace.current?.querySelector('.event-card-details'), frontFace.current?.querySelector('.event-card-top'), backFace.current?.querySelector('.event-card-top')]) {
       if (element) observer?.observe(element)
     }
     window.addEventListener('resize', measure)
@@ -63,16 +94,7 @@ export default function EventPassport() {
   const venueLabel = nextEvent.venue || 'Venue to be announced'
   const formatLabel = nextEvent.type || 'Workshop / Talk / Hackathon'
   const title = nextEvent.title || 'The next build session'
-  const showDetails = () => {
-    setFlipped(true)
-    window.requestAnimationFrame(() => backButton.current?.focus())
-  }
-  const showCountdown = () => {
-    setFlipped(false)
-    window.requestAnimationFrame(() => frontButton.current?.focus())
-  }
-
-  return <section className="upcoming-event" aria-labelledby="upcoming-event-title">
+  return <section ref={sectionRef} className={`upcoming-event event-section ${isLit ? 'is-lit' : ''} ${isTorchReady ? 'torch-ready' : ''} ${isTorchOn ? '' : 'light-off'}`} aria-labelledby="upcoming-event-title">
     <div className="event-access-head"><div className="event-access-brand"><CodeXml aria-hidden="true" /><span>AI BUILDERS / EVENT ACCESS</span></div><span className="event-access-admit"><i aria-hidden="true" /> ADMIT CURIOSITY</span></div>
     <div className="event-access-main">
       <div className="event-access-copy">
@@ -85,23 +107,24 @@ export default function EventPassport() {
           ? <a className="event-access-link" href={nextEvent.registrationUrl} target="_blank" rel="noreferrer">Register now <ArrowUpRight aria-hidden="true" /></a>
           : <Link className="event-access-link" to="/events">Explore events <ArrowUpRight aria-hidden="true" /></Link>}
       </div>
-      <div className={`event-flip-card${flipped ? ' is-flipped' : ''}`} style={{ height: cardHeight }}>
-        <div className="event-flip-inner">
-          <div ref={frontFace} className="event-card-face event-card-front" aria-hidden={flipped} inert={flipped}>
+      <div className="visual-stage"><div className="darkness-label"><span className="darkness-dot" /> WAITING FOR LIGHT</div><div className="ticket-wrap" inert={!isTorchReady || !isTorchOn} aria-hidden={!isTorchReady || !isTorchOn}><div className="ticket-glow" aria-hidden="true" /><CardFlip className="event-flip-card" style={{ height: cardHeight }} flipped={flipped} onFlippedChange={setFlipped} label="AI Builders event pass" front={
+          <div ref={frontFace} className="event-card-face event-card-front">
             <div className="event-card-top"><span>COUNTDOWN / IST</span><Ticket aria-hidden="true" /></div>
             <div className="event-card-center">{countdown
               ? <div className="event-countdown">{countdown.map((value, index) => <div key={['days', 'hours', 'minutes', 'seconds'][index]}><strong>{String(value).padStart(2, '0')}</strong><span>{['DAYS', 'HRS', 'MIN', 'SEC'][index]}</span></div>)}</div>
               : <strong className="event-tba">TBA</strong>}</div>
-            <div className="event-card-bottom"><svg viewBox="0 0 158 44" preserveAspectRatio="none" aria-hidden="true">{barcode.map((bar, index) => <rect key={index} x={bar.x} y={index % 7 === 0 ? 5 : 0} width={bar.width} height={index % 5 === 0 ? 31 : 38} />)}</svg><div className="event-barcode-caption"><span>AI BUILDERS / EVENT PASS</span><span>{nextEvent.startsAt ? 'ACCESS PREVIEW' : 'DETAILS PENDING'}</span></div><div className="event-card-divider" /><p className="event-countdown-note"><Clock3 aria-hidden="true" />{nextEvent.startsAt ? 'Until the next event begins' : 'Countdown starts when the date is announced'}</p><button ref={frontButton} type="button" className="event-flip-trigger" onClick={showDetails}>Flip to see the event details <span aria-hidden="true">↗</span></button></div>
+            <div className="event-card-bottom"><svg viewBox="0 0 158 44" preserveAspectRatio="none" aria-hidden="true">{barcode.map((bar, index) => <rect key={index} x={bar.x} y={index % 7 === 0 ? 5 : 0} width={bar.width} height={index % 5 === 0 ? 31 : 38} />)}</svg><div className="event-barcode-caption"><span>AI BUILDERS / EVENT PASS</span><span>{nextEvent.startsAt ? 'ACCESS PREVIEW' : 'DETAILS PENDING'}</span></div><div className="event-card-divider" /><p className="event-countdown-note"><Clock3 aria-hidden="true" />{nextEvent.startsAt ? 'Until the next event begins' : 'Countdown starts when the date is announced'}</p><span className="event-flip-hint" aria-hidden="true">TAP OR DRAG TO REVEAL DETAILS <span>↗</span></span></div>
           </div>
-          <div ref={backFace} className="event-card-face event-card-back" aria-hidden={!flipped} inert={!flipped}>
+        } back={
+          <div ref={backFace} className="event-card-face event-card-back">
             <div className="event-card-top"><span>EVENT DETAILS / IST</span><Ticket aria-hidden="true" /></div>
             <div className="event-card-details"><div className="event-detail-title"><span>EVENT TITLE</span><h3>{title}</h3></div><dl><div><dt>DATE</dt><dd>{dateLabel}</dd></div><div><dt>VENUE</dt><dd>{venueLabel}</dd></div><div><dt>FORMAT</dt><dd>{formatLabel}</dd></div><div><dt>TOPIC</dt><dd>{nextEvent.description || 'Topic to be published once the next event is confirmed'}</dd></div><div><dt>REGISTRATION</dt><dd>{nextEvent.registrationUrl ? <a href={nextEvent.registrationUrl} target="_blank" rel="noreferrer">Registration is open ↗</a> : 'Registration details will be published once the next event is confirmed'}</dd></div></dl></div>
-            <button ref={backButton} type="button" className="event-flip-trigger event-flip-back" onClick={showCountdown}>Flip back to countdown <span aria-hidden="true">↗</span></button>
+            <span className="event-flip-hint event-flip-back" aria-hidden="true">TAP OR DRAG TO RETURN <span>↗</span></span>
           </div>
-        </div>
-      </div>
+        } /></div></div>
     </div>
+    <Flashlight isOn={isTorchOn} isReady={isTorchReady} onToggle={() => setIsTorchOn(current => !current)} />
+    <div className="light-beam" aria-hidden="true" /><div className="ground-line" aria-hidden="true" />
     <div className="event-access-foot"><span>WORKSHOP / TALK / HACKATHON</span><span><i aria-hidden="true" /> THE NEXT CHAPTER IS LOADING</span></div>
   </section>
 }

@@ -158,7 +158,7 @@ export function FolderReveal() {
     <div className="folder-back" aria-hidden="true"><span>AI BUILDERS</span></div>
     <div className="folder-well" aria-hidden="true" />
     <div className="folder-papers" aria-hidden={!open} inert={!open}>{featuredProjects.map((project, index) =>
-      <Link to="/projects" className="folder-paper" key={project.id} style={{ '--paper-index': index }} tabIndex={open ? 0 : -1}>
+      <Link to={`/projects?project=${project.id}#project-gallery`} className="folder-paper" key={project.id} style={{ '--paper-index': index }} tabIndex={open ? 0 : -1}>
         <span>PROJECT / {project.id}</span><strong>{project.title || `Project ${project.id}`}</strong><small>{project.title ? project.category : 'DETAILS PENDING'}</small>
       </Link>)}</div>
     <button className="folder-front" type="button" aria-expanded={open} aria-label={open ? 'Close AI Builders project folder' : 'Open AI Builders project folder'}

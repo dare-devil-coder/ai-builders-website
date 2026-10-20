@@ -85,7 +85,7 @@ export default function useSiteMotion(pathname) {
             })
           })
           if (!panels.length && pathname !== '/about') {
-            const sections = [...main.querySelectorAll(':scope > section')]
+            const sections = [...main.querySelectorAll(':scope > section:not(.project-dossier):not(.event-section)')]
             sections.slice(0, -1).forEach(section => {
               gsap.fromTo(section, { opacity: 1, scale: 1 }, {
                 opacity: 0,
@@ -119,7 +119,7 @@ export default function useSiteMotion(pathname) {
         }, { rootMargin: '0px 0px -35% 0px', threshold: .25 })
         markerHeadings.forEach(heading => markerObserver.observe(heading))
       } else markerHeadings.forEach(heading => heading.classList.add('is-marker-visible'))
-      const textTargets = [...main.querySelectorAll('h2, p:not(.sr-only)'), ...document.querySelectorAll('footer h2, footer p')].filter(element => !element.closest('.member-badge-overlay, .contribution-morph'))
+      const textTargets = [...main.querySelectorAll('h2, p:not(.sr-only)'), ...document.querySelectorAll('footer h2, footer p')].filter(element => !element.closest('.member-badge-overlay, .contribution-morph, .project-dossier'))
       if (!reduced && 'IntersectionObserver' in window) {
         textTargets.forEach(element => element.classList.add(element.tagName === 'H2' ? 'dual-wipe' : 'rect-reveal'))
         const triggers = new Map()

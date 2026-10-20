@@ -86,7 +86,7 @@ export default function BuildConstellation() {
       drawing?.revert()
       stopFloating.forEach(stop => stop())
       stopFloating = []
-      if (motionPreference.matches) return
+      if (motionPreference.matches || !root.current) return
 
       const scene = root.current.querySelector(mobilePreference.matches ? '.constellation-mobile' : '.constellation-desktop')
       const sceneBounds = scene.getBoundingClientRect()
