@@ -11,9 +11,17 @@ class BadgeRenderBoundary extends Component {
   render() { return this.state.failed ? this.props.fallback : this.props.children }
 }
 
+function StaticBadge({ member, flipped }) {
+  return <div className="member-badge-static-hanger">
+    <div className="member-badge-static-strap" aria-hidden="true">AI BUILDERS · AI BUILDERS</div>
+    <div className="member-badge-static-clasp" aria-hidden="true" />
+    <img className="member-badge-static" src={flipped ? member.badgeBack : member.badgeFront} alt={flipped ? 'AI Builders club artwork on the back of the member badge' : `Badge front for ${member.name}`} />
+  </div>
+}
+
 function BadgeFallback({ member, flipped, onReady }) {
   useEffect(() => { onReady() }, [onReady])
-  return <img className="member-badge-static" src={flipped ? member.badgeBack : member.badgeFront} alt="Member badge artwork" />
+  return <StaticBadge member={member} flipped={flipped} />
 }
 
 export default function MemberBadgeModal({ member, onClose }) {
@@ -64,7 +72,7 @@ export default function MemberBadgeModal({ member, onClose }) {
       <p id="member-badge-description" className="sr-only">{member.role}. {member.description}{member.illustrative ? ' This is an illustrative member profile.' : ''}</p>
       {!badgeReady && <div className="member-badge-loading" role="status">Preparing member badge…</div>}
       <div className={`member-badge-stage${badgeReady ? ' is-ready' : ''}`}>
-        {reduceMotion ? <img className="member-badge-static" src={flipped ? member.badgeBack : member.badgeFront} alt={flipped ? 'AI Builders club artwork on the back of the member badge' : `Badge front for ${member.name}`} /> :
+        {reduceMotion ? <StaticBadge member={member} flipped={flipped} /> :
           <BadgeRenderBoundary fallback={<BadgeFallback member={member} flipped={flipped} onReady={markBadgeReady} />}>
             <Suspense fallback={null}><EventBadge3D flipped={flipped} frontImage={member.badgeFront} backImage={member.badgeBack} onReady={markBadgeReady} /></Suspense>
           </BadgeRenderBoundary>}

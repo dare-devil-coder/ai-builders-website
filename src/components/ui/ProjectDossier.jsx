@@ -16,6 +16,7 @@ export default function ProjectDossier() {
   const [selected, setSelected] = useState(linked?.id || '01')
   const [turning, setTurning] = useState('')
   const [documentLocked, setDocumentLocked] = useState(false)
+  const [mobilePage, setMobilePage] = useState('projects')
   const sectionRef = useRef(null)
   const titleRef = useRef(null)
   const openerRef = useRef(null)
@@ -161,10 +162,10 @@ export default function ProjectDossier() {
   const detail = stage === 'detail' || turning === 'reverse'
   const project = byId(selected)
 
-  return <section id="project-gallery" ref={sectionRef} className={`project-dossier section ${closed ? 'dossier-closed' : 'dossier-open'} stage-${stage}${turning ? ` is-turning-${turning}` : ''}`} aria-label="Project gallery">
+  return <section id="project-gallery" ref={sectionRef} data-mobile-page={mobilePage} className={`project-dossier section ${closed ? 'dossier-closed' : 'dossier-open'} stage-${stage}${turning ? ` is-turning-${turning}` : ''}`} aria-label="Project gallery">
     {!closed && <div className="dossier-backdrop" aria-hidden="true" />}
     <div className="shell">
-      <div className="dossier-topline"><span><b>01 /</b> {closed ? 'PROJECT GALLERY' : 'CLUB PROJECTS'}</span>{!closed ? <button type="button" className="dossier-close" onClick={close} disabled={stage === 'opening'}><X size={17} /> Close file</button> : <span>AI BUILDERS / UNIVERSAL AI UNIVERSITY</span>}</div>
+      <div className="dossier-topline"><span><b>01 /</b> {closed ? 'PROJECT GALLERY' : 'CLUB PROJECTS'}</span>{!closed ? <><div className="dossier-mobile-pages" aria-label="File pages"><button type="button" aria-pressed={mobilePage === 'projects'} onClick={() => setMobilePage('projects')}>Projects</button><button type="button" aria-pressed={mobilePage === 'profile'} onClick={() => setMobilePage('profile')}>Club profile</button></div><button type="button" className="dossier-close" onClick={close} disabled={stage === 'opening'}><X size={17} /> Close file</button></> : <span>AI BUILDERS / UNIVERSAL AI UNIVERSITY</span>}</div>
       {closed ? <div className="dossier-intro">
         <div className="dossier-intro-copy"><span className="dossier-micro">■ &nbsp; AI BUILDERS / UNIVERSAL AI UNIVERSITY</span><h2>The proof is<br /><em>in the build.</em></h2><p>AI Builders brings students together to explore large language models, prompt engineering, and open-source technologies through workshops, collaborative projects, and hands-on development.</p><button ref={openerRef} className="dossier-explore" type="button" onClick={open}>EXPLORE CLUB PROJECTS <ArrowRight aria-hidden="true" /></button><span className="dossier-support">— &nbsp; AI BUILDERS / FUTURE PROJECTS</span></div>
         <div className="dossier-folder" aria-label="AI Builders project folder"><div className="dossier-folder-back" aria-hidden="true" /><div className="dossier-folder-tab" aria-hidden="true">AI BUILDERS / ARCHIVE</div><div className="dossier-folder-front"><span>■ &nbsp; AI BUILDERS / UNIVERSAL AI UNIVERSITY</span><strong>PROJECTS</strong><small>IDEAS, MADE TANGIBLE. PRACTICAL AI IN PROGRESS.</small><i aria-hidden="true">AI BUILDERS / ARCHIVE</i></div><div className="dossier-folder-paper"><span>C/P &nbsp; WORKSHOPS / PROMPT ENGINEERING / OPEN SOURCE</span><b>AI Builders <em>projects</em></b><small>A space for students to learn together, share ideas, develop skills, and turn AI concepts into working products.</small></div><button ref={folderOpenerRef} className="dossier-folder-arrow" type="button" onClick={open} aria-label="Open club projects dossier"><ArrowUpRight aria-hidden="true" /><span>OPEN THE FILE</span></button></div>

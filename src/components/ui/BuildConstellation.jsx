@@ -66,7 +66,7 @@ function Scene({ topics, mobile = false }) {
     <ellipse cx={mobile ? 180 : 370} cy={mobile ? 375 : 290} rx={mobile ? 155 : 233} ry={mobile ? 142 : 164} fill={`url(#build-glow-${suffix})`} />
     {topics.map(topic => <g key={topic.label} transform={`translate(${topic.x} ${topic.y})`}>
       <g className="floating-topic" data-range-x={topic.rx} data-range-y={topic.ry}>
-        <text textAnchor="middle" dominantBaseline="middle">{topic.label}</text>
+        <g className="floating-topic-repel"><text textAnchor="middle" dominantBaseline="middle">{topic.label}</text></g>
       </g>
     </g>)}
     <BuildWord x={mobile ? 180 : 370} baseline={mobile ? 398 : 333} scale={mobile ? .075 : .125} />
@@ -79,13 +79,17 @@ export default function BuildConstellation() {
   useEffect(() => {
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
     const mobilePreference = window.matchMedia('(max-width: 640px)')
+    const hoverPreference = window.matchMedia('(hover: hover) and (pointer: fine)')
     let drawing
     let stopFloating = []
+    let stopRepelling = () => {}
 
     const updateMotion = () => {
       drawing?.revert()
       stopFloating.forEach(stop => stop())
       stopFloating = []
+      stopRepelling()
+      stopRepelling = () => {}
       if (motionPreference.matches || !root.current) return
 
       const scene = root.current.querySelector(mobilePreference.matches ? '.constellation-mobile' : '.constellation-desktop')
@@ -142,6 +146,69 @@ export default function BuildConstellation() {
           element.style.transform = ''
         })
       })
+
+      if (hoverPreference.matches) {
+        const labels = [...scene.querySelectorAll('.floating-topic')].map((element, index) => ({
+          element,
+          repel: element.querySelector('.floating-topic-repel'),
+          x: 0,
+          y: 0,
+          vx: 0,
+          vy: 0,
+          index,
+        }))
+        const pointer = { x: 0, y: 0, active: false }
+        const radius = mobilePreference.matches ? 95 : 145
+        const strength = mobilePreference.matches ? 24 : 42
+        let frame = 0
+
+        const tick = () => {
+          let unsettled = false
+          labels.forEach(label => {
+            let targetX = 0
+            let targetY = 0
+            if (pointer.active) {
+              const matrix = label.element.getScreenCTM()
+              const origin = matrix && { x: matrix.e, y: matrix.f }
+              if (origin) {
+                const dx = origin.x - pointer.x
+                const dy = origin.y - pointer.y
+                const distance = Math.hypot(dx, dy)
+                if (distance < radius) {
+                  const angle = label.index * 2.4
+                  const directionX = distance > 1 ? dx / distance : Math.cos(angle)
+                  const directionY = distance > 1 ? dy / distance : Math.sin(angle)
+                  const force = (1 - distance / radius) ** 2 * strength
+                  targetX = directionX * force
+                  targetY = directionY * force
+                }
+              }
+            }
+            label.vx = (label.vx + (targetX - label.x) * .13) * .72
+            label.vy = (label.vy + (targetY - label.y) * .13) * .72
+            label.x += label.vx
+            label.y += label.vy
+            label.repel.style.transform = `translate(${label.x.toFixed(2)}px, ${label.y.toFixed(2)}px)`
+            if (Math.abs(label.x - targetX) + Math.abs(label.y - targetY) + Math.abs(label.vx) + Math.abs(label.vy) > .2) unsettled = true
+          })
+          frame = pointer.active || unsettled ? requestAnimationFrame(tick) : 0
+        }
+        const onMove = event => {
+          pointer.x = event.clientX
+          pointer.y = event.clientY
+          pointer.active = true
+          if (!frame) frame = requestAnimationFrame(tick)
+        }
+        const onLeave = () => { pointer.active = false }
+        root.current.addEventListener('pointermove', onMove)
+        root.current.addEventListener('pointerleave', onLeave)
+        stopRepelling = () => {
+          root.current?.removeEventListener('pointermove', onMove)
+          root.current?.removeEventListener('pointerleave', onLeave)
+          cancelAnimationFrame(frame)
+          labels.forEach(label => { label.repel.style.transform = '' })
+        }
+      }
     }
 
     updateMotion()
@@ -149,12 +216,15 @@ export default function BuildConstellation() {
     resizeObserver.observe(root.current)
     motionPreference.addEventListener('change', updateMotion)
     mobilePreference.addEventListener('change', updateMotion)
+    hoverPreference.addEventListener('change', updateMotion)
     return () => {
       resizeObserver.disconnect()
       motionPreference.removeEventListener('change', updateMotion)
       mobilePreference.removeEventListener('change', updateMotion)
+      hoverPreference.removeEventListener('change', updateMotion)
       drawing?.revert()
       stopFloating.forEach(stop => stop())
+      stopRepelling()
     }
   }, [])
 

@@ -1,0 +1,28 @@
+.focus-scroll-section{--focus-travel:0px;position:relative;min-height:100dvh;background:#0e1020}
+.about-focus-scroll-section{background:#080911}
+.focus-scroll-section.is-motion-ready{height:calc(100dvh + var(--focus-travel))}
+@media(min-width:901px) and (prefers-reduced-motion:no-preference){
+  .home-page .home-how-panel.is-horizontal-handoff{position:relative;z-index:2;height:auto;min-height:0;margin-top:-100dvh;overflow:visible;pointer-events:none}
+  .home-page .home-how-panel.is-horizontal-handoff .section-stage{height:auto;min-height:100dvh;overflow:visible;background:#080911;pointer-events:auto;will-change:transform}
+}
+.focus-scroll-sticky{display:flex;align-items:center;min-height:100dvh;padding-block:clamp(32px,6vh,72px)}
+.focus-scroll-section.is-motion-ready .focus-scroll-sticky{position:sticky;top:0;height:100dvh}
+.focus-carousel{position:relative}
+.focus-carousel-stage{position:relative}
+.focus-carousel-rail{overflow:hidden}
+.focus-carousel-rail:focus-visible{outline:2px solid #c3caff;outline-offset:4px}
+.focus-carousel-reveal{width:100%;transform-origin:center center}
+.focus-carousel-track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:2px}
+.focus-carousel-item{min-width:0}
+.focus-carousel-item .pillar-card{height:300px}
+.focus-scroll-section.is-motion-ready .focus-carousel-reveal{width:max-content;transform-origin:min(50vw,630px) center}
+.focus-scroll-section.is-motion-ready .focus-carousel-track{display:flex;width:max-content;padding-bottom:14px;will-change:transform}
+.focus-scroll-section.is-motion-ready .focus-carousel-item{flex:0 0 clamp(245px,23vw,300px);width:clamp(245px,23vw,300px)}
+.focus-carousel-footer{display:flex;justify-content:space-between;gap:20px;margin-top:13px;color:#aeb8e7;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.12em}
+.focus-carousel-count{font-variant-numeric:tabular-nums}
+.focus-carousel-instruction{text-align:right}
+@media(max-width:900px){.focus-carousel-track{grid-template-columns:repeat(2,minmax(0,1fr))}.focus-scroll-section.is-motion-ready .focus-carousel-item{flex-basis:min(80vw,320px);width:min(80vw,320px)}.focus-carousel-item .pillar-card{height:270px}.focus-scroll-sticky{padding-block:28px}}
+@media(max-width:640px){.focus-carousel-track{grid-template-columns:1fr}.focus-carousel-footer{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.focus-scroll-section,.focus-scroll-section.is-motion-ready{height:auto}.focus-scroll-sticky,.focus-scroll-section.is-motion-ready .focus-scroll-sticky{position:static;height:auto;min-height:0;padding-block:76px}.focus-scroll-section.is-motion-ready .focus-carousel-reveal{width:100%;transform:none}.focus-scroll-section.is-motion-ready .focus-carousel-track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:auto;will-change:auto}.focus-scroll-section.is-motion-ready .focus-carousel-item{width:auto;flex:auto}.focus-carousel-instruction{display:none}}
+@media(max-width:900px) and (prefers-reduced-motion:reduce){.focus-scroll-section.is-motion-ready .focus-carousel-track{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px) and (prefers-reduced-motion:reduce){.focus-scroll-section.is-motion-ready .focus-carousel-track{grid-template-columns:1fr}}

@@ -2,12 +2,13 @@ import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { pillars } from '../data/site'
 import { pageMeta } from '../data/pages'
-import { PageFlow, PageHero, Reveal, SectionIntro, TiltCard } from '../components/ui/Sections'
+import { PageFlow, PageHero, Reveal, SectionIntro } from '../components/ui/Sections'
 import { ApproachMorph, ShineText, SoftBlurText } from '../components/ui/MotionPieces'
 import { BackgroundWord } from '../components/ui/SiteEffects'
 import CampusPath from '../components/ui/CampusPath'
 import DotPattern from '../components/ui/DotPattern'
 import GridPattern from '../components/ui/GridPattern'
+import FocusCarousel from '../components/ui/FocusCarousel'
 
 export default function About() {
   return (
@@ -57,22 +58,11 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section shell">
-        <SectionIntro index="03" label="OUR PILLARS" title={<>The work has<br /><em>many dimensions.</em></>} className="about-intro-pillars" />
-        <div className="pillar-grid">
-          {pillars.map(pillar => (
-            <Reveal key={pillar.id}>
-              <TiltCard className="pillar-card">
-                <div className="pillar-top">
-                  <span>{pillar.id} / PILLAR</span>
-                  <span className="pillar-icon">{pillar.icon}</span>
-                </div>
-                <h3>{pillar.title}</h3>
-                <p>{pillar.text}</p>
-              </TiltCard>
-            </Reveal>
-          ))}
-        </div>
+      <section className="focus-scroll-section about-focus-scroll-section">
+        <div className="focus-scroll-sticky"><div className="shell">
+          <SectionIntro index="03" label="OUR PILLARS" title={<>The work has<br /><em>many dimensions.</em></>} className="about-intro-pillars" />
+          <FocusCarousel items={pillars} label="Our pillars" itemLabel="PILLAR" showArrow={false} />
+        </div></div>
       </section>
 
       <section className="section section-alt">

@@ -1,13 +1,15 @@
-import { ArrowDown, ArrowUpRight, MoveUpRight } from 'lucide-react'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { clubStats, pillars } from '../data/site'
-import { Reveal, SectionIntro, TiltCard } from '../components/ui/Sections'
+import { Reveal, SectionIntro } from '../components/ui/Sections'
 import BuildConstellation from '../components/ui/BuildConstellation'
 import EventPassport from '../components/ui/EventPassport'
 import { ApproachMorph, FolderReveal, KineticType } from '../components/ui/MotionPieces'
 import { BackgroundRipple, BackgroundWord, HeroKineticBuild, TextFlippingBoard, WaveText, WordGenerate } from '../components/ui/SiteEffects'
 import InfiniteRibbon from '../components/ui/InfiniteRibbon'
 import GridPattern from '../components/ui/GridPattern'
+import FocusCarousel from '../components/ui/FocusCarousel'
+import HomeSectionHandoff from '../components/ui/HomeSectionHandoff'
 
 function ScrollPanel({ children, tone = '' }) {
   return <div className={`scroll-panel ${tone}`}><div className="section-stage"><div className="section-inner">{children}</div></div></div>
@@ -24,13 +26,11 @@ export default function Home() {
       <section id="what-we-do" className="section shell has-section-grid"><GridPattern animated className="section-grid--quiet" /><SectionIntro index="01" label="WHO WE ARE" title={<>A community of people<br />who <em>make things real.</em></>} watermark="WHO" className="home-intro-who" /><div className="about-snapshot"><Reveal><KineticType text="We are a student-led community of builders, researchers, and contributors at Universal AI University. We build AI systems that solve real problems — from intelligent agents to retrieval-augmented pipelines — and we do it in the open." /><Link to="/about" className="text-link">More about the club <ArrowUpRight size={18} /></Link></Reveal><TextFlippingBoard stats={clubStats} /></div></section>
     </ScrollPanel>
 
-    <ScrollPanel tone="alt-panel">
-      <section className="section section-alt"><div className="shell"><SectionIntro index="02" label="WHAT WE EXPLORE" title={<>Eight ways to<br /><em>keep building.</em></>} description="From models and agents to complete products, our work crosses disciplines." action={{ label: 'Explore our approach', to: '/about' }} className="home-intro-explore" /><div className="pillar-grid">{pillars.map(pillar => <Reveal key={pillar.id}><TiltCard className="pillar-card"><div className="pillar-top"><span>{pillar.id} / FOCUS</span><span className="pillar-icon">{pillar.icon}</span></div><h3>{pillar.title}</h3><p>{pillar.text}</p><MoveUpRight size={19} className="pillar-arrow" /></TiltCard></Reveal>)}</div></div></section>
-    </ScrollPanel>
+    <section className="section-alt focus-scroll-section home-focus-scroll-section"><div className="focus-scroll-sticky"><div className="shell"><SectionIntro index="02" label="WHAT WE EXPLORE" title={<>Eight ways to<br /><em>keep building.</em></>} description="From models and agents to complete products, our work crosses disciplines." action={{ label: 'Explore our approach', to: '/about' }} className="home-intro-explore" /><FocusCarousel items={pillars} /></div></div></section>
 
-    <ScrollPanel>
+    <HomeSectionHandoff>
       <section className="section shell"><SectionIntro index="03" label="HOW WE WORK" title={<>A simple loop.<br /><em>Real momentum.</em></>} description="Our approach moves ideas beyond the classroom." watermark="WORK" className="home-intro-how" /><ApproachMorph /></section>
-    </ScrollPanel>
+    </HomeSectionHandoff>
 
     <ScrollPanel tone="proof-panel-bg">
       <section className="section proof-section"><BackgroundWord text="WORK" /><div className="shell work-showcase"><div><SectionIntro index="04" label="THE WORK" title={<>Work worth<br /><em>sharing.</em></>} description="Each project will have its own story, team, technology, and public source link." watermark={false} motionManaged /><Link className="button button-primary work-gallery-button" to="/projects">See project gallery <ArrowUpRight size={18} /></Link></div><FolderReveal /></div></section>

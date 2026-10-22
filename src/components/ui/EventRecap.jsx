@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import SmoothCursor from './SmoothCursor'
 import './EventRecap.css'
 
 const sampleThemes = ['Prompt engineering', 'Prototyping', 'Creative AI', 'Ideation', 'Collaboration']
@@ -41,6 +42,7 @@ export default function EventRecap({ name, onDismiss }) {
   }
 
   const content = <dialog ref={dialogRef} className={`event-recap${closing ? ' is-closing' : ''}`} aria-labelledby="event-recap-title" onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === event.currentTarget) close() }}>
+    <SmoothCursor withinDialog />
     {name && <div className="event-recap-sheet">
       <header className="event-recap-hero">
         <div className="event-recap-toolbar"><button type="button" className="event-recap-back" onClick={close}>‹ <span>Back to archive</span></button><span className="event-recap-topic">{isSample ? 'Creative AI' : 'Sample event'}</span></div>

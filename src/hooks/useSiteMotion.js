@@ -65,7 +65,7 @@ export default function useSiteMotion(pathname) {
         })
 
         if (!reduced) {
-          const panels = [...main.querySelectorAll('.home-page > .scroll-panel')]
+          const panels = [...main.querySelectorAll('.home-page > .scroll-panel:not(.home-how-panel)')]
           panels.slice(0, -1).forEach(panel => {
             const stage = panel.querySelector('.section-stage')
             if (!stage) return

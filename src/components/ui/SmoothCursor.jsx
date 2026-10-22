@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export default function SmoothCursor() {
+export default function SmoothCursor({ withinDialog = false }) {
   const ref = useRef(null)
   useEffect(() => {
     const element = ref.current
@@ -25,7 +25,9 @@ export default function SmoothCursor() {
     const blur = () => { pressed = false; element.classList.remove('is-visible') }
     const tick = () => {
       x += (targetX - x) * .24; y += (targetY - y) * .24
-      element.style.transform = `translate3d(${x - 9}px,${y - 5}px,0)`
+      const dialog = withinDialog ? element.closest('dialog') : null
+      const bounds = dialog?.getBoundingClientRect()
+      element.style.transform = `translate3d(${x - 9 - (bounds?.left ?? 0)}px,${y - 5 - (bounds?.top ?? 0)}px,0)`
       frame = requestAnimationFrame(tick)
     }
     frame = requestAnimationFrame(tick)
@@ -36,6 +38,6 @@ export default function SmoothCursor() {
     document.addEventListener('pointerleave', hide)
     window.addEventListener('blur', blur)
     return () => { cancelAnimationFrame(frame); window.removeEventListener('pointermove', move); window.removeEventListener('pointerdown', down); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up); document.removeEventListener('pointerleave', hide); window.removeEventListener('blur', blur); element.classList.remove('is-visible') }
-  }, [])
+  }, [withinDialog])
   return <div ref={ref} className="smooth-cursor" aria-hidden="true"><svg viewBox="0 0 30 32"><path d="M4 3 25 18l-10 1-4 10L4 3Z" /></svg></div>
 }
