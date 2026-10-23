@@ -1,5 +1,23 @@
 # Frontend QA handoff
 
+## Project dossier viewport and palette, 2026-10-24
+
+- Compared the supplied Projects screen recording with the open gallery. The opened file now occupies the viewport, its sheets scroll within the file, and the detail sheet uses the site's dark blue and lavender palette. The index is hidden once the page turn completes.
+- In local Chrome, opening the folder and selecting Project 02 showed the full file at 1440 × 900 and 390 × 900. Direct `?project=04` links, Back to project list, Close file, scroll availability, and released body scroll passed at 1440, 390, and 320 px widths with a 700 px height; none had document horizontal overflow. Physical-device touch behavior was not checked.
+
+## Home return navigation, 2026-10-24
+
+- The Home preloader is now tied to the initial route entry. Clicking the navbar brand from About, Projects, Events, Team, Resources, Open Source, or Join returned to `/` without remounting it; a fresh load of `/` still displayed the opening sequence.
+- Returning from About after the initial sequence finished showed the hero heading and released the scroll lock. These checks used the local Chrome preview. Browser Back to the original Home history entry and physical-device behavior were not checked.
+
+## Home intro restoration, 2026-10-23
+
+- Compared extracted frames from the supplied 14.95-second WhatsApp video. Restored the existing LEARN / BUILD / SHIP / CONTRIBUTE, welcome hold, letter scatter, BUILD assembly, then hero-heading reveal. Removed the competing full-screen alphabet sequence and restored the original constellation and hero mounting. Preserved the existing folder-hover changes and Home-only preloader scope.
+- Chrome through Playwright, local Vite preview: captured scatter and completed states at 1440 x 900, 390 x 900, and 320 x 900; captured the desktop gather stage. The preloader completed at every tested width. Screenshot files are under `output/playwright/` (`scatter-*`, `complete-*`, `gather-1440.png`).
+- Navigating from About back to Home replayed the handoff, revealed all heading words, removed the overlay, and released the scroll lock. Desktop completion had no horizontal overflow. Reduced-motion emulation skipped the preloader and left scrolling unlocked.
+- At 320 px with reduced motion, About, Projects, Events, Team, Resources, Open Source, and Join loaded with headings, no preloader, and no horizontal document overflow. This was a route smoke check, not full interaction coverage.
+- Lint, production build, and `git diff --check` passed. Impeccable detector returned no findings for the restored targets. Existing bundle-size advisories remain. Physical-device performance and exact frame-by-frame timing parity are not verified.
+
 ## Live verification, 2026-10-18, project dossier scroll lock
 
 - On `http://127.0.0.1:5174/projects?project=04`, an opened project file applies the existing 10 px backdrop blur and locks document scrolling. The dossier itself is a labelled, vertical-only scroll region with contained overscroll and a themed scrollbar. Closing through the top-right Close file control restores page scrolling at the previous position.
@@ -85,3 +103,5 @@ The latest screenshots require a lamp without a visible cone boundary on every n
 The next screenshot set marks upper-right positions for Resources TUTORIALS, Resources FRAMEWORKS, and Open Source SOURCE. Compare those at desktop and narrow widths; confirm the navigation hero heading group sits 3 px higher. On Home, watch the lavender ribbon cross its repeat seam, pause and resume it by keyboard, and check its static reduced-motion state. On Open Source, watch all four contribution stages cycle, select each button, pause/resume, check the progress bar, and verify the guide remains readable at 390 px and 320 px. Across all routes, confirm each italic heading phrase receives one marker sweep without obscuring its text or interfering with the existing reveal.
 
 The `build session.` screenshot showed the marker extending below the glyphs. Confirm the revised marker sits within each italic phrase, fills its exact text width at desktop and mobile, wraps cleanly across lines, and starts only when its heading reaches the viewport. Scroll away and back to confirm replay. Check short and long phrases, including `build session.`, `is to build with it.`, and `Make it useful to others.`
+
+- 2026-10-24 project-file viewport follow-up (supersedes the scrollable-sheet treatment above): the open spread and both sheets now fit the viewport without inner scrolling. Chromium detail measurements passed at 1920x973, 1440x900, 1366x768, 390x844 and 320x700; sheet clientHeight equaled scrollHeight and the footers remained visible. At 1440x900 and 320x700, exercised open, project selection, return to index and close; index/reading heights also matched, both profile and right-sheet animation names ran forward and backward, and closing restored body scrolling. Inspected desktop and phone screenshots. At 320x700 with reduced motion, the Club profile tab fit without overflow, profile animation was none, and return to index worked. Text and actions now use the site's pale lavender palette. Physical devices and browser zoom remain untested.

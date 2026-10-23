@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { ArrowUpRight, Pause, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -108,7 +108,19 @@ export function PagePreloader() {
   const visualRef = useRef(null)
   const phrase = 'WELCOME TO THE WORLD OF AI BUILDERS'
   const [isHome] = useState(() => window.location.pathname === '/')
+  useLayoutEffect(() => {
+    document.documentElement.dataset.preloaderDone = String(!isHome || Boolean(reduced))
+  }, [isHome, reduced])
   useEffect(() => {
+    if (!isHome || reduced || phase === 'done') return undefined
+    const fallback = window.setTimeout(() => setPhase('done'), 11000)
+    return () => window.clearTimeout(fallback)
+  }, [isHome, reduced, phase])
+  useEffect(() => {
+    if (!isHome) {
+      document.documentElement.dataset.preloaderDone = 'true'
+      return undefined
+    }
     if (reduced) {
       document.documentElement.dataset.preloaderDone = 'true'
       window.dispatchEvent(new Event('site-preloader-done'))
@@ -118,12 +130,11 @@ export function PagePreloader() {
     document.body.style.overflow = 'hidden'
     const words = [370, 740, 1110].map((delay, value) => window.setTimeout(() => setIndex(value + 1), delay))
     const welcome = window.setTimeout(() => setPhase('welcome'), 1480)
-    const leave = window.setTimeout(() => setPhase(isHome ? 'handoff' : 'exit'), 4480)
-    const done = isHome ? null : window.setTimeout(() => setPhase('done'), 5160)
-    return () => { words.forEach(window.clearTimeout); window.clearTimeout(welcome); window.clearTimeout(leave); window.clearTimeout(done); document.body.style.overflow = previous }
+    const leave = window.setTimeout(() => setPhase('handoff'), 4480)
+    return () => { words.forEach(window.clearTimeout); window.clearTimeout(welcome); window.clearTimeout(leave); document.body.style.overflow = previous }
   }, [reduced, isHome])
   useEffect(() => {
-    if (phase !== 'handoff') return undefined
+    if (phase !== 'handoff' || reduced) return undefined
     let cancelled = false
     const animations = []
     const play = (element, frames, options) => {
@@ -211,7 +222,7 @@ export function PagePreloader() {
       if (!cancelled) setPhase('done')
     })
     return () => { cancelled = true; cancelAnimationFrame(frame); animations.forEach(animation => animation.cancel()) }
-  }, [phase])
+  }, [phase, reduced])
   useEffect(() => {
     if (phase === 'done') {
       document.body.style.overflow = ''
@@ -219,7 +230,7 @@ export function PagePreloader() {
       window.dispatchEvent(new Event('site-preloader-done'))
     }
   }, [phase])
-  if (reduced || phase === 'done') return null
+  if (!isHome || reduced || phase === 'done') return null
   const welcome = phase === 'welcome' || phase === 'exit' || phase === 'handoff'
   return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''} ${phase === 'handoff' ? 'is-handoff' : ''}`} role="status" aria-live="polite"><span className="sr-only">{welcome ? 'Welcome to the world of AI Builders' : 'Loading AI Builders'}</span><div ref={visualRef} className="preloader-visual" aria-hidden="true"><span>AI BUILDERS / UAI</span><strong key={welcome ? 'welcome' : index} className={welcome ? 'preloader-welcome' : ''}>{welcome ? phrase.split(' ').map((word, wordIndex) => <span className="preloader-word" key={wordIndex}>{[...word].map((letter, letterIndex) => <span data-intro-letter key={letterIndex}>{letter}</span>)}</span>) : ['LEARN', 'BUILD', 'SHIP', 'CONTRIBUTE'][index]}</strong><span>MADE TO MAKE THINGS REAL</span></div></div>
 }

@@ -130,6 +130,32 @@ export default function CradleText({
       const style = getComputedStyle(lettersEl);
       const em = Number.parseFloat(style.fontSize);
       ink.font = style.font;
+      const strokeCanvas = document.createElement("canvas");
+      strokeCanvas.width = Math.ceil(em * 4);
+      strokeCanvas.height = Math.ceil(em * 3);
+      const stroke = strokeCanvas.getContext("2d");
+      const topStrokeCenter = (char: string) => {
+        if (!stroke) return null;
+        stroke.clearRect(0, 0, strokeCanvas.width, strokeCanvas.height);
+        stroke.font = style.font;
+        stroke.fillStyle = "#fff";
+        stroke.fillText(char, em, em * 2);
+        const { data, width, height } = stroke.getImageData(0, 0, strokeCanvas.width, strokeCanvas.height);
+        for (let y = 0; y < height; y++) {
+          let first = width;
+          let last = -1;
+          for (let row = y; row < Math.min(y + 3, height); row++) {
+            for (let x = 0; x < width; x++) {
+              if (data[(row * width + x) * 4 + 3] > 96) {
+                first = Math.min(first, x);
+                last = Math.max(last, x);
+              }
+            }
+          }
+          if (last >= first) return (first + last + 1) / 2 - em;
+        }
+        return null;
+      };
       railY = rail.getBoundingClientRect().top - stageBox.top + 0.5;
       radius = Math.max(baseline - em * 0.35 - railY, 1);
       bobs = spans.map((el) => {
@@ -140,8 +166,12 @@ export default function CradleText({
         const left = boxLeft - m.actualBoundingBoxLeft;
         const right = boxLeft + m.actualBoundingBoxRight;
         const top = baseline - m.actualBoundingBoxAscent;
-        const center = (left + right) / 2;
-        // The thread runs from the rail to the top of the ink.
+        // J's hook makes its box center fall left of the visible top stroke.
+        // Attach the thread to that stroke so it meets the letter cleanly.
+        const center = boxLeft + (el.dataset.letter === "J"
+          ? topStrokeCenter("J") ?? box.width / 2
+          : box.width / 2);
+        // The thread and swing use the same suspension point.
         const thread = el.firstElementChild as HTMLElement;
         thread.style.left = `${center - boxLeft - 0.5}px`;
         thread.style.top = `${railY - (box.top - stageBox.top)}px`;

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { flushSync } from 'react-dom'
 import Navbar from './components/layout/Navbar'
@@ -20,12 +20,16 @@ import './components/ui/RequestedMotion.css'
 function Site() {
   const location = useLocation()
   const navigate = useNavigate()
+  const [initialHomeKey] = useState(() => location.pathname === '/' ? location.key : null)
   useSiteMotion(location.pathname)
   useLayoutEffect(() => {
+    if (location.pathname !== '/') {
+      document.documentElement.dataset.preloaderDone = 'true'
+    }
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     const frame = requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' }))
     return () => cancelAnimationFrame(frame)
-  }, [location.key])
+  }, [location.key, location.pathname])
   useEffect(() => {
     const onLink = event => {
       if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
@@ -43,7 +47,7 @@ function Site() {
     const titles = { '/': 'AI Builders | Universal AI University', '/about': 'About | AI Builders', '/projects': 'Projects | AI Builders', '/events': 'Events | AI Builders', '/team': 'Team | AI Builders', '/blog': 'Resources | AI Builders', '/open-source': 'Open Source | AI Builders', '/join': 'Join Us | AI Builders' }
     document.title = titles[location.pathname] || 'Page not found | AI Builders'
   }, [location.pathname])
-  return <><SmoothCursor /><PagePreloader /><TracingBeam /><Navbar /><main id="main-content"><Routes>
+  return <><SmoothCursor />{location.pathname === '/' && location.key === initialHomeKey && <PagePreloader />}<TracingBeam /><Navbar /><main id="main-content"><Routes>
     <Route path="/" element={<Home />} /><Route path="/about" element={<About />} />
     <Route path="/projects" element={<Projects />} /><Route path="/events" element={<Events />} />
     <Route path="/team" element={<Team />} /><Route path="/blog" element={<Blog />} />

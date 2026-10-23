@@ -158,3 +158,44 @@
   .dossier-open .dossier-resources small{font-size:10px}
   .dossier-open .dossier-bottomline{min-height:23px;margin-top:5px;font-size:9px}
 }
+
+/* The open spread fills the viewport without scrolling. */
+.project-dossier.dossier-open{position:fixed;inset:0;z-index:40;block-size:100dvh;overflow:hidden;background:#0d1229}
+.dossier-open .dossier-reading{overflow:hidden;scrollbar-gutter:auto;background:#151b35}
+.dossier-open .dossier-profile,.dossier-open .dossier-pages{height:100%;min-height:0;overflow:hidden}
+.dossier-open .dossier-pages{min-height:0;background:#1b223d}
+.dossier-open .dossier-sheet{height:100%;min-height:0;overflow:hidden;background:#1b223d;color:#edf0ff}
+.dossier-open .dossier-index-sheet{height:100%}
+.dossier-open.stage-detail:not(.is-turning-reverse) .dossier-index-sheet{visibility:hidden;opacity:0;transition:none}
+.dossier-open .dossier-reading::before{border-color:#53628d}
+.dossier-open .dossier-index-meta,.dossier-open .dossier-detail-head,.dossier-open .dossier-page-foot{color:#aab8e9}
+.dossier-open .dossier-label,.dossier-open .dossier-index-meta span:first-child{color:#b0beff}
+.dossier-open .dossier-index-sheet>p,.dossier-open .dossier-status,.dossier-open .dossier-project-list small,.dossier-open .dossier-resources small{color:#b9c3df}
+.dossier-open .dossier-project-list button{color:#edf0ff;border-bottom-color:#414d73}
+.dossier-open .dossier-project-list i,.dossier-open .dossier-project-list em,.dossier-open .dossier-index-bottom{color:#aab8e9}
+.dossier-open .dossier-project-list button.is-selected:not(:hover):not(:focus-visible){background:#303b66;color:#f2f4ff;box-shadow:inset 3px 0 #aebcff}
+.dossier-open .dossier-project-list button.is-selected:not(:hover):not(:focus-visible) small,.dossier-open .dossier-project-list button.is-selected:not(:hover):not(:focus-visible) i,.dossier-open .dossier-project-list button.is-selected:not(:hover):not(:focus-visible) em{color:#d5ddfb}
+.dossier-open .dossier-project-list button:hover,.dossier-open .dossier-project-list button:focus-visible{background:#414e86}
+.dossier-open .dossier-detail-grid,.dossier-open .dossier-approach,.dossier-open .dossier-resources,.dossier-open .dossier-page-foot{border-color:#414d73}
+.dossier-open .dossier-approach article{background:#283251}
+.dossier-open .dossier-resources>div{border-color:#516087}
+.dossier-open .dossier-turn-leaf{background:linear-gradient(0deg,#253254,#6677b0 50%,#283658);color:#eef1ff}
+@media(max-width:760px){
+  .dossier-open .dossier-pages,.dossier-open .dossier-sheet{min-height:0}
+  .dossier-open .dossier-reading{overflow:hidden}
+  .dossier-open[data-mobile-page='profile'] .dossier-profile{min-height:100%}
+}
+
+/* Palette shared with the site's headings, copy and primary actions. */
+.project-dossier .dossier-intro-copy h2 em{color:#b9baff}
+.project-dossier .dossier-micro,.project-dossier .dossier-support,.project-dossier .dossier-university,.project-dossier .dossier-facts dt,.project-dossier .dossier-profile-top,.project-dossier .dossier-profile-foot,.project-dossier .dossier-bottomline{color:#aeb6d5}
+.project-dossier .dossier-close,.project-dossier .dossier-detail-head button,.project-dossier .dossier-folder-arrow{background:#b9baff;color:#171b32}
+.project-dossier .dossier-close:hover,.project-dossier .dossier-detail-head button:hover,.project-dossier .dossier-folder-arrow:hover{background:#d1d2ff}
+.project-dossier .dossier-folder-paper b em{color:#3e4776}
+.dossier-open .dossier-profile{transform-origin:right center}
+.dossier-open.is-turning-forward .dossier-profile{animation:dossierProfileTurn .76s cubic-bezier(.22,1,.36,1) both}
+.dossier-open.is-turning-reverse .dossier-profile{animation:dossierProfileTurn .68s cubic-bezier(.22,1,.36,1) reverse both}
+@keyframes dossierProfileTurn{0%,100%{transform:perspective(1200px) rotateY(0);opacity:1}50%{transform:perspective(1200px) rotateY(18deg);opacity:.45}}
+@media(prefers-reduced-motion:reduce){.dossier-open.is-turning-forward .dossier-profile,.dossier-open.is-turning-reverse .dossier-profile{animation:none}}
+
+.dossier-open .dossier-reading::before{inset:0}
