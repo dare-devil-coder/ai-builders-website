@@ -20,6 +20,30 @@
         ],
         "createdAt": "2026-10-17T18:46:54.791Z",
         "reason": "Existing pointer-reveal watermark glow; the gradient follows the cursor and user asked to preserve this site effect."
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/index.css"
+        ],
+        "createdAt": "2026-10-22T14:49:38.869Z",
+        "reason": "Agent: existing two-pixel border marks a pullquote, not a card"
+      },
+      {
+        "rule": "overused-font",
+        "value": "instrument serif",
+        "createdAt": "2026-10-22T14:49:40.060Z",
+        "reason": "Agent: existing serif is the site emphasis face"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/components/ui/MotionPieces.css"
+        ],
+        "createdAt": "2026-10-22T15:10:23.355Z",
+        "reason": "Agent: existing shine-text sweep predates this intro change and is preserved as part of the established site motion identity"
       }
     ]
   }

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { flushSync } from 'react-dom'
 import Navbar from './components/layout/Navbar'
@@ -21,6 +21,11 @@ function Site() {
   const location = useLocation()
   const navigate = useNavigate()
   useSiteMotion(location.pathname)
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    const frame = requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' }))
+    return () => cancelAnimationFrame(frame)
+  }, [location.key])
   useEffect(() => {
     const onLink = event => {
       if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return

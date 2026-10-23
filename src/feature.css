@@ -9,6 +9,9 @@ main .reveal{opacity:1;transform:none;transition:none}
 
 /* Unboxed, uniformly styled topics float around the standalone BUILD word. */
 .build-constellation{position:relative;width:100%;height:590px;min-width:0;display:grid;place-items:center;isolation:isolate}
+html:not([data-preloader-done="true"]) .home-page .build-constellation{visibility:hidden}
+html:not([data-preloader-done="true"]) .home-page .hero-copy>:not(.hero-kinetic-heading),html:not([data-preloader-done="true"]) .home-page .hero-bottom{opacity:0}
+html[data-preloader-done="true"] .home-page .hero-copy>:not(.hero-kinetic-heading),html[data-preloader-done="true"] .home-page .hero-bottom{transition:opacity .65s cubic-bezier(.16,1,.3,1)}
 .build-constellation:before{content:'';position:absolute;inset:17% 8%;border-radius:50%;background:radial-gradient(ellipse,#5d6fde20,transparent 68%);filter:blur(34px);pointer-events:none}
 .constellation-desktop{width:110%;max-width:none;height:100%;overflow:visible;filter:drop-shadow(0 16px 38px #06091980)}
 .floating-topic{pointer-events:none;transform-box:fill-box;transform-origin:center}

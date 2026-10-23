@@ -105,16 +105,113 @@ export function PagePreloader() {
   const reduced = useReducedMotion()
   const [phase, setPhase] = useState('hold')
   const [index, setIndex] = useState(0)
+  const visualRef = useRef(null)
+  const phrase = 'WELCOME TO THE WORLD OF AI BUILDERS'
+  const [isHome] = useState(() => window.location.pathname === '/')
   useEffect(() => {
-    if (reduced) return undefined
+    if (reduced) {
+      document.documentElement.dataset.preloaderDone = 'true'
+      window.dispatchEvent(new Event('site-preloader-done'))
+      return undefined
+    }
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     const words = [370, 740, 1110].map((delay, value) => window.setTimeout(() => setIndex(value + 1), delay))
     const welcome = window.setTimeout(() => setPhase('welcome'), 1480)
-    const leave = window.setTimeout(() => setPhase('exit'), 4480)
-    const done = window.setTimeout(() => setPhase('done'), 5160)
+    const leave = window.setTimeout(() => setPhase(isHome ? 'handoff' : 'exit'), 4480)
+    const done = isHome ? null : window.setTimeout(() => setPhase('done'), 5160)
     return () => { words.forEach(window.clearTimeout); window.clearTimeout(welcome); window.clearTimeout(leave); window.clearTimeout(done); document.body.style.overflow = previous }
-  }, [reduced])
+  }, [reduced, isHome])
+  useEffect(() => {
+    if (phase !== 'handoff') return undefined
+    let cancelled = false
+    const animations = []
+    const play = (element, frames, options) => {
+      const animation = element.animate(frames, options)
+      animations.push(animation)
+      return animation
+    }
+    const frame = requestAnimationFrame(async () => {
+      const letters = [...visualRef.current.querySelectorAll('[data-intro-letter]')]
+      // Keep the complete greeting in place while its backdrop reveals the hero.
+      await play(visualRef.current, [{ opacity: 1 }, { opacity: 1 }], { duration: 650 }).finished.catch(() => {})
+      if (cancelled) return
+      const scene = document.querySelector(window.matchMedia('(max-width: 640px)').matches ? '.constellation-mobile' : '.constellation-desktop')
+      const glyphs = [...(scene?.querySelector('.build-word')?.children || [])]
+      const wordBounds = scene?.querySelector('.build-word')?.getBoundingClientRect()
+      const viewportAssembly = wordBounds && wordBounds.bottom > innerHeight - 24
+      const assemblyOffsetY = viewportAssembly ? innerHeight * .48 - (wordBounds.top + wordBounds.height / 2) : 0
+      const source = phrase.replaceAll(' ', '').lastIndexOf('BUILD')
+      const spread = letters.map((letter, i) => {
+        const origin = letter.getBoundingClientRect()
+        // Jittered viewport cells distribute the fragments across the whole screen.
+        const columns = innerWidth > 640 ? 7 : 4
+        const rows = Math.ceil(letters.length / columns)
+        const cell = (i * 11) % letters.length
+        const x = 24 + ((cell % columns + .25 + Math.random() * .5) / columns) * (innerWidth - 48) - (origin.left + origin.width / 2)
+        const y = 40 + ((Math.floor(cell / columns) + .25 + Math.random() * .5) / rows) * (innerHeight - 80) - (origin.top + origin.height / 2)
+        const rotation = (Math.random() - .5) * 52
+        const animation = play(letter, [{ transform: 'translate(0, 0)', opacity: 1 }, { transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`, opacity: 1 }], { duration: 780, easing: 'cubic-bezier(.2,.65,.25,1)', fill: 'forwards' })
+        return { letter, x, y, rotation, origin, animation }
+      })
+      await Promise.all(spread.map(item => item.animation.finished.catch(() => {})))
+      if (cancelled) return
+      const settle = spread.map((item, i) => {
+        const glyphIndex = i - source
+        const selected = glyphIndex >= 0 && glyphIndex < 5 && glyphs[glyphIndex]
+        const to = selected ? selected.getBoundingClientRect() : null
+        const endX = to ? to.left + to.width / 2 - (item.origin.left + item.origin.width / 2) : item.x * 1.1
+        const endY = to ? to.top + to.height / 2 + assemblyOffsetY - (item.origin.top + item.origin.height / 2) : item.y * 1.1
+        const dx = endX - item.x
+        const dy = endY - item.y
+        const delay = selected ? 180 + glyphIndex * 230 : 500
+        const scale = to ? to.height / Math.max(item.origin.height, 1) : 1
+        const scaleX = to ? to.width / Math.max(item.origin.width, 1) : 1
+        if (selected) {
+          // Fly the actual hero outline so the landing matches BUILD precisely.
+          const bounds = selected.getBBox()
+          const outline = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+          outline.setAttribute('viewBox', `${bounds.x} ${bounds.y} ${bounds.width} ${bounds.height}`)
+          outline.setAttribute('preserveAspectRatio', 'none')
+          outline.setAttribute('class', 'intro-letter-outline')
+          const paths = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+          paths.setAttribute('transform', `translate(0 ${2 * bounds.y + bounds.height}) scale(1 -1)`)
+          ;[...selected.children].forEach(path => paths.appendChild(path.cloneNode(true)))
+          outline.appendChild(paths)
+          item.letter.appendChild(outline)
+          play(outline, [{ opacity: 0 }, { opacity: 1 }], { duration: 120, delay, fill: 'both' })
+          play(item.letter, [{ color: '#f2f3ff' }, { color: 'transparent' }], { duration: 120, delay, fill: 'forwards' })
+          const plume = document.createElement('i')
+          plume.className = 'intro-thruster'
+          item.letter.appendChild(plume)
+          plume.style.setProperty('--thrust-angle', `${Math.atan2(dy, dx)}rad`)
+          play(plume, [
+            { opacity: 0, scale: '.15 1', offset: 0 },
+            { opacity: 1, scale: '.45 1', offset: .12 },
+            { opacity: .95, scale: '1 1', offset: .38 },
+            { opacity: .7, scale: '.65 .8', offset: .7 },
+            { opacity: 0, scale: '.05 .5', offset: 1 },
+          ], { duration: 1000, delay, fill: 'both' })
+        }
+        const transform = (x, y, rotation, size = 1, width = size) => `translate(${x}px, ${y}px) rotate(${rotation}deg) scale(${width}, ${size})`
+        return play(item.letter, selected ? [
+          { transform: transform(item.x, item.y, item.rotation), offset: 0, easing: 'ease-in' },
+          { transform: transform(item.x - dx * .035, item.y - dy * .035, item.rotation * .5), offset: .12, easing: 'cubic-bezier(.65,0,.3,1)' },
+          { transform: transform(endX + dx * .012, endY + dy * .012, -2, scale, scaleX), offset: .84, easing: 'ease-out' },
+          { transform: transform(endX, endY, 0, scale, scaleX), offset: 1 },
+        ] : [
+          { transform: transform(item.x, item.y, item.rotation), opacity: 1 },
+          { transform: transform(endX, endY, item.rotation), opacity: 0 },
+        ], { duration: selected ? 1000 : 550, delay, fill: 'forwards' })
+      })
+      await Promise.all(settle.map(animation => animation.finished.catch(() => {})))
+      if (!cancelled && viewportAssembly) {
+        await play(visualRef.current, [{ opacity: 1 }, { opacity: 1, offset: .6 }, { opacity: 0 }], { duration: 450, fill: 'forwards' }).finished.catch(() => {})
+      }
+      if (!cancelled) setPhase('done')
+    })
+    return () => { cancelled = true; cancelAnimationFrame(frame); animations.forEach(animation => animation.cancel()) }
+  }, [phase])
   useEffect(() => {
     if (phase === 'done') {
       document.body.style.overflow = ''
@@ -123,7 +220,8 @@ export function PagePreloader() {
     }
   }, [phase])
   if (reduced || phase === 'done') return null
-  return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''}`} role="status" aria-live="polite"><span className="sr-only">{phase === 'welcome' ? 'Welcome to the world of AI Builders' : 'Loading AI Builders'}</span><div className="preloader-visual" aria-hidden="true"><span>AI BUILDERS / UAI</span><strong key={phase === 'welcome' || phase === 'exit' ? 'welcome' : index} className={phase === 'welcome' || phase === 'exit' ? 'preloader-welcome' : ''}>{phase === 'welcome' || phase === 'exit' ? 'WELCOME TO THE WORLD OF AI BUILDERS' : ['LEARN', 'BUILD', 'SHIP', 'CONTRIBUTE'][index]}</strong><span>MADE TO MAKE THINGS REAL</span></div></div>
+  const welcome = phase === 'welcome' || phase === 'exit' || phase === 'handoff'
+  return <div className={`site-preloader ${phase === 'exit' ? 'is-exiting' : ''} ${phase === 'handoff' ? 'is-handoff' : ''}`} role="status" aria-live="polite"><span className="sr-only">{welcome ? 'Welcome to the world of AI Builders' : 'Loading AI Builders'}</span><div ref={visualRef} className="preloader-visual" aria-hidden="true"><span>AI BUILDERS / UAI</span><strong key={welcome ? 'welcome' : index} className={welcome ? 'preloader-welcome' : ''}>{welcome ? phrase.split(' ').map((word, wordIndex) => <span className="preloader-word" key={wordIndex}>{[...word].map((letter, letterIndex) => <span data-intro-letter key={letterIndex}>{letter}</span>)}</span>) : ['LEARN', 'BUILD', 'SHIP', 'CONTRIBUTE'][index]}</strong><span>MADE TO MAKE THINGS REAL</span></div></div>
 }
 
 export function KineticCenterBuild({ words = ['Learn.', 'Build.', 'Repeat.'] }) {

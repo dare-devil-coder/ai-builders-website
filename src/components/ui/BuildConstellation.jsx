@@ -158,8 +158,8 @@ export default function BuildConstellation() {
           index,
         }))
         const pointer = { x: 0, y: 0, active: false }
-        const radius = mobilePreference.matches ? 95 : 145
-        const strength = mobilePreference.matches ? 24 : 42
+        const radius = mobilePreference.matches ? 105 : 175
+        const strength = mobilePreference.matches ? 22 : 40
         let frame = 0
 
         const tick = () => {
@@ -178,20 +178,22 @@ export default function BuildConstellation() {
                   const angle = label.index * 2.4
                   const directionX = distance > 1 ? dx / distance : Math.cos(angle)
                   const directionY = distance > 1 ? dy / distance : Math.sin(angle)
-                  const force = (1 - distance / radius) ** 2 * strength
+                  const proximity = 1 - distance / radius
+                  const force = proximity * proximity * (3 - 2 * proximity) * strength
                   targetX = directionX * force
                   targetY = directionY * force
                 }
               }
             }
-            label.vx = (label.vx + (targetX - label.x) * .13) * .72
-            label.vy = (label.vy + (targetY - label.y) * .13) * .72
+            label.vx = (label.vx + (targetX - label.x) * .1) * .62
+            label.vy = (label.vy + (targetY - label.y) * .1) * .62
             label.x += label.vx
             label.y += label.vy
             label.repel.style.transform = `translate(${label.x.toFixed(2)}px, ${label.y.toFixed(2)}px)`
             if (Math.abs(label.x - targetX) + Math.abs(label.y - targetY) + Math.abs(label.vx) + Math.abs(label.vy) > .2) unsettled = true
           })
           frame = pointer.active || unsettled ? requestAnimationFrame(tick) : 0
+          if (!frame) labels.forEach(label => { label.repel.style.transform = '' })
         }
         const onMove = event => {
           pointer.x = event.clientX
@@ -202,9 +204,11 @@ export default function BuildConstellation() {
         const onLeave = () => { pointer.active = false }
         root.current.addEventListener('pointermove', onMove)
         root.current.addEventListener('pointerleave', onLeave)
+        root.current.addEventListener('pointercancel', onLeave)
         stopRepelling = () => {
           root.current?.removeEventListener('pointermove', onMove)
           root.current?.removeEventListener('pointerleave', onLeave)
+          root.current?.removeEventListener('pointercancel', onLeave)
           cancelAnimationFrame(frame)
           labels.forEach(label => { label.repel.style.transform = '' })
         }
